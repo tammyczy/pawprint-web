@@ -1,0 +1,15 @@
+[
+ {"id":"review-01","group":"review-adversarial","text":"Don't run and jump","expected":null},
+ {"id":"review-02","group":"review-adversarial","text":"Do not walk and run","expected":null},
+ {"id":"review-03","group":"review-adversarial","text":"Never jump, run, or wag your tail","expected":null},
+ {"id":"review-04","group":"review-adversarial","text":"If I say go, run","expected":null},
+ {"id":"review-05","group":"review-adversarial","text":"My favorite commands are walk, run, jump","expected":null},
+ {"id":"review-06","group":"review-adversarial","text":"Translate these words: walk, run, jump","expected":null},
+ {"id":"review-07","group":"review-adversarial","text":"Explain what run, jump, and stop mean","expected":null},
+ {"id":"review-08","group":"review-adversarial","text":"蓝老，别动吧","expected":"stop"},
+ {"id":"review-09","group":"review-adversarial","text":"蓝老，不要动","expected":"stop"},
+ {"id":"review-10","group":"review-adversarial","text":"Run, don't run","expected":null},
+ {"id":"review-11","group":"review-adversarial","text":"如果我说可以，你就跑步","expected":null},
+ {"id":"review-12","group":"review-adversarial","text":"请翻译，跑步，跳一下","expected":null},
+ {"id":"review-13","group":"review-adversarial","text":"不要跑，停下","expected":"stop"}
+]

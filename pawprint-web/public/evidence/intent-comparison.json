@@ -1,0 +1,1771 @@
+{
+ "schemaVersion": 1,
+ "generatedAt": "2026-10-25T03:14:43.246Z",
+ "scope": "Offline command-intent recognition only (text -> one of come/home/walk/run/wag/jump/stop or none). No user outcomes, speech recognition, clinical efficacy, or competition score measured. LLM column only when an API key is present.",
+ "method": "cases.json is a DEVELOPMENT set (author-written, seen while building; not blind). Classifier: softmax regression on character 1-3 grams, trained on train.json seed drafts written by an AI assistant for the team to review. train.mjs refuses to train if any training sentence is identical or near-identical (>=0.85 char similarity) to cases.json. Learning curve and threshold choice use 5-fold cross-validation on train.json only. blind-test.json, when present, should be written by people who never saw train.json. Small datasets: differences of one or two cases are noise.",
+ "datasetSha256": {
+  "cases": "5657823de0016fe2d6e4d0f1f733abea73b296025c06da88fb99ea90ea032fab",
+  "train": "4ad6d21079638d3d268ae71d2812bc889f54ceac904809e433e94f99953c845a",
+  "blindTest": null
+ },
+ "modelSha256": "a936cf715eff5cd4432265719f18f517b750aa3bd4c26c1d78031e908269d405",
+ "codeSha256": {
+  "intentModel": "9f46abc33c7350655e5b5050fbd6dcf93ca2b2e506a9df6d2c2d4d24137cc697",
+  "rules": "c9f885bc51b0a89798a7bf6bc89e9ebcb8bc872c47879e66eaef9bc304ee6bfb"
+ },
+ "model": {
+  "features": 1175,
+  "bytes": 40795,
+  "trainingExamples": 315,
+  "threshold": 0.75
+ },
+ "llm": "skipped: no key (set OPENAI_API_KEY to include the LLM)",
+ "dev": {
+  "systems": {
+   "baseline": {
+    "accuracy": 0.4545,
+    "macroF1": 0.5657,
+    "falseActionRate": 0.8636,
+    "falseActions": 19,
+    "negativeCases": 22,
+    "missedActions": 10,
+    "wrongActions": 1,
+    "correct": 25,
+    "total": 55,
+    "groups": {
+     "commands-en": {
+      "accuracy": 0.875,
+      "macroF1": 0.75,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 1,
+      "wrongActions": 0,
+      "correct": 7,
+      "total": 8
+     },
+     "commands-zh": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 8,
+      "total": 8
+     },
+     "commands-fr": {
+      "accuracy": 0,
+      "macroF1": 0,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 5,
+      "wrongActions": 0,
+      "correct": 0,
+      "total": 5
+     },
+     "negation": {
+      "accuracy": 0.25,
+      "macroF1": 0.08,
+      "falseActionRate": 0.75,
+      "falseActions": 6,
+      "negativeCases": 8,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 2,
+      "total": 8
+     },
+     "non-commands": {
+      "accuracy": 0.1,
+      "macroF1": 0.0303,
+      "falseActionRate": 0.9,
+      "falseActions": 9,
+      "negativeCases": 10,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 1,
+      "total": 10
+     },
+     "quoted": {
+      "accuracy": 0,
+      "macroF1": 0,
+      "falseActionRate": 1,
+      "falseActions": 4,
+      "negativeCases": 4,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 0,
+      "total": 4
+     },
+     "multiple": {
+      "accuracy": 0.8333,
+      "macroF1": 0.6,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 0,
+      "wrongActions": 1,
+      "correct": 5,
+      "total": 6
+     },
+     "exploratory-limits": {
+      "accuracy": 0.3333,
+      "macroF1": 0.1667,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 4,
+      "wrongActions": 0,
+      "correct": 2,
+      "total": 6
+     }
+    },
+    "confusion": {
+     "none": {
+      "none": 3,
+      "come": 2,
+      "home": 0,
+      "walk": 2,
+      "run": 6,
+      "wag": 0,
+      "jump": 5,
+      "stop": 4
+     },
+     "come": {
+      "none": 3,
+      "come": 6,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "home": {
+      "none": 1,
+      "come": 0,
+      "home": 1,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "walk": {
+      "none": 2,
+      "come": 0,
+      "home": 0,
+      "walk": 2,
+      "run": 1,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "run": {
+      "none": 2,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 4,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "wag": {
+      "none": 0,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 2,
+      "jump": 0,
+      "stop": 0
+     },
+     "jump": {
+      "none": 1,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 2,
+      "stop": 0
+     },
+     "stop": {
+      "none": 1,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 5
+     }
+    }
+   },
+   "rules": {
+    "accuracy": 0.9273,
+    "macroF1": 0.9487,
+    "falseActionRate": 0,
+    "falseActions": 0,
+    "negativeCases": 22,
+    "missedActions": 4,
+    "wrongActions": 0,
+    "correct": 51,
+    "total": 55,
+    "groups": {
+     "commands-en": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 8,
+      "total": 8
+     },
+     "commands-zh": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 8,
+      "total": 8
+     },
+     "commands-fr": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 5,
+      "total": 5
+     },
+     "negation": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 8,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 8,
+      "total": 8
+     },
+     "non-commands": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 10,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 10,
+      "total": 10
+     },
+     "quoted": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 4,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 4,
+      "total": 4
+     },
+     "multiple": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 6,
+      "total": 6
+     },
+     "exploratory-limits": {
+      "accuracy": 0.3333,
+      "macroF1": 0.1667,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 4,
+      "wrongActions": 0,
+      "correct": 2,
+      "total": 6
+     }
+    },
+    "confusion": {
+     "none": {
+      "none": 22,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "come": {
+      "none": 2,
+      "come": 7,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "home": {
+      "none": 0,
+      "come": 0,
+      "home": 2,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "walk": {
+      "none": 1,
+      "come": 0,
+      "home": 0,
+      "walk": 4,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "run": {
+      "none": 1,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 5,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "wag": {
+      "none": 0,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 2,
+      "jump": 0,
+      "stop": 0
+     },
+     "jump": {
+      "none": 0,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 3,
+      "stop": 0
+     },
+     "stop": {
+      "none": 0,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 6
+     }
+    }
+   },
+   "classifier": {
+    "accuracy": 0.7818,
+    "macroF1": 0.786,
+    "falseActionRate": 0.1364,
+    "falseActions": 3,
+    "negativeCases": 22,
+    "missedActions": 6,
+    "wrongActions": 3,
+    "correct": 43,
+    "total": 55,
+    "groups": {
+     "commands-en": {
+      "accuracy": 0.75,
+      "macroF1": 0.625,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 1,
+      "wrongActions": 1,
+      "correct": 6,
+      "total": 8
+     },
+     "commands-zh": {
+      "accuracy": 0.75,
+      "macroF1": 0.625,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 2,
+      "wrongActions": 0,
+      "correct": 6,
+      "total": 8
+     },
+     "commands-fr": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 5,
+      "total": 5
+     },
+     "negation": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 8,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 8,
+      "total": 8
+     },
+     "non-commands": {
+      "accuracy": 0.9,
+      "macroF1": 0.4737,
+      "falseActionRate": 0.1,
+      "falseActions": 1,
+      "negativeCases": 10,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 9,
+      "total": 10
+     },
+     "quoted": {
+      "accuracy": 0.5,
+      "macroF1": 0.2222,
+      "falseActionRate": 0.5,
+      "falseActions": 2,
+      "negativeCases": 4,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 2,
+      "total": 4
+     },
+     "multiple": {
+      "accuracy": 0.3333,
+      "macroF1": 0.25,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 2,
+      "wrongActions": 2,
+      "correct": 2,
+      "total": 6
+     },
+     "exploratory-limits": {
+      "accuracy": 0.8333,
+      "macroF1": 0.7143,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 1,
+      "wrongActions": 0,
+      "correct": 5,
+      "total": 6
+     }
+    },
+    "confusion": {
+     "none": {
+      "none": 19,
+      "come": 1,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 1,
+      "stop": 1
+     },
+     "come": {
+      "none": 1,
+      "come": 8,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "home": {
+      "none": 0,
+      "come": 0,
+      "home": 2,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "walk": {
+      "none": 0,
+      "come": 0,
+      "home": 0,
+      "walk": 5,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "run": {
+      "none": 1,
+      "come": 0,
+      "home": 0,
+      "walk": 2,
+      "run": 2,
+      "wag": 0,
+      "jump": 0,
+      "stop": 1
+     },
+     "wag": {
+      "none": 0,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 2,
+      "jump": 0,
+      "stop": 0
+     },
+     "jump": {
+      "none": 0,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 3,
+      "stop": 0
+     },
+     "stop": {
+      "none": 4,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 2
+     }
+    }
+   },
+   "hybrid": {
+    "accuracy": 0.9273,
+    "macroF1": 0.9487,
+    "falseActionRate": 0,
+    "falseActions": 0,
+    "negativeCases": 22,
+    "missedActions": 4,
+    "wrongActions": 0,
+    "correct": 51,
+    "total": 55,
+    "groups": {
+     "commands-en": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 8,
+      "total": 8
+     },
+     "commands-zh": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 8,
+      "total": 8
+     },
+     "commands-fr": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 5,
+      "total": 5
+     },
+     "negation": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 8,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 8,
+      "total": 8
+     },
+     "non-commands": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 10,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 10,
+      "total": 10
+     },
+     "quoted": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 4,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 4,
+      "total": 4
+     },
+     "multiple": {
+      "accuracy": 1,
+      "macroF1": 1,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 0,
+      "wrongActions": 0,
+      "correct": 6,
+      "total": 6
+     },
+     "exploratory-limits": {
+      "accuracy": 0.3333,
+      "macroF1": 0.1667,
+      "falseActionRate": 0,
+      "falseActions": 0,
+      "negativeCases": 0,
+      "missedActions": 4,
+      "wrongActions": 0,
+      "correct": 2,
+      "total": 6
+     }
+    },
+    "confusion": {
+     "none": {
+      "none": 22,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "come": {
+      "none": 2,
+      "come": 7,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "home": {
+      "none": 0,
+      "come": 0,
+      "home": 2,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "walk": {
+      "none": 1,
+      "come": 0,
+      "home": 0,
+      "walk": 4,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "run": {
+      "none": 1,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 5,
+      "wag": 0,
+      "jump": 0,
+      "stop": 0
+     },
+     "wag": {
+      "none": 0,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 2,
+      "jump": 0,
+      "stop": 0
+     },
+     "jump": {
+      "none": 0,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 3,
+      "stop": 0
+     },
+     "stop": {
+      "none": 0,
+      "come": 0,
+      "home": 0,
+      "walk": 0,
+      "run": 0,
+      "wag": 0,
+      "jump": 0,
+      "stop": 6
+     }
+    }
+   },
+   "llm": {
+    "status": "skipped: no key (set OPENAI_API_KEY to include the LLM)"
+   }
+  },
+  "rows": [
+   {
+    "id": "en-01",
+    "group": "commands-en",
+    "text": "Come here",
+    "expected": "come",
+    "baseline": "come",
+    "rules": "come",
+    "classifier": "come",
+    "hybrid": "come",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.99
+   },
+   {
+    "id": "en-02",
+    "group": "commands-en",
+    "text": "Lanlao, come closer",
+    "expected": "come",
+    "baseline": "come",
+    "rules": "come",
+    "classifier": "come",
+    "hybrid": "come",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.918
+   },
+   {
+    "id": "en-03",
+    "group": "commands-en",
+    "text": "Could you walk with me?",
+    "expected": "walk",
+    "baseline": "walk",
+    "rules": "walk",
+    "classifier": "walk",
+    "hybrid": "walk",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.325
+   },
+   {
+    "id": "en-04",
+    "group": "commands-en",
+    "text": "Please run fast",
+    "expected": "run",
+    "baseline": "run",
+    "rules": "run",
+    "classifier": "stop",
+    "hybrid": "run",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.402
+   },
+   {
+    "id": "en-05",
+    "group": "commands-en",
+    "text": "Wag your tail",
+    "expected": "wag",
+    "baseline": "wag",
+    "rules": "wag",
+    "classifier": "wag",
+    "hybrid": "wag",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.976
+   },
+   {
+    "id": "en-06",
+    "group": "commands-en",
+    "text": "Jump once",
+    "expected": "jump",
+    "baseline": "jump",
+    "rules": "jump",
+    "classifier": "jump",
+    "hybrid": "jump",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.872
+   },
+   {
+    "id": "en-07",
+    "group": "commands-en",
+    "text": "Go home",
+    "expected": "home",
+    "baseline": null,
+    "rules": "home",
+    "classifier": "home",
+    "hybrid": "home",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.449
+   },
+   {
+    "id": "en-08",
+    "group": "commands-en",
+    "text": "Stop running",
+    "expected": "stop",
+    "baseline": "stop",
+    "rules": "stop",
+    "classifier": null,
+    "hybrid": "stop",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.597
+   },
+   {
+    "id": "zh-01",
+    "group": "commands-zh",
+    "text": "蓝老，过来",
+    "expected": "come",
+    "baseline": "come",
+    "rules": "come",
+    "classifier": "come",
+    "hybrid": "come",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.956
+   },
+   {
+    "id": "zh-02",
+    "group": "commands-zh",
+    "text": "藍老，過來",
+    "expected": "come",
+    "baseline": "come",
+    "rules": "come",
+    "classifier": "come",
+    "hybrid": "come",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.971
+   },
+   {
+    "id": "zh-03",
+    "group": "commands-zh",
+    "text": "走一走",
+    "expected": "walk",
+    "baseline": "walk",
+    "rules": "walk",
+    "classifier": "walk",
+    "hybrid": "walk",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.972
+   },
+   {
+    "id": "zh-04",
+    "group": "commands-zh",
+    "text": "蓝老跑步",
+    "expected": "run",
+    "baseline": "run",
+    "rules": "run",
+    "classifier": null,
+    "hybrid": "run",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.694
+   },
+   {
+    "id": "zh-05",
+    "group": "commands-zh",
+    "text": "搖尾巴",
+    "expected": "wag",
+    "baseline": "wag",
+    "rules": "wag",
+    "classifier": "wag",
+    "hybrid": "wag",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.917
+   },
+   {
+    "id": "zh-06",
+    "group": "commands-zh",
+    "text": "跳一下",
+    "expected": "jump",
+    "baseline": "jump",
+    "rules": "jump",
+    "classifier": "jump",
+    "hybrid": "jump",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.962
+   },
+   {
+    "id": "zh-07",
+    "group": "commands-zh",
+    "text": "回去",
+    "expected": "home",
+    "baseline": "home",
+    "rules": "home",
+    "classifier": "home",
+    "hybrid": "home",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.979
+   },
+   {
+    "id": "zh-08",
+    "group": "commands-zh",
+    "text": "停止跑步",
+    "expected": "stop",
+    "baseline": "stop",
+    "rules": "stop",
+    "classifier": null,
+    "hybrid": "stop",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.839
+   },
+   {
+    "id": "fr-01",
+    "group": "commands-fr",
+    "text": "Viens ici",
+    "expected": "come",
+    "baseline": null,
+    "rules": "come",
+    "classifier": "come",
+    "hybrid": "come",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.89
+   },
+   {
+    "id": "fr-02",
+    "group": "commands-fr",
+    "text": "Marche",
+    "expected": "walk",
+    "baseline": null,
+    "rules": "walk",
+    "classifier": "walk",
+    "hybrid": "walk",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.797
+   },
+   {
+    "id": "fr-03",
+    "group": "commands-fr",
+    "text": "Cours",
+    "expected": "run",
+    "baseline": null,
+    "rules": "run",
+    "classifier": "run",
+    "hybrid": "run",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.966
+   },
+   {
+    "id": "fr-04",
+    "group": "commands-fr",
+    "text": "Saute",
+    "expected": "jump",
+    "baseline": null,
+    "rules": "jump",
+    "classifier": "jump",
+    "hybrid": "jump",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.93
+   },
+   {
+    "id": "fr-05",
+    "group": "commands-fr",
+    "text": "Repose-toi",
+    "expected": "stop",
+    "baseline": null,
+    "rules": "stop",
+    "classifier": "stop",
+    "hybrid": "stop",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.592
+   },
+   {
+    "id": "neg-01",
+    "group": "negation",
+    "text": "Don't run",
+    "expected": null,
+    "baseline": "run",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.963
+   },
+   {
+    "id": "neg-02",
+    "group": "negation",
+    "text": "Do not jump",
+    "expected": null,
+    "baseline": "jump",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.602
+   },
+   {
+    "id": "neg-03",
+    "group": "negation",
+    "text": "Don't stop",
+    "expected": null,
+    "baseline": "stop",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.91
+   },
+   {
+    "id": "neg-04",
+    "group": "negation",
+    "text": "Please never walk away",
+    "expected": null,
+    "baseline": "walk",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.557
+   },
+   {
+    "id": "neg-05",
+    "group": "negation",
+    "text": "不要跑步",
+    "expected": null,
+    "baseline": null,
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.995
+   },
+   {
+    "id": "neg-06",
+    "group": "negation",
+    "text": "不用过来",
+    "expected": null,
+    "baseline": null,
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.916
+   },
+   {
+    "id": "neg-07",
+    "group": "negation",
+    "text": "不许跳",
+    "expected": null,
+    "baseline": "jump",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.913
+   },
+   {
+    "id": "neg-08",
+    "group": "negation",
+    "text": "不要停止",
+    "expected": null,
+    "baseline": "stop",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.994
+   },
+   {
+    "id": "story-01",
+    "group": "non-commands",
+    "text": "I watched a dog run yesterday",
+    "expected": null,
+    "baseline": "run",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.991
+   },
+   {
+    "id": "story-02",
+    "group": "non-commands",
+    "text": "My computer runs slowly",
+    "expected": null,
+    "baseline": "run",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.817
+   },
+   {
+    "id": "story-03",
+    "group": "non-commands",
+    "text": "The runway is long",
+    "expected": null,
+    "baseline": "run",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.976
+   },
+   {
+    "id": "story-04",
+    "group": "non-commands",
+    "text": "Welcome home",
+    "expected": null,
+    "baseline": "come",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.726
+   },
+   {
+    "id": "story-05",
+    "group": "non-commands",
+    "text": "I bought a stopwatch",
+    "expected": null,
+    "baseline": "stop",
+    "rules": null,
+    "classifier": "stop",
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.652
+   },
+   {
+    "id": "story-06",
+    "group": "non-commands",
+    "text": "If you jump, I will smile",
+    "expected": null,
+    "baseline": "jump",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.757
+   },
+   {
+    "id": "story-07",
+    "group": "non-commands",
+    "text": "我今天走了三公里",
+    "expected": null,
+    "baseline": "walk",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.973
+   },
+   {
+    "id": "story-08",
+    "group": "non-commands",
+    "text": "我昨天去跑步了",
+    "expected": null,
+    "baseline": "run",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.974
+   },
+   {
+    "id": "story-09",
+    "group": "non-commands",
+    "text": "我喜欢跳舞",
+    "expected": null,
+    "baseline": "jump",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.981
+   },
+   {
+    "id": "story-10",
+    "group": "non-commands",
+    "text": "我好难过",
+    "expected": null,
+    "baseline": null,
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.959
+   },
+   {
+    "id": "quote-01",
+    "group": "quoted",
+    "text": "She said “run”",
+    "expected": null,
+    "baseline": "run",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.63
+   },
+   {
+    "id": "quote-02",
+    "group": "quoted",
+    "text": "Translate \"come here\"",
+    "expected": null,
+    "baseline": "come",
+    "rules": null,
+    "classifier": "come",
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.528
+   },
+   {
+    "id": "quote-03",
+    "group": "quoted",
+    "text": "他说「跳一下」",
+    "expected": null,
+    "baseline": "jump",
+    "rules": null,
+    "classifier": "jump",
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.899
+   },
+   {
+    "id": "quote-04",
+    "group": "quoted",
+    "text": "请解释“停止”",
+    "expected": null,
+    "baseline": "stop",
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "rules",
+    "classifierConfidence": 0.96
+   },
+   {
+    "id": "multi-01",
+    "group": "multiple",
+    "text": "Walk, then run",
+    "expected": "run",
+    "baseline": "run",
+    "rules": "run",
+    "classifier": "walk",
+    "hybrid": "run",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.71
+   },
+   {
+    "id": "multi-02",
+    "group": "multiple",
+    "text": "Run then walk",
+    "expected": "walk",
+    "baseline": "run",
+    "rules": "walk",
+    "classifier": "walk",
+    "hybrid": "walk",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.755
+   },
+   {
+    "id": "multi-03",
+    "group": "multiple",
+    "text": "Run and stop",
+    "expected": "stop",
+    "baseline": "stop",
+    "rules": "stop",
+    "classifier": "stop",
+    "hybrid": "stop",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.585
+   },
+   {
+    "id": "multi-04",
+    "group": "multiple",
+    "text": "Don't run, stop",
+    "expected": "stop",
+    "baseline": "stop",
+    "rules": "stop",
+    "classifier": null,
+    "hybrid": "stop",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.928
+   },
+   {
+    "id": "multi-05",
+    "group": "multiple",
+    "text": "先走一走，然后跑步",
+    "expected": "run",
+    "baseline": "run",
+    "rules": "run",
+    "classifier": "walk",
+    "hybrid": "run",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.653
+   },
+   {
+    "id": "multi-06",
+    "group": "multiple",
+    "text": "跑步，然后停止",
+    "expected": "stop",
+    "baseline": "stop",
+    "rules": "stop",
+    "classifier": null,
+    "hybrid": "stop",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.753
+   },
+   {
+    "id": "limit-01",
+    "group": "exploratory-limits",
+    "text": "It's lonely over here; could you come sit next to me?",
+    "expected": "come",
+    "baseline": "come",
+    "rules": "come",
+    "classifier": "come",
+    "hybrid": "come",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.758
+   },
+   {
+    "id": "limit-02",
+    "group": "exploratory-limits",
+    "text": "Let's get some fresh air together",
+    "expected": "walk",
+    "baseline": null,
+    "rules": null,
+    "classifier": "walk",
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.299
+   },
+   {
+    "id": "limit-03",
+    "group": "exploratory-limits",
+    "text": "Show me how fast you can go",
+    "expected": "run",
+    "baseline": null,
+    "rules": null,
+    "classifier": "run",
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.308
+   },
+   {
+    "id": "limit-04",
+    "group": "exploratory-limits",
+    "text": "J'aimerais que tu viennes près de moi",
+    "expected": "come",
+    "baseline": null,
+    "rules": null,
+    "classifier": null,
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.756
+   },
+   {
+    "id": "limit-05",
+    "group": "exploratory-limits",
+    "text": "Ven aquí",
+    "expected": "come",
+    "baseline": null,
+    "rules": null,
+    "classifier": "come",
+    "hybrid": null,
+    "hybridSource": "classifier",
+    "classifierConfidence": 0.324
+   },
+   {
+    "id": "limit-06",
+    "group": "exploratory-limits",
+    "text": "Can you please come over?",
+    "expected": "come",
+    "baseline": "come",
+    "rules": "come",
+    "classifier": "come",
+    "hybrid": "come",
+    "hybridSource": "rules",
+    "classifierConfidence": 0.758
+   }
+  ]
+ },
+ "blind": {
+  "status": "not present: create eval/intent/blind-test.json (see 盲測集填寫說明.md)"
+ },
+ "learningCurve": [
+  {
+   "fraction": 0.1,
+   "meanTrainSize": 24,
+   "classifierCV": {
+    "accuracy": 0.3778,
+    "macroF1": 0.229,
+    "falseActionRate": 0.1275
+   },
+   "hybridCV": {
+    "accuracy": 0.3873,
+    "macroF1": 0.1994,
+    "falseActionRate": 0.0294
+   }
+  },
+  {
+   "fraction": 0.25,
+   "meanTrainSize": 63.8,
+   "classifierCV": {
+    "accuracy": 0.5111,
+    "macroF1": 0.4778,
+    "falseActionRate": 0.2451
+   },
+   "hybridCV": {
+    "accuracy": 0.4603,
+    "macroF1": 0.3539,
+    "falseActionRate": 0.0098
+   }
+  },
+  {
+   "fraction": 0.5,
+   "meanTrainSize": 127.2,
+   "classifierCV": {
+    "accuracy": 0.6159,
+    "macroF1": 0.6032,
+    "falseActionRate": 0.2451
+   },
+   "hybridCV": {
+    "accuracy": 0.5302,
+    "macroF1": 0.4829,
+    "falseActionRate": 0.049
+   }
+  },
+  {
+   "fraction": 0.75,
+   "meanTrainSize": 190.6,
+   "classifierCV": {
+    "accuracy": 0.6762,
+    "macroF1": 0.6787,
+    "falseActionRate": 0.2549
+   },
+   "hybridCV": {
+    "accuracy": 0.5841,
+    "macroF1": 0.5569,
+    "falseActionRate": 0.0588
+   }
+  },
+  {
+   "fraction": 1,
+   "meanTrainSize": 252,
+   "classifierCV": {
+    "accuracy": 0.6952,
+    "macroF1": 0.7018,
+    "falseActionRate": 0.2451
+   },
+   "hybridCV": {
+    "accuracy": 0.581,
+    "macroF1": 0.5494,
+    "falseActionRate": 0.0392
+   }
+  }
+ ],
+ "rulesOnTrainForReference": {
+  "baseline": {
+   "accuracy": 0.4952,
+   "macroF1": 0.5093,
+   "falseActionRate": 0.3824,
+   "falseActions": 39,
+   "negativeCases": 102,
+   "missedActions": 119,
+   "wrongActions": 1,
+   "correct": 156,
+   "total": 315
+  },
+  "rules": {
+   "accuracy": 0.3524,
+   "macroF1": 0.1208,
+   "falseActionRate": 0,
+   "falseActions": 0,
+   "negativeCases": 102,
+   "missedActions": 204,
+   "wrongActions": 0,
+   "correct": 111,
+   "total": 315
+  }
+ },
+ "thresholdSweep": {
+  "chosen": 0.75,
+  "rule": "5-fold out-of-fold hybrid predictions on train.json: most accurate threshold whose false-action rate <= 0.05 (cases.json not used)",
+  "thresholds": [
+   0.3,
+   0.35,
+   0.4,
+   0.45,
+   0.5,
+   0.55,
+   0.6,
+   0.65,
+   0.7,
+   0.75,
+   0.8,
+   0.85,
+   0.9,
+   0.95
+  ],
+  "trainOutOfFold": [
+   {
+    "threshold": 0.3,
+    "accuracy": 0.7333,
+    "macroF1": 0.7335,
+    "falseActionRate": 0.1471,
+    "falseActions": 15,
+    "missedActions": 46
+   },
+   {
+    "threshold": 0.35,
+    "accuracy": 0.7302,
+    "macroF1": 0.7352,
+    "falseActionRate": 0.1471,
+    "falseActions": 15,
+    "missedActions": 52
+   },
+   {
+    "threshold": 0.4,
+    "accuracy": 0.727,
+    "macroF1": 0.7326,
+    "falseActionRate": 0.1373,
+    "falseActions": 14,
+    "missedActions": 56
+   },
+   {
+    "threshold": 0.45,
+    "accuracy": 0.7175,
+    "macroF1": 0.7228,
+    "falseActionRate": 0.1275,
+    "falseActions": 13,
+    "missedActions": 62
+   },
+   {
+    "threshold": 0.5,
+    "accuracy": 0.7048,
+    "macroF1": 0.7119,
+    "falseActionRate": 0.1176,
+    "falseActions": 12,
+    "missedActions": 70
+   },
+   {
+    "threshold": 0.55,
+    "accuracy": 0.7016,
+    "macroF1": 0.706,
+    "falseActionRate": 0.0882,
+    "falseActions": 9,
+    "missedActions": 76
+   },
+   {
+    "threshold": 0.6,
+    "accuracy": 0.673,
+    "macroF1": 0.6728,
+    "falseActionRate": 0.0686,
+    "falseActions": 7,
+    "missedActions": 90
+   },
+   {
+    "threshold": 0.65,
+    "accuracy": 0.6444,
+    "macroF1": 0.6375,
+    "falseActionRate": 0.0588,
+    "falseActions": 6,
+    "missedActions": 100
+   },
+   {
+    "threshold": 0.7,
+    "accuracy": 0.6159,
+    "macroF1": 0.6007,
+    "falseActionRate": 0.0588,
+    "falseActions": 6,
+    "missedActions": 111
+   },
+   {
+    "threshold": 0.75,
+    "accuracy": 0.581,
+    "macroF1": 0.5494,
+    "falseActionRate": 0.0392,
+    "falseActions": 4,
+    "missedActions": 125
+   },
+   {
+    "threshold": 0.8,
+    "accuracy": 0.5587,
+    "macroF1": 0.5161,
+    "falseActionRate": 0.0196,
+    "falseActions": 2,
+    "missedActions": 136
+   },
+   {
+    "threshold": 0.85,
+    "accuracy": 0.5302,
+    "macroF1": 0.4747,
+    "falseActionRate": 0.0196,
+    "falseActions": 2,
+    "missedActions": 145
+   },
+   {
+    "threshold": 0.9,
+    "accuracy": 0.4952,
+    "macroF1": 0.4131,
+    "falseActionRate": 0.0098,
+    "falseActions": 1,
+    "missedActions": 157
+   },
+   {
+    "threshold": 0.95,
+    "accuracy": 0.4381,
+    "macroF1": 0.3055,
+    "falseActionRate": 0,
+    "falseActions": 0,
+    "missedActions": 176
+   }
+  ],
+  "devCases_forTransparencyOnly": [
+   {
+    "threshold": 0.3,
+    "accuracy": 0.9455,
+    "macroF1": 0.9608,
+    "falseActionRate": 0.0455,
+    "falseActions": 1,
+    "missedActions": 2
+   },
+   {
+    "threshold": 0.35,
+    "accuracy": 0.9091,
+    "macroF1": 0.9362,
+    "falseActionRate": 0.0455,
+    "falseActions": 1,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.4,
+    "accuracy": 0.9091,
+    "macroF1": 0.9362,
+    "falseActionRate": 0.0455,
+    "falseActions": 1,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.45,
+    "accuracy": 0.9091,
+    "macroF1": 0.9362,
+    "falseActionRate": 0.0455,
+    "falseActions": 1,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.5,
+    "accuracy": 0.9091,
+    "macroF1": 0.9362,
+    "falseActionRate": 0.0455,
+    "falseActions": 1,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.55,
+    "accuracy": 0.9091,
+    "macroF1": 0.9362,
+    "falseActionRate": 0.0455,
+    "falseActions": 1,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.6,
+    "accuracy": 0.9091,
+    "macroF1": 0.9362,
+    "falseActionRate": 0.0455,
+    "falseActions": 1,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.65,
+    "accuracy": 0.9091,
+    "macroF1": 0.9362,
+    "falseActionRate": 0.0455,
+    "falseActions": 1,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.7,
+    "accuracy": 0.9273,
+    "macroF1": 0.9487,
+    "falseActionRate": 0,
+    "falseActions": 0,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.75,
+    "accuracy": 0.9273,
+    "macroF1": 0.9487,
+    "falseActionRate": 0,
+    "falseActions": 0,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.8,
+    "accuracy": 0.9273,
+    "macroF1": 0.9487,
+    "falseActionRate": 0,
+    "falseActions": 0,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.85,
+    "accuracy": 0.9273,
+    "macroF1": 0.9487,
+    "falseActionRate": 0,
+    "falseActions": 0,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.9,
+    "accuracy": 0.9273,
+    "macroF1": 0.9487,
+    "falseActionRate": 0,
+    "falseActions": 0,
+    "missedActions": 4
+   },
+   {
+    "threshold": 0.95,
+    "accuracy": 0.9273,
+    "macroF1": 0.9487,
+    "falseActionRate": 0,
+    "falseActions": 0,
+    "missedActions": 4
+   }
+  ]
+ }
+}

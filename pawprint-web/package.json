@@ -1,0 +1,31 @@
+{
+  "name": "lanlao-companion",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "start": "node server/index.mjs",
+    "process": "node server/worker.mjs",
+    "process:mock": "node server/worker.mjs --mock",
+    "build": "npm run evaluate && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test",
+    "evaluate": "node eval/run.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.1",
+    "express": "^5.2.1",
+    "lucide": "^1.51.0",
+    "multer": "^2.4.0",
+    "sharp": "^0.35.4",
+    "three": "^0.183.0",
+    "vite": "^7.3.0"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "^4.5.0",
+    "@gltf-transform/extensions": "^4.5.0",
+    "@gltf-transform/functions": "^4.5.0",
+    "meshoptimizer": "^1.2.0"
+  }
+}

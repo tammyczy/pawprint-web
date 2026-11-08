@@ -1,0 +1,10 @@
+{
+ "README": "TEMPLATE. Copy to eval/intent/blind-test.json, delete the example rows (or keep \"example\": true and they will be skipped), and add rows written by people who have NOT seen train.json or cases.json. expected = come|home|walk|run|wag|jump|stop, or null when the pet should not move. See 盲測集填寫說明.md.",
+ "items": [
+  {"id":"ex-01","text":"(example) 你能不能來我旁邊坐坐","expected":"come","lang":"zh-Hant","group":"command","author":"classmate-A","example":true},
+  {"id":"ex-02","text":"(example) 别跳上床","expected":null,"lang":"zh-Hans","group":"negation","author":"classmate-B","example":true},
+  {"id":"ex-03","text":"(example) My sister told me her hamster can jump","expected":null,"lang":"en","group":"non-command","author":"classmate-C","example":true},
+  {"id":"ex-04","text":"(example) Va faire un tour dans le salon","expected":"walk","lang":"fr","group":"command","author":"classmate-D","example":true},
+  {"id":"ex-05","text":"(example) 他剛剛說「停」","expected":null,"lang":"zh-Hant","group":"quoted","author":"classmate-A","example":true}
+ ]
+}

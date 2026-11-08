@@ -1,0 +1,844 @@
+
+===== PDF PAGE 1 =====
+Dec 4th – 6th, 2026
+www.waicy.org
+2026
+Location: Hybrid
+
+===== PDF PAGE 2 =====
+COMPETITION INFO
+WHAT IS WAICY?WHO CAN PARTICIPATE?
+Organizer: ReadyAI (USA)- https://www.readyai.org/
+Competition type: Hybrid (online & onsite)
+Project submission deadline: November 29th, 2026
+Competition date: December 4th-6th, 2026
+Competition language: English
+Type of participants: Teams with 1- 5 members under the age of 18
+WAICY 2026 Organizing Team: info@waicy.org
+The World Artificial Intelligence
+Competition for Youth (WAICY)
+is a global competition
+challenging students to learn
+and use artificial intelligence
+(AI) technology to solve real
+world problems. WAICY is a
+competition where students
+around the world showcase
+their learning in artificial
+intelligence (AI).
+The competition is open to all students around the world
+under the age of 18. To participate in WAICY, students must
+prepare a project that showcases an AI solution for a real-
+world problem. There are no limitations to the format of the
+project (coding demo, essays, visual prototype, a robot,
+even artworks etc.) as long as it uses AI and addresses a
+societal problem. ALL YOU NEED IS AN IDEA! Past competition
+topics have ranged from recycling, senior care, to cookie-
+baking.
+Watch WAICY 2025 here: https://youtu.be/16TGxZ6eHZo
+Watch WAICY 2024 here: https://youtu.be/nwGOfJeAWFU
+Watch WAICY 2023 here: https://youtu.be/BC1DWHuE76s
+Watch WAICY 2022 here: https://youtu.be/ThVOO5RZptU
+Watch WAICY 2021 here: https://youtu.be/dakZ_NymM0g 
+Watch WAICY 2020 here: https://youtu.be/zgWMxcvLJKs
+Watch WAICY 2019 here: https://youtu.be/L-lGz0CyhMg
+Watch WAICY 2018 here: https://youtu.be/s2VS0KHDGS8
+Registration for participation:
+https://www.waicy.org/2026-submission
+Competition rules:
+https://www.waicy.org/rubrics
+www.waicy.org
+
+===== PDF PAGE 3 =====
+HOW DOES IT GO?
+This year we have four tracks that you can participate in. Prepare your AI project based on the
+requirement of each track and submit your project online! If selected, teams will present live on
+WAICY Day, scheduled for December 5th - 7th. The presentation comprises a 3-minute
+presentation a 3-minute demo, followed by a 4 minute Q&A session with the judges. Teams can
+present in two ways – videos + live or with videos only. Coaching is allowed before the
+presentation and translating during the presentation is acceptable.
+Create a project that showcases an AI solution for a real-world
+problem.
+Based on this year’s themes, create artworks using text-to-
+image AI models like ChatGPT Images 2.5, Midjourney, Nano
+Banana, or Stable Diffusion. 
+AI SHOWCASE TRACK
+AI GENERATED ART TRACK
+AI GENERATED VIDEO TRACK
+All the projects should be submitted before online submission deadline.
+Submission Deadline: November 29, 2026, 5:00 PM ET 
+www.waicy.org
+Instruct the AI to adopt a specific domain of expertise using
+popular AI Large Language Models, such as ChatGPT, Bard AI,
+and others.
+AI LARGE LANGUAGE MODEL TRACK
+Create a short video using AI tools that tells a powerful story or
+conveys a compelling message inspired by this year’s themes.
+
+===== PDF PAGE 4 =====
+TIMELINE
+The online submission form can be accessed here.
+Participants of the final competition will be arranged
+a time section of attending the final WAICY.
+Participants need to present in front of the judges
+and answer questions during the Q&A sessions. 
+The winners and awards will be announced online.
+SUBMISSION DEADLINENOVEMBER 29
+ALLOCATE TIME SLOTDECEMBER 2 
+FINAL COMPETITION DAYDECEMBER 4 - 6
+ANNOUNCEMENT OF WINNERDECEMBER 7
+www.waicy.org
+
+===== PDF PAGE 5 =====
+AI SHOWCASE TRACK
+Task
+Participants will create projects demonstrating the utility of AI in solving real-world issues.
+Project Submission Requirements
+Project Name
+Project Description: Maximum 250 words.
+AI Usage Explanation: Maximum 250 words.
+Explain what AI technologies are used in the project, what role AI plays in the solution, and
+what parts were designed, developed, trained, programmed, researched, or created by the
+student team.
+6-Minute Video: Comprising a 3-minute presentation and a 3-minute demo.
+3-Minute Presentation: Detail the problem, AI application, and expected positive impact
+using visual aids such as slides.
+3-Minute Demo: Demonstrate your solution through any format, including simulations.
+Submission Deadline: November 29, 2026, 5:00 PM ET 
+via the Project Submission Form. Link
+www.waicy.org
+A detailed breakdown of the submission components:
+Presentation Video Requirements
+Duration: Max 3 minutes, inclusive of the full presentation.
+Language: English or subtitled in English.
+Equipment: Any videotaping equipment or format is permissible.
+Visual aids: Incorporation of slides or other videos is allowed.
+Demo Video Requirements
+Duration: Max 3 minutes, covering the full demonstration.
+Language: English or subtitled in English.
+Narration: Allowed and encouraged to facilitate understanding.
+Equipment: Any videotaping equipment or format is permissible.
+
+===== PDF PAGE 6 =====
+AI SHOWCASE TRACK
+Project Folder & File Naming Instructions
+To help the WAICY judging team organize and review projects efficiently, please follow the naming
+instructions below when preparing your shared Google Drive folder.
+Name Your Project Folder
+Use the following format:
+Track_Category_ProjectName (Example: Main_High_SmartRecyclingAssistant)
+Track:
+Main — AI Showcase
+Art — AI-Generated Art
+Video — AI-Generated Video
+LLM — LLM Track
+A Standard Folder should include following items:
+Main_Category_ProjectName_Presentation.pdf
+Main_Category_ProjectName_Description.pdf (include description + AI usage explaination)
+Main_Category_ProjectName_DemoVideo.mp4
+Main_Category_ProjectName_PresentationVideo.mp4
+Optional: Main_Category_ProjectName_AdditionalMaterials
+www.waicy.org
+Category:
+Elementary
+Middle
+High
+Before submitting your Google Drive link, please check that:
+Your folder follows the correct naming format.
+All required files are included.
+Your Google Drive folder sharing setting allows the WAICY judging team to access the materials.
+
+===== PDF PAGE 7 =====
+AI SHOWCASE TRACK
+www.waicy.org
+WAICY Day
+If selected, teams will present live on WAICY Day, scheduled for December 4th - 6th. The
+presentation comprises a 3-minute presentation a 3-minute demo, followed by a 4 minute
+Q&A session with the judges.
+4 Minute Q&A: Address questions from the judges regarding your presentation and demo.
+Note: The list of selected teams will be announced on December 2nd, 2026.
+WAICY Day
+A grand two-day event where selected teams showcase their projects live. Refer to the WAICY
+2026 Home Page in November for the guidebook on using the online conference platform.
+Note: While live attendance is advised, it is not compulsory. However, absentees will not
+receive Q&A performance credits. Accommodations are available for those unable to attend
+but wish to earn Q&A credits.
+Rubric
+Grading will be based on an official rubric encompassing AI (50 points) and Design and Impact
+(50 points). Access the grading rubric here for a detailed understanding.
+Awards
+Certificate of Participation: Granted to all timely project submissions.
+Prize Ceremony: December 7th, 2026, 4:00 PM EDT.
+Award Categories
+Gold, Silver, and Bronze: For top three scores per grade category.
+AI Excellence: Highest score in AI and technical skills combined.
+Impact Excellence: Highest score in problem statement, AI ethics, and presentation &
+communication.
+Design Excellence: Top score in design and creativity & originality.
+Special Recognitions: Outstanding Coach and Organization Awards.
+For detailed information on each category, refer to the official WAICY 2026 grading rubric.
+
+
+===== PDF PAGE 8 =====
+RECOMMENDATIONS
+These suggestions are meant to spark inspiration and help you conceive a project that aligns well
+with the AI Showcase Track theme.
+High School:
+FishNET AI 
+NavigAld 
+Middle School:
+Fly-tipping
+To Eat and Not To Eat
+Elementary School:
+Drive Assist
+MaWeRec
+www.waicy.org
+AI SHOWCASE TRACK
+Past Projects:  https://www.waicy.org/resources/
+
+===== PDF PAGE 9 =====
+Overview
+How can humans collaborate with AI to communicate an idea visually?
+Create an original visual work using one or more AI-powered image creation or editing tools. You
+may use text prompts, sketches, reference images, image editing, compositing, style exploration, or
+other AI-assisted creative techniques.
+We are not only looking for a beautiful final image. We want to understand your idea, your creative
+decisions, how you worked with AI, how your work evolved, and what you contributed as the
+human creator.
+This track is open to all grades.
+Theme: The Future We Choose
+Imagine a future shaped by the decisions we make today. What might our homes, schools, cities,
+environment, relationships, or daily lives look like in the years ahead?
+Use AI to visualize a future you hope to see—or a future you think we should avoid. Your work can be
+optimistic, cautionary, imaginative, or thought-provoking.
+Focus: Show how human choices, technology, and creativity could shape our shared future.
+Example ideas:
+a city redesigned for children and nature;
+a future classroom;
+humans living alongside robots;
+a restored ocean ecosystem;
+two contrasting versions of the same future.
+AI-GENERATED ART TRACK
+www.waicy.org
+Submission Deadline: November 29, 2026, 5:00 PM ET 
+via the Project Submission Form. Link
+
+===== PDF PAGE 10 =====
+AI-GENERATED ART TRACK
+RESOURCES:
+Process Diagram Example
+https://openai.com/index/dall-e-3/
+https://docs.midjourney.com/
+https://stablediffusionweb.com/ 
+https://hotpot.ai/ 
+Past Projects:
+https://www.waicy.org/resources/
+www.waicy.org
+Examples of AI image tools, as of September 2026: ChatGPT Images, Midjourney, Google
+Gemini/Nano Banana, Adobe Firefly, FLUX, and other comparable AI image-generation or editing
+tools.
+Participants may use any appropriate AI image creation tool. 
+    The examples above are provided for reference only and may change as technology evolves.
+Teacher & Learning Resources: 
+Want to help students understand how AI image generators work, not just how to use them?
+These resources can support classroom instruction, demonstrations, and student exploration.
+🎥 Learn — Cats in Latent Space
+An educational video from Carnegie Mellon University that introduces how text-to-image
+generative AI models such as Stable Diffusion transform text prompts into images. It uses
+accessible visual examples to explain concepts such as latent space, denoising, and image
+generation. 
+Watch “Cats in Latent Space”
+🧪 Explore — DiffusionDemo
+An interactive educational tool that lets students experiment with how Stable Diffusion works.
+Students can investigate how changing prompts, seeds, denoising steps, guidance settings,
+embeddings, and other parameters affects generated images. 
+Open DiffusionDemo — use HTTP, not HTTPS
+📘 Teach — DiffusionDemo Activity Resource Guide
+A teacher-friendly activity guide designed to accompany DiffusionDemo. 
+Download the DiffusionDemo Activity Resource Guide
+
+
+===== PDF PAGE 11 =====
+AI-GENERATED ART TRACK
+Submission Deadline: November 29, 2026, 5:00 PM ET 
+via the Project Submission Form. Link
+www.waicy.org
+Project Submission Requirements
+One Document in PDF Format Including: 
+1.Artwork Title: Provide a title for your artwork.
+2.Description of Your Idea: Write a detailed description of the concept behind your artwork.
+Explain the inspiration, the message you intend to convey, and why the subject matter is
+important to you (no less than 250 words).
+3.Prompt and Iterative Process: Share the exact prompt(s) you used to generate the image
+using AI tools and describe the iterative process that led to the final artwork. Explain how
+you refined your prompts or made creative adjustments throughout the process (no less
+than 250 words). Include at least 2 process images that show the evolution of your artwork
+from the initial draft to the final version.
+4.Final Image: Submit the final AI-generated artwork. The image should be of high resolution
+and suitable for display. Accepted formats include PNG, JPEG, etc.
+5.Process Diagrams: Submit all process diagrams or images generated during the creation
+of the final artwork. At least 2 iterative pictures should be included to show how your idea
+evolved during the creation process.
+*You can see an example of the process diagram here.
+Explore More WAICY Art Project Examples here. 
+2-Minute Pitch: Record 2-minute video pitch explaining your creation. The pitch should include,
+but not be limited to your artistic intention, the reasoning behind your creative decisions, and
+the significance of your artwork.
+Final Image.
+
+
+===== PDF PAGE 12 =====
+AI-GENERATED ART TRACK
+www.waicy.org
+Project Folder & File Naming Instructions
+To help the WAICY judging team organize and review projects efficiently, please follow the naming
+instructions below when preparing your shared Google Drive folder.
+Name Your Project Folder
+Use the following format:
+Track_Category_ProjectName (Example: Main_High_SmartRecyclingAssistant)
+Track:
+Main — AI Showcase
+Art — AI-Generated Art
+Video — AI-Generated Video
+LLM — LLM Track
+A Standard Folder should include following items:
+Art_Category_ProjectName_FinalArtwork.png (*Submit the highest-quality version of your final
+artwork.)
+Art_Category_ProjectName_Process.pdf
+Art_Category_ProjectName_Pitch.mp4
+Category:
+Elementary
+Middle
+High
+Before submitting your Google Drive link, please check that:
+Your folder follows the correct naming format.
+All required files are included.
+Your Google Drive folder sharing setting allows the WAICY judging team to access the materials.
+
+===== PDF PAGE 13 =====
+AI-GENERATED ART TRACK
+www.waicy.org
+RESOURCES:
+Process Diagram Example
+https://openai.com/index/dall-e-3/
+https://docs.midjourney.com/
+https://stablediffusionweb.com/ 
+https://hotpot.ai/ 
+Past Projects:
+https://www.waicy.org/resources/
+Examples of AI image tools, as of September 2026: ChatGPT Images, Midjourney, Google
+Gemini/Nano Banana, Adobe Firefly, FLUX, and other comparable AI image-generation or editing
+tools.
+Participants may use any appropriate AI image creation tool. 
+    The examples above are provided for reference only and may change as technology evolves.
+
+===== PDF PAGE 14 =====
+AI-GENERATED VIDEO TRACK
+Overview
+Create a 1–2 minute short film or video using AI as a meaningful part of the production process.
+Your project may combine text-to-video, image-to-video, AI-generated imagery, AI animation, AI
+voice/audio, AI-assisted editing, traditional filmmaking, or other creative techniques.
+The goal is not simply to generate impressive clips. Strong projects should demonstrate
+storytelling, visual direction, consistency, intentional use of AI, and thoughtful human editing
+and decision-making.
+This track is open to all grades and encourages creativity, technical skill, and thoughtful application
+of AI.
+Theme:
+Participants can choose one or more of the following themes to guide their video creation:
+The Future We Choose – Create a short video showing how AI impacts daily life, local culture, or
+social challenges.
+Example ideas: “A Day in 2040,” “The Last Tree in the City,” “When Robots Became Our
+Classmates,” “A Message From My Future Self.”
+Project Submission Requirements
+Final Video: A 1-2 minute video that fully embodies the chosen theme and narrative.
+The video must be in English or subtitled in English.
+All video formats are accepted (e.g., MP4, AVI, MOV).
+One Document in PDF Format Including: 
+1. Video Title
+2. Project Concept & Story Description (Recommended length: 200–300 words)
+Describe the idea behind your video.
+Your description should explain:
+What story, idea, issue, or message does the video explore?
+Why did you choose this topic?
+What do you want the audience to think, feel, or understand after watching?
+How does your project connect to the selected WAICY theme?
+Projects may be fictional, educational, documentary-style, experimental, humorous, or other
+forms of visual storytelling.
+www.waicy.org
+
+===== PDF PAGE 15 =====
+www.waicy.org
+AI-GENERATED VIDEO TRACK
+3. Final Script / Storyboard
+Submit the final script, storyboard, or detailed scene outline used to create your video. Your
+submission should show the structure of the video from beginning to end and include at least
+three key scenes or sequences.
+For each major scene, include where applicable:
+Scene description
+Dialogue or narration
+Visual direction
+Camera or movement ideas
+Sound, music, or voice-over notes
+AI generation instructions or prompts
+A storyboard can be hand-drawn, digitally created, or generated with the assistance of AI.
+4.AI Tools & Creative Workflow: (Recommended length: 250–400 words).
+   Explain how AI was used in the creation of your video.
+Participants may use one or multiple AI-assisted methods, including but not limited to:
+Text-to-video
+Image-to-video
+Video-to-video
+AI-generated images or visual assets
+AI animation
+AI-assisted scriptwriting or ideation
+AI-generated or AI-assisted voice
+AI-generated music or sound
+AI-assisted editing
+Character or visual reference workflows
+Other AI-powered creative techniques
+List the major AI tools used and explain what each tool contributed to the project.
+   
+Traditional production tools such as video editors, illustration software, cameras, microphones, or
+animation software may also be used.
+
+===== PDF PAGE 16 =====
+www.waicy.org
+AI-GENERATED VIDEO TRACK
+5. Scene-by-Scene Creation Process
+Show the development process for at least three important scenes from your final video.
+For each scene, include:
+A. Creative Goal
+What were you trying to achieve in this scene?
+B. AI Input
+Show the prompt, reference image, source material, storyboard, or other instructions provided
+to the AI.
+C. AI Output
+Include examples or screenshots of generated results.
+D. Iteration
+Show at least one example of how you changed, refined, regenerated, edited, or improved the
+result.
+E. Final Decision
+Explain why you selected the final version and how it supports the story.
+Participants are encouraged to show unsuccessful attempts as well as successful ones. We
+want to understand how your ideas evolved, not only see the final result.
+6.AI & Source Disclosure
+   At the end of the PDF, include a simple list of:
+AI tools/models used
+Editing or production software used
+External images, videos, music, audio, datasets, or other resources used
+References or sources that significantly informed the project
+   
+   Participants should credit external materials whenever appropriate.
+Submission Deadline: November 29, 2026, 5:00 PM ET 
+via the Project Submission Form. Link
+
+===== PDF PAGE 17 =====
+www.waicy.org
+AI-GENERATED VIDEO TRACK
+Project Folder & File Naming Instructions
+To help the WAICY judging team organize and review projects efficiently, please follow the naming
+instructions below when preparing your shared Google Drive folder.
+Name Your Project Folder
+Use the following format:
+Track_Category_ProjectName (Example: Main_High_SmartRecyclingAssistant)
+Track:
+Main — AI Showcase
+Art — AI-Generated Art
+Video — AI-Generated Video
+LLM — LLM Track
+A Standard Folder should include following items:
+Video_Category_ProjectName_FinalVideo.mp4
+Video_Category_ProjectName_Process.pdf
+includes:
+Video Title
+Project Concept & Story Description
+Final Script / Storyboard
+AI Tools & Creative Workflow
+Scene-by-Scene Creation Process
+AI & Source Disclosure
+Category:
+Elementary
+Middle
+High
+Before submitting your Google Drive link, please check that:
+Your folder follows the correct naming format.
+All required files are included.
+Your Google Drive folder sharing setting allows the WAICY judging team to access the materials.
+
+===== PDF PAGE 18 =====
+www.waicy.org
+AI-GENERATED VIDEO TRACK
+Teacher & Learning Resources: 
+Use these resources to help students understand how AI-generated video works, explore
+prompting techniques, and think critically about responsible AI creation.
+🎥 LEARN — How Does AI Video Generation Work?
+Google for Developers: How do AI video generation models work?
+This short video introduces the core concepts behind AI video generation, including diffusion,
+text prompts, latent space, and how AI maintains consistency across video frames.
+Watch the video:
+https://www.youtube.com/watch?v=Y5zHHoLrvAE
+🎬 CREATE — Learn How to Prompt for AI Video
+Runway Academy: Prompting Guide
+Learn how to write effective AI video prompts using elements such as subject, environment,
+lighting, framing, action, camera movement, direction, and speed.
+Explore the guide:
+https://academy.runwayml.com/guides/prompting-guide
+🧪 EXPLORE — Experiment with Cinematic Prompting
+Google DeepMind: Veo Prompt Guide
+Explore how filmmaking concepts such as shot framing, camera movement, visual style,
+lighting, character, location, action, dialogue, and sound can be used to guide AI-generated
+video.
+Explore the guide:
+https://deepmind.google/models/veo/prompt-guide/
+🛡 THINK — Create AI Content Responsibly
+Common Sense Education: AI Literacy Lessons
+Explore classroom resources covering topics such as AI-generated media, deepfakes,
+creativity and ownership, consent, misinformation, bias, and responsible use of AI.
+Explore the resources:
+https://www.commonsense.org/education/collections/ai-literacy-lessons-for-grades-6-12
+
+
+===== PDF PAGE 19 =====
+RESOURCES:
+AI-generated Video Tools:
+https://kling.ai/ (Text to Video, Image to Video, Motion Control, Multi-scene
+Video, Native Audio)
+https://pixverse.ai/ (Text to Video, Image to Video)
+https://www.stablevideo.com/welcome (Text to Video, Image to Video)
+https://haiper.ai/ (Text to Video, Image to Video, Video to Video)
+https://pictory.ai/ (AI generated voice-over) 
+www.waicy.org
+AI-GENERATED VIDEO TRACK
+Other comparable AI video-generation tools are also permitted. Participants are not limited to the tools listed
+above.
+💡 Suggested Classroom Activity: Direct the Same Scene
+Give students the same starting idea, such as:
+“A robot discovers a flower in an abandoned city.”
+Ask students to create different versions of the scene by changing one element at a time, such
+as camera movement, framing, lighting, visual style, or character motion.
+Have students compare the results and discuss:
+How did each prompt change the final video?
+Which instructions did the AI understand well?
+Which instructions were difficult for the AI to follow?
+How can prompt wording influence storytelling and visual style?
+What responsibilities should creators consider when using AI-generated video?
+This activity helps students practice prompt iteration, creative storytelling, filmmaking
+concepts, and critical thinking about generative AI.
+
+===== PDF PAGE 20 =====
+LLM & AI AGENT TRACK
+Theme: AI as a Service
+Your task is to instruct the AI to adopt a specific domain of expertise. This is not simply about
+asking an AI a question or giving it a role. Your goal is to turn a general-purpose Large Language
+Model into a knowledgeable and personalized advisor that can understand different users and
+provide recommendations based on their individual needs.
+Users may have different ages, interests, goals, experience levels, budgets, preferences, limitations,
+or circumstances. Your advisor should be able to recognize these differences and adapt its
+responses accordingly.
+For example, a basketball shoe advisor might recommend different shoes to a beginner, an
+experienced player, or someone recovering from an injury. A gardening advisor might give different
+recommendations to someone living in an apartment versus someone with a large backyard.
+The goal is to create an advisor that is not only knowledgeable, but also useful, reliable, adaptable,
+and user-centered.
+This track is designed for upper-middle and high school students who have a strong interest in
+exploring Prompt Engineering in a research-oriented way. Students from all levels are welcome.
+However, there are no separate categories for different age groups in this track.
+Submission Requirements
+One Document in PDF Format Including: 
+www.waicy.org
+Build an AI that can help people solve a specific problem.
+What Specific Service Your AI Provides 
+Clearly define the unique service your AI provides.
+Provide a concise description of your AI’s core functionality, the challenges it addresses, and
+the value it brings to its users.
+Your advisor should focus on a specific area, rather than trying to become an expert on
+everything.
+For example:
+Too broad: Sports Advisor ⟶ More specific: Basketball Shoe Advisor
+Too broad: Gardening Advisor ⟶ More specific: Home Gardening Advisor for Beginner
+Gardeners
+Too broad: Travel Advisor ⟶ More specific: New York City Travel Advisor
+
+
+===== PDF PAGE 21 =====
+LLM PROMPT ENGINEERING TRACK
+www.waicy.org
+Who Are Your Users?
+Identify the people who may use your AI advisor.
+Create at least three different user profiles. The users should have meaningfully different
+needs, interests, goals, experience levels, or constraints.
+For each user, explain:
+Who are they? What do they need? What factors should the AI consider when advising them?
+For example, a New York City Travel Advisor could be designed for:
+A family with young children visiting for the first time.
+A high school student interested in history and architecture with a limited budget.
+A retired couple who have visited New York before and are looking for less familiar arts
+and cultural experiences.
+Your AI advisor should be able to respond differently to each user.
+Motivation
+Explain why you developed this AI service, mentioning what inspired its creation.
+Link to the Chat History
+Create a conversation that includes at least 10 exchanged messages between you and the
+final edition of the virtual assistant you've developed. Share a link to the conversation history
+like this example. Example Link 
+Link to the Chatbot:
+Provide a live link to your chatbot prototype so judges can directly interact with it and
+evaluate its functionality. This will allow us to assess the real-time performance and user
+experience of your AI. Example Link
+Iterative AI Design Process 
+Follow an iterative design process to develop and improve your AI advisor. Document how
+your project evolved through the following stages:
+Idea → Advisor Design → Testing → Error Analysis → Improvement
+This is an example of what we expect.
+Iterative Prompt Development Process Example.pdf
+
+
+===== PDF PAGE 22 =====
+LLM PROMPT ENGINEERING TRACK
+www.waicy.org
+RESOURCES:
+OpentAI ChatGPT  https://chat.openai.com/
+Gemini              https://gemini.google.com/
+DeepLearning.AI   https://www.deeplearning.ai/
+Limitation 
+Describe any limitations of your AI service, such as ethical considerations or practical issues.
+Future Development
+Discuss planned advancements or improvements to address the aforementioned
+limitations and enhance the AI service’s capabilities and performance.
+Conclusion
+Summarize the key points discussed in the previous sections.
+Highlight the significance and potential impact of your AI service.
+Reference
+List all the sources, articles, books, and other resources that you have referred to while
+creating your AI service and writing the submission in a recognized citation style (e.g., APA,
+MLA, Chicago, etc.).
+Submission Deadline: November 29, 2026, 5:00 PM ET 
+via the Project Submission Form. Link
+Past Projects:
+https://www.waicy.org/resources/
+
+
+===== PDF PAGE 23 =====
+LLM PROMPT ENGINEERING TRACK
+www.waicy.org
+Project Folder & File Naming Instructions
+To help the WAICY judging team organize and review projects efficiently, please follow the naming
+instructions below when preparing your shared Google Drive folder.
+Name Your Project Folder
+Use the following format:
+Track_Category_ProjectName (Example: Main_High_SmartRecyclingAssistant)
+Track:
+Main — AI Showcase
+Art — AI-Generated Art
+Video — AI-Generated Video
+LLM — LLM Track
+A Standard Folder should include following items:
+LLM_Category_ProjectName.pdf
+Category:
+Elementary
+Middle
+High
+Before submitting your Google Drive link, please check that:
+Your folder follows the correct naming format.
+All required files are included.
+Your Google Drive folder sharing setting allows the WAICY judging team to access the materials.
+
+===== PDF PAGE 24 =====
+LLM PROMPT ENGINEERING TRACK
+Examples: 
+1. Basketball Shoe Sales Assistant (Main Example)
+Description of Idea: 
+Design an AI to act as a sales assistant in a store specializing in basketball shoes. It should
+understand the nuances of selecting the right basketball shoe based on various factors like playing
+style, court type, and foot shape.
+Prompt Construction: 
+Research Phase: Begin by searching reputable sources and grasping essential details related to
+basketball shoes. Understand the differences brought about by playing style, court type, foot
+shape, and other unique factors. Includes any online resources you are using for constructing. For
+this example, we are taking ideas about how to choose the right basketball shoes from this blog to
+help generate the context and background. 
+How To Choose The Right Basketball Shoes | Finish Line. (2023, June 13). The Fresh Press by Finish
+Line. https://blog.finishline.com/how-to-choose-the-right-basketball-shoes/.
+Initial Context & Background Setting: Using the gathered information, construct an initial context
+for the AI. This should include foundational advice on shoe selection, emphasizing factors exclusive
+to basketball shoes.
+Test & Refine: Pretend to be a potential customer and engage with the AI. Identify areas where the
+assistant might falter in its recommendations or knowledge. Adjust the context and background
+setting based on these interactions, refining the prompts to enhance its proficiency.
+Finalization: Once satisfied with the AI's performance in its specialized domain, finalize the context
+and background settings for optimal user interactions.
+Submission: 
+Iterative Prompt Development Process Iterative Prompt Development Process Example.pdf
+Link to the Chat History Example Link 
+Link to the Chatbot Example Link
+(Same with the example in Submission Requirements)
+www.waicy.org
+
+===== PDF PAGE 25 =====
+LLM PROMPT ENGINEERING TRACK
+Examples: 
+2. Home Gardening Consultant
+Description of Idea: 
+Design an AI that can act as a home gardening consultant for individuals looking to start or
+maintain a garden in their homes. The AI should have knowledge of plant types suitable for various
+climates, soil types, sunlight requirements, and potential pests or diseases that might affect them.
+Includes any online resources you are using for constructing. We are taking ideas about how to
+start or maintain a garden in their homes from this blog to help generate the context and
+background.
+Waterworth, K. (2023, April 27). The Ultimate Guide For How To Start A Garden From Scratch. Forbes
+Home. https://www.forbes.com/home-improvement/lawn-care/how-to-start-a-garden/
+Prompt Construction: 
+Research Phase: Start by exploring reputable sources about home gardening. Gain an
+understanding of the essential factors affecting plant growth, including climate, soil, light, water,
+and pests.
+Initial Context & Background Setting: Using the gathered information, construct an initial context
+for the AI. This should include foundational advice on choosing plants based on the above factors,
+as well as general tips on care, pest control, and disease prevention.
+Experiments: Pretend to be a potential customer and engage with the AI. Identify areas where the
+assistant might falter in its recommendations or knowledge. Adjust the context and background
+setting based on these interactions, refining the prompts to enhance its proficiency.
+Finalization: Once satisfied with the AI's performance in its specialized domain, finalize the context
+and background settings for optimal user interactions.
+www.waicy.org
+
+===== PDF PAGE 26 =====
+LLM PROMPT ENGINEERING TRACK
+Examples: 
+3. Friendly Water Saver
+Description of Idea: 
+Develop an AI named "Friendly Water Saver" that helps children and their families understand and
+implement water-saving tactics at home. The AI should be interactive and engaging and should
+provide easy-to-understand tips on water conservation in a fun manner. It can guide users on how
+to conduct a home water audit, suggest simple changes like fixing leaks or changing to efficient
+fixtures, and challenge the family with weekly water-saving goals. We are taking ideas about how
+to save water in the family from this website page to help generate the context and background.
+Water Use It Wisely. (2023). 100+ Ways To Conserve Water. Retrieved from
+https://wateruseitwisely.com/100-ways-to-conserve/
+Prompt Construction: 
+Research Phase: Review resources about home water conservation techniques, focusing on
+strategies and tactics that are simple enough for children to understand and be engaged with.
+"100+ Ways To Conserve Water" could be a starting point to extract practical tips and ideas.
+Initial Context & Background Setting: Embed into the AI, base knowledge about water
+conservation, ensuring the language and concepts are child-friendly. The AI should be able to
+provide quick tips and fun facts and initiate water-saving challenges suitable for families to
+implement.
+Experiments: Interact with the AI, posing as a child or a parent interested in learning about water
+conservation. Ensure the tips and challenges provided are safe, practical, and engaging for young
+minds. The AI should encourage actions and also celebrate the achievements of the users in a
+positive tone.
+Finalization: After assuring the AI's responses are consistently appropriate, educational, and
+engaging for a young audience, finalize the context and settings. The AI, "Friendly Water Saver,"
+should be a delightful, informative companion that inspires tangible action in-home water
+conservation among children and their families.
+www.waicy.org
+
+===== PDF PAGE 27 =====
+LLM PROMPT ENGINEERING TRACK
+Evaluation Criteria
+Originality and innovation in the selected context.
+Clarity and relevance of the distinguished information.
+Reliability and accuracy of the resultant prompt.
+Coherence and feasibility of the projected intelligent agent interaction.
+Advanced capabilities are encouraged but not required. Projects may incorporate external knowledge,
+retrieval, multimodal input, tool/function calling, APIs, workflows or agentic behavior. Projects will be judged
+on whether these capabilities meaningfully improve the solution—not on technical complexity alone.
+www.waicy.org
+Tips:
+1. Choose a specific, small daily case.
+By specific, we mean: 
+For instance, become a "basketball shoe sales assistant" rather than a general "shoe sales
+assistant." Be a "home gardening consultant" instead of a broad "gardening consultant for all
+conditions."
+By small daily, we mean: 
+Focus on topics like shoes and gardening rather than broader topics like "how to develop a
+selling strategy" or "formulating an environmental law policy."
+2. Balance youthful creativity with research process
+Research: Even if you possess experience and knowledge about a specific service, conducting
+thorough research can save you valuable time in subsequent phases of the project, such as
+Error Analysis. An in-depth understanding is a vital component of your project.
+Creativity: you can show your different perspectives from daily life and use an innovative
+approach to prompt engineering that makes the agent distinctive compared to a general one. 
+To strike a balance, we expect you to employ a similar structure as in the example; however, we
+do not require you to be overly specific or to cover every turn. The purpose of this process is for
+you to share your creative thoughts clearly.
+
+
+===== PDF PAGE 28 =====
+LLM PROMPT ENGINEERING TRACK
+www.waicy.org
+Tips:
+3. Design for different people
+Ask yourself: Would my advisor give the same recommendation to everyone? If yes, it probably
+needs more personalization. Think about age, experience, goals, interests, budget, preferences,
+and other relevant constraints.
+4. Ask before advising
+A good advisor may need additional information before making a recommendation. Teach your
+AI to ask useful follow-up questions rather than immediately guessing what the user needs.
+5. Try to make your AI fail
+Testing is not about proving that your advisor is perfect. Ask difficult questions and look for
+mistakes, weak recommendations, missing information, or made-up facts. Then improve it.
+6. Know when to say “I don't know.”
+A reliable advisor should recognize uncertainty. Sometimes asking the user for more information
+or recommending that they verify something is better than confidently giving an incorrect
+answer.
+
+===== PDF PAGE 29 =====
+INTERACTIVE WAICY DAY!SPECIAL PRIZE DESIGN!
+Cheers to eight incredible years of WAICY! Throughout this journey, we’ve watched the younger
+generation dive into the world of AI with passion, creativity, and vision. More than just learning to
+code or understanding AI’s impact, WAICY has empowered students to take part in shaping the
+global conversation around technology. Year after year, it has inspired countless young minds—
+both boys and girls—to explore STEM by offering free participation, sharing essential AI resources,
+and connecting them with opportunities to grow their unique interests. As we celebrate this
+milestone, WAICY remains committed to nurturing these bright talents and paving the way for a
+smarter, more innovative future!
+From December 4th-6th, 2026 between is
+interactive WAICY day. Teams that
+successfully complete and submit their
+projects by the deadline receive an
+invitation to participate in this event. This
+gives the chance for participants to
+present their projects to a live audience!
+Presentations in front of live judges
+present the opportunity to receive Q&A
+performance credits.
+WAICY 2026 is excited to hand out awards to top
+projects at Interactive WAICY Day! A Certification of
+Participation is awarded to all participants who
+successfully submit their projects on time. Additionally,
+there are Gold, Silver, and Bronze awards for the top 3
+projects in the given categories. Projects can also earn
+other awards that include AI Excellence, Impact
+Excellence, Design Excellence, Outstanding Coach
+Awards, and Outstanding Organization Awards. The
+variety of awards presents lots of opportunities for
+teams to showcase their abilities!
+REUNION FOR OUR BIG WAICY
+FAMILY!
+Every year the WAICY Family gets together to
+organize the yearly competition. We’re always
+happy to work with old and new faces in order to
+present an important opportunity to the younger
+generation. We’re excited to be back for another
+round of exciting projects and passionate
+presentations.
+Not only are we hoping to take on new
+teams for this year, but we also invite old
+teams from our previous years! We will
+publish stories of the selected WAICY stars
+from past winning team. This gives all
+participants the opportunity to get a great
+idea of what an amazing project looks like. 
+www.waicy.org
+EIGHTH YEAR OF WAICY!
+WAICY STARS FROM PAST
+YEARS
+
+===== PDF PAGE 30 =====
+WAICY OFFICIAL WEBSITE: https://www.waicy.org
+WAICY 2026 WEBPAGE: https://www.waicy.org/waicy-2026/
+AI RESOURCES BY WAICY: https://www.waicy.org/start-learning-about-ai/ 
+WAICY FB RESOURCES: https://www.facebook.com/hashtag/waicy 
+THE 5 BIG IDEAS OF AI: https://ai4k12.org/resources/big-ideas-poster/
+PROJECT DEMOS FROM PREVIOUS WAICYs: https://www.waicy.org/resources/
+www.waicy.org
+SOME USEFUL RESOURCES:

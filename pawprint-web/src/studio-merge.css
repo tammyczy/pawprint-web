@@ -1,0 +1,57 @@
+@layer pawprint-legacy {
+.shell header { gap: 18px; }
+.shell header nav { margin-left: auto; }
+.shell header .brand { white-space: nowrap; letter-spacing: -1px; }
+.shell header nav a { white-space: nowrap; }
+.shell header .locale-picker { margin-left: 0; margin-right: 0; }
+.shell .hero h1 { letter-spacing: -.045em; }
+.shell .note, .shell .card, .shell .job { box-shadow: 0 12px 34px #25462c0a; }
+
+#species-label select {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  margin-top: 8px;
+  border: 1px solid #d2d7ca;
+  border-radius: 8px;
+  background: #fffef9;
+  color: #2d3b32;
+}
+
+.reference-uploads {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0 5px;
+}
+
+.reference-uploads label {
+  border: 1px dashed #bec9b2;
+  border-radius: 12px;
+  padding: 15px;
+  min-width: 0;
+  font-weight: 600;
+}
+
+.reference-uploads input {
+  display: block;
+  width: 100%;
+  font-size: 11px;
+  margin-top: 12px;
+}
+
+.reference-hint {
+  grid-column: 1 / -1;
+  font-weight: 400;
+}
+
+@media (max-width: 750px) {
+  .reference-uploads { grid-template-columns: 1fr; }
+  .shell header { gap: 10px; }
+  .shell header .brand { font-size: 22px; }
+  .shell header .brand small { letter-spacing: 1.1px; }
+  .shell header nav { font-size: 10px; }
+  .shell header .locale-picker select { max-width: 80px; padding: 6px 5px; font-size: 10px; }
+}
+
+}

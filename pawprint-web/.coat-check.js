@@ -1,0 +1,15 @@
+import * as T from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
+import {createLanlaoBlink} from './src/lanlao-blink.js';
+import {createWebFur} from './src/web-fur.js';
+import {softenLanlaoEarColor} from './src/lanlao-ear-color.js';
+const {scene:model}=await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync('/models/lanlao-base.glb');
+const scene=new T.Scene();scene.background=new T.Color('#e8e9df');scene.add(model);
+const camera=new T.PerspectiveCamera(32,1,.01,50);camera.position.set(-1.48,1.07,.085);camera.lookAt(-.34,.755,.026);
+const renderer=new T.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setSize(680,680);renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;document.body.append(renderer.domElement);
+scene.add(new T.HemisphereLight(0xfffaf2,0xb1afa3,2.4));const sun=new T.DirectionalLight(0xfff7ea,2.1);sun.position.set(-3,5,3);scene.add(sun);const fill=new T.DirectionalLight(0xffffff,1.5);fill.position.set(3,2,-2);scene.add(fill);
+createLanlaoBlink(model,'/models/lanlao-eye-coat.png');
+model.traverse(o=>{if(o.isMesh){if(o.material.normalScale)o.material.normalScale.set(.4,.4);o.material.metalness=0;o.material.roughness=1;}});
+createWebFur(model,{layers:8,length:.009,lanlaoCoat:true});softenLanlaoEarColor(model);
+renderer.render(scene,camera);window.probe=()=>true;

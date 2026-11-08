@@ -1,0 +1,9 @@
+@layer pawprint-legacy {
+#dog-speech{position:absolute;top:0;left:0;z-index:2;width:max-content;max-width:min(284px,calc(100% - 32px));padding:12px 17px 14px;border:1px solid #ffffffef;border-radius:18px;background:#fffef6f5;color:#284634;box-shadow:0 7px 28px #455f352b,0 0 16px #ffffff9c;transform:translate(-50%,-100%);pointer-events:none;box-sizing:border-box;text-align:left;overflow-wrap:anywhere}
+#dog-speech[hidden]{display:none}
+#dog-speech::after{content:'';position:absolute;bottom:-9px;left:calc(50% - 9px);width:17px;height:17px;background:#fffef6;transform:rotate(45deg);border-radius:0 0 4px 0}
+.dog-speech-name{display:block;color:#728766;font-size:11px;font-weight:600;letter-spacing:2px;margin-bottom:5px}
+.dog-speech-text{position:relative;z-index:1;font-size:16px;font-weight:500;line-height:1.65}
+@media(max-width:760px){.dog-speech-text{font-size:15px}#dog-speech{max-width:calc(100% - 38px);padding:10px 14px 12px}}
+
+}

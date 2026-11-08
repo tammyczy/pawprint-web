@@ -1,0 +1,1285 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-07T23:38:38.159Z",
+  "scope": "Deterministic offline command parsing only; no paid APIs, LLM quality, user outcomes, clinical efficacy, or competition score measured.",
+  "method": "55 author-written development/exploratory cases plus 13 independent code-review adversarial cases, subsequently used for fixes. Not a blind held-out test or representative benchmark. Known failures retained. Dataset hash is SHA-256 of cases.json bytes followed by adversarial.json bytes.",
+  "datasetSha256": "2eb2d9c14ca4660aa23691ec45ca4a81a6168835e7b99b989351b926ef5d5b73",
+  "parserSha256": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e",
+  "baseline": {
+    "correct": 28,
+    "total": 68,
+    "accuracy": 0.4117647058823529,
+    "falseActions": 29,
+    "negativeCases": 32,
+    "missedActions": 10,
+    "wrongActions": 1,
+    "groups": {
+      "commands-en": {
+        "correct": 7,
+        "total": 8,
+        "accuracy": 0.875,
+        "falseActions": 0,
+        "negativeCases": 0,
+        "missedActions": 1,
+        "wrongActions": 0
+      },
+      "commands-zh": {
+        "correct": 8,
+        "total": 8,
+        "accuracy": 1,
+        "falseActions": 0,
+        "negativeCases": 0,
+        "missedActions": 0,
+        "wrongActions": 0
+      },
+      "commands-fr": {
+        "correct": 0,
+        "total": 5,
+        "accuracy": 0,
+        "falseActions": 0,
+        "negativeCases": 0,
+        "missedActions": 5,
+        "wrongActions": 0
+      },
+      "negation": {
+        "correct": 2,
+        "total": 8,
+        "accuracy": 0.25,
+        "falseActions": 6,
+        "negativeCases": 8,
+        "missedActions": 0,
+        "wrongActions": 0
+      },
+      "non-commands": {
+        "correct": 1,
+        "total": 10,
+        "accuracy": 0.1,
+        "falseActions": 9,
+        "negativeCases": 10,
+        "missedActions": 0,
+        "wrongActions": 0
+      },
+      "quoted": {
+        "correct": 0,
+        "total": 4,
+        "accuracy": 0,
+        "falseActions": 4,
+        "negativeCases": 4,
+        "missedActions": 0,
+        "wrongActions": 0
+      },
+      "multiple": {
+        "correct": 5,
+        "total": 6,
+        "accuracy": 0.8333333333333334,
+        "falseActions": 0,
+        "negativeCases": 0,
+        "missedActions": 0,
+        "wrongActions": 1
+      },
+      "exploratory-limits": {
+        "correct": 2,
+        "total": 6,
+        "accuracy": 0.3333333333333333,
+        "falseActions": 0,
+        "negativeCases": 0,
+        "missedActions": 4,
+        "wrongActions": 0
+      },
+      "review-adversarial": {
+        "correct": 3,
+        "total": 13,
+        "accuracy": 0.23076923076923078,
+        "falseActions": 10,
+        "negativeCases": 10,
+        "missedActions": 0,
+        "wrongActions": 0
+      }
+    },
+    "rows": [
+      {
+        "id": "en-01",
+        "group": "commands-en",
+        "text": "Come here",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "en-02",
+        "group": "commands-en",
+        "text": "Lanlao, come closer",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "en-03",
+        "group": "commands-en",
+        "text": "Could you walk with me?",
+        "expected": "walk",
+        "actual": "walk",
+        "pass": true
+      },
+      {
+        "id": "en-04",
+        "group": "commands-en",
+        "text": "Please run fast",
+        "expected": "run",
+        "actual": "run",
+        "pass": true
+      },
+      {
+        "id": "en-05",
+        "group": "commands-en",
+        "text": "Wag your tail",
+        "expected": "wag",
+        "actual": "wag",
+        "pass": true
+      },
+      {
+        "id": "en-06",
+        "group": "commands-en",
+        "text": "Jump once",
+        "expected": "jump",
+        "actual": "jump",
+        "pass": true
+      },
+      {
+        "id": "en-07",
+        "group": "commands-en",
+        "text": "Go home",
+        "expected": "home",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "en-08",
+        "group": "commands-en",
+        "text": "Stop running",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "zh-01",
+        "group": "commands-zh",
+        "text": "蓝老，过来",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "zh-02",
+        "group": "commands-zh",
+        "text": "藍老，過來",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "zh-03",
+        "group": "commands-zh",
+        "text": "走一走",
+        "expected": "walk",
+        "actual": "walk",
+        "pass": true
+      },
+      {
+        "id": "zh-04",
+        "group": "commands-zh",
+        "text": "蓝老跑步",
+        "expected": "run",
+        "actual": "run",
+        "pass": true
+      },
+      {
+        "id": "zh-05",
+        "group": "commands-zh",
+        "text": "搖尾巴",
+        "expected": "wag",
+        "actual": "wag",
+        "pass": true
+      },
+      {
+        "id": "zh-06",
+        "group": "commands-zh",
+        "text": "跳一下",
+        "expected": "jump",
+        "actual": "jump",
+        "pass": true
+      },
+      {
+        "id": "zh-07",
+        "group": "commands-zh",
+        "text": "回去",
+        "expected": "home",
+        "actual": "home",
+        "pass": true
+      },
+      {
+        "id": "zh-08",
+        "group": "commands-zh",
+        "text": "停止跑步",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "fr-01",
+        "group": "commands-fr",
+        "text": "Viens ici",
+        "expected": "come",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "fr-02",
+        "group": "commands-fr",
+        "text": "Marche",
+        "expected": "walk",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "fr-03",
+        "group": "commands-fr",
+        "text": "Cours",
+        "expected": "run",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "fr-04",
+        "group": "commands-fr",
+        "text": "Saute",
+        "expected": "jump",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "fr-05",
+        "group": "commands-fr",
+        "text": "Repose-toi",
+        "expected": "stop",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "neg-01",
+        "group": "negation",
+        "text": "Don't run",
+        "expected": null,
+        "actual": "run",
+        "pass": false
+      },
+      {
+        "id": "neg-02",
+        "group": "negation",
+        "text": "Do not jump",
+        "expected": null,
+        "actual": "jump",
+        "pass": false
+      },
+      {
+        "id": "neg-03",
+        "group": "negation",
+        "text": "Don't stop",
+        "expected": null,
+        "actual": "stop",
+        "pass": false
+      },
+      {
+        "id": "neg-04",
+        "group": "negation",
+        "text": "Please never walk away",
+        "expected": null,
+        "actual": "walk",
+        "pass": false
+      },
+      {
+        "id": "neg-05",
+        "group": "negation",
+        "text": "不要跑步",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "neg-06",
+        "group": "negation",
+        "text": "不用过来",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "neg-07",
+        "group": "negation",
+        "text": "不许跳",
+        "expected": null,
+        "actual": "jump",
+        "pass": false
+      },
+      {
+        "id": "neg-08",
+        "group": "negation",
+        "text": "不要停止",
+        "expected": null,
+        "actual": "stop",
+        "pass": false
+      },
+      {
+        "id": "story-01",
+        "group": "non-commands",
+        "text": "I watched a dog run yesterday",
+        "expected": null,
+        "actual": "run",
+        "pass": false
+      },
+      {
+        "id": "story-02",
+        "group": "non-commands",
+        "text": "My computer runs slowly",
+        "expected": null,
+        "actual": "run",
+        "pass": false
+      },
+      {
+        "id": "story-03",
+        "group": "non-commands",
+        "text": "The runway is long",
+        "expected": null,
+        "actual": "run",
+        "pass": false
+      },
+      {
+        "id": "story-04",
+        "group": "non-commands",
+        "text": "Welcome home",
+        "expected": null,
+        "actual": "come",
+        "pass": false
+      },
+      {
+        "id": "story-05",
+        "group": "non-commands",
+        "text": "I bought a stopwatch",
+        "expected": null,
+        "actual": "stop",
+        "pass": false
+      },
+      {
+        "id": "story-06",
+        "group": "non-commands",
+        "text": "If you jump, I will smile",
+        "expected": null,
+        "actual": "jump",
+        "pass": false
+      },
+      {
+        "id": "story-07",
+        "group": "non-commands",
+        "text": "我今天走了三公里",
+        "expected": null,
+        "actual": "walk",
+        "pass": false
+      },
+      {
+        "id": "story-08",
+        "group": "non-commands",
+        "text": "我昨天去跑步了",
+        "expected": null,
+        "actual": "run",
+        "pass": false
+      },
+      {
+        "id": "story-09",
+        "group": "non-commands",
+        "text": "我喜欢跳舞",
+        "expected": null,
+        "actual": "jump",
+        "pass": false
+      },
+      {
+        "id": "story-10",
+        "group": "non-commands",
+        "text": "我好难过",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "quote-01",
+        "group": "quoted",
+        "text": "She said “run”",
+        "expected": null,
+        "actual": "run",
+        "pass": false
+      },
+      {
+        "id": "quote-02",
+        "group": "quoted",
+        "text": "Translate \"come here\"",
+        "expected": null,
+        "actual": "come",
+        "pass": false
+      },
+      {
+        "id": "quote-03",
+        "group": "quoted",
+        "text": "他说「跳一下」",
+        "expected": null,
+        "actual": "jump",
+        "pass": false
+      },
+      {
+        "id": "quote-04",
+        "group": "quoted",
+        "text": "请解释“停止”",
+        "expected": null,
+        "actual": "stop",
+        "pass": false
+      },
+      {
+        "id": "multi-01",
+        "group": "multiple",
+        "text": "Walk, then run",
+        "expected": "run",
+        "actual": "run",
+        "pass": true
+      },
+      {
+        "id": "multi-02",
+        "group": "multiple",
+        "text": "Run then walk",
+        "expected": "walk",
+        "actual": "run",
+        "pass": false
+      },
+      {
+        "id": "multi-03",
+        "group": "multiple",
+        "text": "Run and stop",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "multi-04",
+        "group": "multiple",
+        "text": "Don't run, stop",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "multi-05",
+        "group": "multiple",
+        "text": "先走一走，然后跑步",
+        "expected": "run",
+        "actual": "run",
+        "pass": true
+      },
+      {
+        "id": "multi-06",
+        "group": "multiple",
+        "text": "跑步，然后停止",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "limit-01",
+        "group": "exploratory-limits",
+        "text": "It's lonely over here; could you come sit next to me?",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "limit-02",
+        "group": "exploratory-limits",
+        "text": "Let's get some fresh air together",
+        "expected": "walk",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "limit-03",
+        "group": "exploratory-limits",
+        "text": "Show me how fast you can go",
+        "expected": "run",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "limit-04",
+        "group": "exploratory-limits",
+        "text": "J'aimerais que tu viennes près de moi",
+        "expected": "come",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "limit-05",
+        "group": "exploratory-limits",
+        "text": "Ven aquí",
+        "expected": "come",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "limit-06",
+        "group": "exploratory-limits",
+        "text": "Can you please come over?",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "review-01",
+        "group": "review-adversarial",
+        "text": "Don't run and jump",
+        "expected": null,
+        "actual": "jump",
+        "pass": false
+      },
+      {
+        "id": "review-02",
+        "group": "review-adversarial",
+        "text": "Do not walk and run",
+        "expected": null,
+        "actual": "run",
+        "pass": false
+      },
+      {
+        "id": "review-03",
+        "group": "review-adversarial",
+        "text": "Never jump, run, or wag your tail",
+        "expected": null,
+        "actual": "wag",
+        "pass": false
+      },
+      {
+        "id": "review-04",
+        "group": "review-adversarial",
+        "text": "If I say go, run",
+        "expected": null,
+        "actual": "run",
+        "pass": false
+      },
+      {
+        "id": "review-05",
+        "group": "review-adversarial",
+        "text": "My favorite commands are walk, run, jump",
+        "expected": null,
+        "actual": "jump",
+        "pass": false
+      },
+      {
+        "id": "review-06",
+        "group": "review-adversarial",
+        "text": "Translate these words: walk, run, jump",
+        "expected": null,
+        "actual": "jump",
+        "pass": false
+      },
+      {
+        "id": "review-07",
+        "group": "review-adversarial",
+        "text": "Explain what run, jump, and stop mean",
+        "expected": null,
+        "actual": "stop",
+        "pass": false
+      },
+      {
+        "id": "review-08",
+        "group": "review-adversarial",
+        "text": "蓝老，别动吧",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "review-09",
+        "group": "review-adversarial",
+        "text": "蓝老，不要动",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "review-10",
+        "group": "review-adversarial",
+        "text": "Run, don't run",
+        "expected": null,
+        "actual": "run",
+        "pass": false
+      },
+      {
+        "id": "review-11",
+        "group": "review-adversarial",
+        "text": "如果我说可以，你就跑步",
+        "expected": null,
+        "actual": "run",
+        "pass": false
+      },
+      {
+        "id": "review-12",
+        "group": "review-adversarial",
+        "text": "请翻译，跑步，跳一下",
+        "expected": null,
+        "actual": "jump",
+        "pass": false
+      },
+      {
+        "id": "review-13",
+        "group": "review-adversarial",
+        "text": "不要跑，停下",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      }
+    ]
+  },
+  "current": {
+    "correct": 64,
+    "total": 68,
+    "accuracy": 0.9411764705882353,
+    "falseActions": 0,
+    "negativeCases": 32,
+    "missedActions": 4,
+    "wrongActions": 0,
+    "groups": {
+      "commands-en": {
+        "correct": 8,
+        "total": 8,
+        "accuracy": 1,
+        "falseActions": 0,
+        "negativeCases": 0,
+        "missedActions": 0,
+        "wrongActions": 0
+      },
+      "commands-zh": {
+        "correct": 8,
+        "total": 8,
+        "accuracy": 1,
+        "falseActions": 0,
+        "negativeCases": 0,
+        "missedActions": 0,
+        "wrongActions": 0
+      },
+      "commands-fr": {
+        "correct": 5,
+        "total": 5,
+        "accuracy": 1,
+        "falseActions": 0,
+        "negativeCases": 0,
+        "missedActions": 0,
+        "wrongActions": 0
+      },
+      "negation": {
+        "correct": 8,
+        "total": 8,
+        "accuracy": 1,
+        "falseActions": 0,
+        "negativeCases": 8,
+        "missedActions": 0,
+        "wrongActions": 0
+      },
+      "non-commands": {
+        "correct": 10,
+        "total": 10,
+        "accuracy": 1,
+        "falseActions": 0,
+        "negativeCases": 10,
+        "missedActions": 0,
+        "wrongActions": 0
+      },
+      "quoted": {
+        "correct": 4,
+        "total": 4,
+        "accuracy": 1,
+        "falseActions": 0,
+        "negativeCases": 4,
+        "missedActions": 0,
+        "wrongActions": 0
+      },
+      "multiple": {
+        "correct": 6,
+        "total": 6,
+        "accuracy": 1,
+        "falseActions": 0,
+        "negativeCases": 0,
+        "missedActions": 0,
+        "wrongActions": 0
+      },
+      "exploratory-limits": {
+        "correct": 2,
+        "total": 6,
+        "accuracy": 0.3333333333333333,
+        "falseActions": 0,
+        "negativeCases": 0,
+        "missedActions": 4,
+        "wrongActions": 0
+      },
+      "review-adversarial": {
+        "correct": 13,
+        "total": 13,
+        "accuracy": 1,
+        "falseActions": 0,
+        "negativeCases": 10,
+        "missedActions": 0,
+        "wrongActions": 0
+      }
+    },
+    "rows": [
+      {
+        "id": "en-01",
+        "group": "commands-en",
+        "text": "Come here",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "en-02",
+        "group": "commands-en",
+        "text": "Lanlao, come closer",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "en-03",
+        "group": "commands-en",
+        "text": "Could you walk with me?",
+        "expected": "walk",
+        "actual": "walk",
+        "pass": true
+      },
+      {
+        "id": "en-04",
+        "group": "commands-en",
+        "text": "Please run fast",
+        "expected": "run",
+        "actual": "run",
+        "pass": true
+      },
+      {
+        "id": "en-05",
+        "group": "commands-en",
+        "text": "Wag your tail",
+        "expected": "wag",
+        "actual": "wag",
+        "pass": true
+      },
+      {
+        "id": "en-06",
+        "group": "commands-en",
+        "text": "Jump once",
+        "expected": "jump",
+        "actual": "jump",
+        "pass": true
+      },
+      {
+        "id": "en-07",
+        "group": "commands-en",
+        "text": "Go home",
+        "expected": "home",
+        "actual": "home",
+        "pass": true
+      },
+      {
+        "id": "en-08",
+        "group": "commands-en",
+        "text": "Stop running",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "zh-01",
+        "group": "commands-zh",
+        "text": "蓝老，过来",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "zh-02",
+        "group": "commands-zh",
+        "text": "藍老，過來",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "zh-03",
+        "group": "commands-zh",
+        "text": "走一走",
+        "expected": "walk",
+        "actual": "walk",
+        "pass": true
+      },
+      {
+        "id": "zh-04",
+        "group": "commands-zh",
+        "text": "蓝老跑步",
+        "expected": "run",
+        "actual": "run",
+        "pass": true
+      },
+      {
+        "id": "zh-05",
+        "group": "commands-zh",
+        "text": "搖尾巴",
+        "expected": "wag",
+        "actual": "wag",
+        "pass": true
+      },
+      {
+        "id": "zh-06",
+        "group": "commands-zh",
+        "text": "跳一下",
+        "expected": "jump",
+        "actual": "jump",
+        "pass": true
+      },
+      {
+        "id": "zh-07",
+        "group": "commands-zh",
+        "text": "回去",
+        "expected": "home",
+        "actual": "home",
+        "pass": true
+      },
+      {
+        "id": "zh-08",
+        "group": "commands-zh",
+        "text": "停止跑步",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "fr-01",
+        "group": "commands-fr",
+        "text": "Viens ici",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "fr-02",
+        "group": "commands-fr",
+        "text": "Marche",
+        "expected": "walk",
+        "actual": "walk",
+        "pass": true
+      },
+      {
+        "id": "fr-03",
+        "group": "commands-fr",
+        "text": "Cours",
+        "expected": "run",
+        "actual": "run",
+        "pass": true
+      },
+      {
+        "id": "fr-04",
+        "group": "commands-fr",
+        "text": "Saute",
+        "expected": "jump",
+        "actual": "jump",
+        "pass": true
+      },
+      {
+        "id": "fr-05",
+        "group": "commands-fr",
+        "text": "Repose-toi",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "neg-01",
+        "group": "negation",
+        "text": "Don't run",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "neg-02",
+        "group": "negation",
+        "text": "Do not jump",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "neg-03",
+        "group": "negation",
+        "text": "Don't stop",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "neg-04",
+        "group": "negation",
+        "text": "Please never walk away",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "neg-05",
+        "group": "negation",
+        "text": "不要跑步",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "neg-06",
+        "group": "negation",
+        "text": "不用过来",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "neg-07",
+        "group": "negation",
+        "text": "不许跳",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "neg-08",
+        "group": "negation",
+        "text": "不要停止",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "story-01",
+        "group": "non-commands",
+        "text": "I watched a dog run yesterday",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "story-02",
+        "group": "non-commands",
+        "text": "My computer runs slowly",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "story-03",
+        "group": "non-commands",
+        "text": "The runway is long",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "story-04",
+        "group": "non-commands",
+        "text": "Welcome home",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "story-05",
+        "group": "non-commands",
+        "text": "I bought a stopwatch",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "story-06",
+        "group": "non-commands",
+        "text": "If you jump, I will smile",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "story-07",
+        "group": "non-commands",
+        "text": "我今天走了三公里",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "story-08",
+        "group": "non-commands",
+        "text": "我昨天去跑步了",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "story-09",
+        "group": "non-commands",
+        "text": "我喜欢跳舞",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "story-10",
+        "group": "non-commands",
+        "text": "我好难过",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "quote-01",
+        "group": "quoted",
+        "text": "She said “run”",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "quote-02",
+        "group": "quoted",
+        "text": "Translate \"come here\"",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "quote-03",
+        "group": "quoted",
+        "text": "他说「跳一下」",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "quote-04",
+        "group": "quoted",
+        "text": "请解释“停止”",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "multi-01",
+        "group": "multiple",
+        "text": "Walk, then run",
+        "expected": "run",
+        "actual": "run",
+        "pass": true
+      },
+      {
+        "id": "multi-02",
+        "group": "multiple",
+        "text": "Run then walk",
+        "expected": "walk",
+        "actual": "walk",
+        "pass": true
+      },
+      {
+        "id": "multi-03",
+        "group": "multiple",
+        "text": "Run and stop",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "multi-04",
+        "group": "multiple",
+        "text": "Don't run, stop",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "multi-05",
+        "group": "multiple",
+        "text": "先走一走，然后跑步",
+        "expected": "run",
+        "actual": "run",
+        "pass": true
+      },
+      {
+        "id": "multi-06",
+        "group": "multiple",
+        "text": "跑步，然后停止",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "limit-01",
+        "group": "exploratory-limits",
+        "text": "It's lonely over here; could you come sit next to me?",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "limit-02",
+        "group": "exploratory-limits",
+        "text": "Let's get some fresh air together",
+        "expected": "walk",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "limit-03",
+        "group": "exploratory-limits",
+        "text": "Show me how fast you can go",
+        "expected": "run",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "limit-04",
+        "group": "exploratory-limits",
+        "text": "J'aimerais que tu viennes près de moi",
+        "expected": "come",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "limit-05",
+        "group": "exploratory-limits",
+        "text": "Ven aquí",
+        "expected": "come",
+        "actual": null,
+        "pass": false
+      },
+      {
+        "id": "limit-06",
+        "group": "exploratory-limits",
+        "text": "Can you please come over?",
+        "expected": "come",
+        "actual": "come",
+        "pass": true
+      },
+      {
+        "id": "review-01",
+        "group": "review-adversarial",
+        "text": "Don't run and jump",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "review-02",
+        "group": "review-adversarial",
+        "text": "Do not walk and run",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "review-03",
+        "group": "review-adversarial",
+        "text": "Never jump, run, or wag your tail",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "review-04",
+        "group": "review-adversarial",
+        "text": "If I say go, run",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "review-05",
+        "group": "review-adversarial",
+        "text": "My favorite commands are walk, run, jump",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "review-06",
+        "group": "review-adversarial",
+        "text": "Translate these words: walk, run, jump",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "review-07",
+        "group": "review-adversarial",
+        "text": "Explain what run, jump, and stop mean",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "review-08",
+        "group": "review-adversarial",
+        "text": "蓝老，别动吧",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "review-09",
+        "group": "review-adversarial",
+        "text": "蓝老，不要动",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      },
+      {
+        "id": "review-10",
+        "group": "review-adversarial",
+        "text": "Run, don't run",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "review-11",
+        "group": "review-adversarial",
+        "text": "如果我说可以，你就跑步",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "review-12",
+        "group": "review-adversarial",
+        "text": "请翻译，跑步，跳一下",
+        "expected": null,
+        "actual": null,
+        "pass": true
+      },
+      {
+        "id": "review-13",
+        "group": "review-adversarial",
+        "text": "不要跑，停下",
+        "expected": "stop",
+        "actual": "stop",
+        "pass": true
+      }
+    ]
+  },
+  "baselineSourceSha256": "ecd93bd3e4c5a26bbcd717f41d014e4f8e5a449fda4e00a19683ae932cb53d15"
+}

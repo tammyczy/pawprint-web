@@ -1,0 +1,4 @@
+Use case: logo-brand. Create a new premium logo symbol for Pawprint, an intimate digital pet companion and handmade keepsake brand. A single elegant, memorable abstract paw shaped as a flowing loop / gentle embrace, subtle heart negative space inside the main pad. Four restrained organic toe shapes, deliberate optical balance, refined modern identity design. Flat solid very dark forest green #233f35, no gradients or texture. Transparent background, generous clear space, square composition. Symbol only, no typography, no words, no mockup, no shadows. Must remain legible as a website nav mark at 36 pixels. Sophisticated, warm, understated, suitable for embossed ceramic and a digital product.
+
+Generated with the built-in image_gen tool, transparent_background=true.
+Project asset: public/pawprint-mark-v3.png
