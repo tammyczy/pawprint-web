@@ -1,0 +1,36 @@
+{
+  "syntheticInputs": true,
+  "date": "2026-11-09T18:16:03.461Z",
+  "model": "gpt-5.4-mini",
+  "scope": "Direct adapter + guard; one run each, not browser/HTTP or a representative language test.",
+  "adapterSha256": "bc741c4f971afd746e8d9598686da3b8e7498f447fff13fbaeff79e7d00c9e12",
+  "guardSha256": "16ef623273b1afb0a350e34c92c485aa77e340bcc0a688aab88a40d5bc7dcebd",
+  "results": [
+    {
+      "text": "Don't move",
+      "raw": {
+        "caption": "Okay, I’ll stay right here.",
+        "action": "stop",
+        "sound": null
+      },
+      "guarded": {
+        "caption": "Okay, I’ll stay right here.",
+        "action": "stop",
+        "sound": null
+      }
+    },
+    {
+      "text": "Let's get some fresh air together",
+      "raw": {
+        "caption": "Ooh, fresh air sounds great. I’ll walk with you and sniff every good breeze 🐾",
+        "action": "walk",
+        "sound": "sniffing"
+      },
+      "guarded": {
+        "caption": "Ooh, fresh air sounds great. I’ll walk with you and sniff every good breeze 🐾",
+        "action": "walk",
+        "sound": "sniffing"
+      }
+    }
+  ]
+}

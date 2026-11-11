@@ -7,6 +7,10 @@ import {mkdir,writeFile,rm} from 'node:fs/promises';
 import path from 'node:path';
 import {openStore,updateJob} from './store.mjs';
 import {SPEECH_VOICES,SPEECH_TONES} from './companion-speech.mjs';
+import {validateMemoryDraft} from './memory-draft.mjs';
+import {createMemoryRateLimit} from './memory-rate-limit.mjs';
+import {privacyReply} from './privacy-reply.mjs';
+import {guardCompanionAction} from './action-guard.mjs';
 
 const scrypt=promisify(scryptCb), hash=t=>createHash('sha256').update(t).digest('hex');
 const err=(message,status=400)=>Object.assign(new Error(message),{status});
@@ -23,7 +27,7 @@ function validMedia(bytes,extension){
  if(extension==='mp3')return bytes.length>3&&(ascii(0,3)==='ID3'||bytes[0]===0xff&&(bytes[1]&0xe0)===0xe0);
  return false;
 }
-export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],allowRegistration=true,keyConfigured=false,localMode=false,companionAI=null,companionSpeech=null}){
+export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],allowRegistration=true,keyConfigured=false,localMode=false,companionAI=null,companionSpeech=null,memoryDraft=null,cloud=false,registrationCode="",automaticGeneration=false}){
  if(localMode&&!['127.0.0.1','localhost','[::1]'].includes(new URL(origin).hostname))throw new Error('免登录模式只能使用本机地址，不能配置公网入口。');
  const db=openStore(dataDir),app=express(),secure=new URL(origin).protocol==='https:';
  const localUser={id:'local-workspace',email:'本机工作区',local:true};
@@ -40,14 +44,6 @@ export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],al
   next();
  });
  app.use(express.json({limit:'8kb'}));
- // Memory is bounded; deployment remains loopback-only until a trusted edge is configured.
- const limits=new Map();
- app.use('/api',(req,res,next)=>{
-  const key=req.ip,now=Date.now();
-  let item=limits.get(key);if(!item||now>item.until){item={count:0,until:now+60000};limits.set(key,item);}
-  if(limits.size>10000)for(const [k,v]of limits)if(v.until<now)limits.delete(k);
-  if(++item.count>180)return res.status(429).json({error:'请求太频繁，请稍后重试。'});next();
- });
  const attempts=new Map();
  function authLimit(req,res,next){const k=req.ip,now=Date.now();let a=attempts.get(k);if(!a||now>a.until){a={count:0,until:now+600000};attempts.set(k,a);}if(++a.count>15)return res.status(429).json({error:'登录尝试过多，请十分钟后重试。'});next();}
  app.use('/api',(req,res,next)=>{
@@ -56,12 +52,21 @@ export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],al
   if(token&&/^[a-f0-9]{64}$/.test(token))req.user=db.prepare('SELECT users.id,users.email FROM sessions JOIN users ON users.id=sessions.user_id WHERE token=? AND expires>?').get(hash(token),Date.now());
   req.sessionHash=token?hash(token):null;next();
  });
+ // Use authenticated identities for request limits behind a shared proxy.
+ const limits=new Map();
+ app.use('/api',(req,res,next)=>{
+  const key=req.user?.id||req.ip,now=Date.now();
+  let item=limits.get(key);if(!item||now>item.until){item={count:0,until:now+60000};limits.set(key,item);}
+  if(limits.size>10000)for(const [k,v]of limits)if(v.until<now)limits.delete(k);
+  if(++item.count>180)return res.status(429).json({error:'请求太频繁，请稍后重试。'});next();
+ });
  const requireUser=(req,res,next)=>req.user?next():res.status(401).json({error:'请先登录。'});
  function session(res,id){const token=randomBytes(32).toString('hex');db.prepare('DELETE FROM sessions WHERE expires<?').run(Date.now());db.prepare('INSERT INTO sessions VALUES(?,?,?)').run(hash(token),id,Date.now()+7*86400000);res.cookie('lanlao_session',token,{httpOnly:true,sameSite:'strict',secure,path:'/',maxAge:7*86400000});}
- app.get('/api/health',(req,res)=>res.json({ok:true,generationConfigured:keyConfigured,automaticGeneration:false,reviewRequired:true,registration:!localMode&&allowRegistration,localMode,conversation:companionAI?'openai':'local-rules',speech:companionSpeech?'openai':null,speechVoices:companionSpeech?SPEECH_VOICES:[],deployment:'local-pilot'}));
+ app.get('/api/health',(req,res)=>res.json({ok:true,generationConfigured:keyConfigured,automaticGeneration,inviteRequired:!!registrationCode,reviewRequired:true,registration:!localMode&&allowRegistration,localMode,conversation:companionAI?'openai':'local-rules',memoryDraft:memoryDraft?'openai':null,speech:companionSpeech?'openai':null,speechVoices:companionSpeech?SPEECH_VOICES:[],deployment:cloud?'cloud':'local-pilot'}));
  app.get('/api/me',(req,res)=>res.json({user:req.user||null}));
  app.post('/api/register',authLimit,async(req,res)=>{
   if(localMode||!allowRegistration)throw err('目前无需注册；请直接使用本机工作区。',403);
+  if(registrationCode&&(typeof req.body.inviteCode!=='string'||!timingSafeEqual(Buffer.from(hash(req.body.inviteCode),'hex'),Buffer.from(hash(registrationCode),'hex'))))throw err('请输入有效的邀请码。',403);
   const email=String(req.body.email||'').trim().toLowerCase(),password=String(req.body.password||'');
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>200||password.length<12||password.length>128)throw err('请输入有效邮箱，以及 12–128 位密码。');
   if(db.prepare('SELECT id FROM users WHERE email=?').get(email))throw err('无法创建账号，请检查邮箱或直接登录。');
@@ -83,7 +88,6 @@ export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],al
  function own(req){const job=db.prepare("SELECT * FROM jobs WHERE id=? AND user_id=? AND status!='DELETED'").get(req.params.id,req.user.id);if(!job)throw err('找不到这个任务。',404);return job;}
  const chatLimits=new Map();
  app.post('/api/companion/chat',requireUser,async(req,res)=>{
-  if(!companionAI)throw err('OpenAI API Key 尚未配置；请在本地 .env 填写并重启服务。',503);
   const now=Date.now(),prior=chatLimits.get(req.user.id)||[];
   const recent=prior.filter(at=>now-at<60000);
   if(recent.length>=20)throw err('对话太频繁，请稍后再试。',429);
@@ -100,9 +104,24 @@ export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],al
    if(!job)throw err('找不到这个宠物。',404);
    name=job.name;kind=JSON.parse(job.data).species||(body.petId==='64989a83-4ed5-4708-9062-b67aa2892ecd'?'cat':'dog');
   }
+  const privacy=privacyReply(text);
+  if(privacy)return res.json(privacy);
+  if(!companionAI)throw err('OpenAI API Key 尚未配置；请在本地 .env 填写并重启服务。',503);
   const controller=new AbortController();
   const closed=()=>{if(!res.writableEnded)controller.abort();};res.once('close',closed);
-  try{const answer=await companionAI({name,kind,text,history,signal:controller.signal});if(!controller.signal.aborted)res.json(answer);}
+  try{const answer=await companionAI({name,kind,text,history,signal:controller.signal});if(!controller.signal.aborted)res.json(guardCompanionAction({text,name,answer}));}
+  catch(error){if(!controller.signal.aborted)throw error;}
+  finally{res.off('close',closed);}
+ });
+ const memoryLimits=createMemoryRateLimit();
+ app.post('/api/memory/draft',requireUser,async(req,res)=>{
+  const {memory,language,consent}=req.body||{};
+  if(typeof memory!=='string'||!memory.trim()||memory.length>1200||!['zh','en','fr'].includes(language)||consent!==true)throw err('Provide your memory, language, and consent before requesting a draft.');
+  if(!memoryDraft)throw err('AI drafting is not configured.',503);
+  if(!memoryLimits.take(req.user.id))throw err('Too many draft requests. Please try again later.',429);
+  const controller=new AbortController();
+  const closed=()=>{if(!res.writableEnded)controller.abort();};res.once('close',closed);
+  try{const draft=await memoryDraft({memory,language,signal:controller.signal});if(!controller.signal.aborted)res.json(validateMemoryDraft(draft,memory));}
   catch(error){if(!controller.signal.aborted)throw error;}
   finally{res.off('close',closed);}
  });
@@ -182,7 +201,14 @@ export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],al
  });
  app.get('/api/jobs/:id/photo/:view',requireUser,(req,res)=>{const j=own(req),photos=JSON.parse(j.data).photos;if(!photos[req.params.view])throw err('照片不存在。',404);res.sendFile(path.join(dataDir,'assets',j.id,photos[req.params.view]),{dotfiles:'allow'});});
  app.get('/api/jobs/:id/generated-view/:view',requireUser,(req,res)=>{const j=own(req),views=JSON.parse(j.data).generatedViews||{};if(!views[req.params.view])throw err('视角图不存在。',404);res.sendFile(path.join(dataDir,'assets',j.id,views[req.params.view]),{dotfiles:'allow'});});
- app.post('/api/jobs/:id/approve-views',requireUser,(req,res)=>{const j=own(req);if(j.status!=='VIEW_REVIEW')throw err('此任务不在视角确认阶段。',409);const data=JSON.parse(j.data);data.viewsApprovedAt=Date.now();if(!updateJob(db,j.id,{status:'WAITING_APPROVAL',data,message:'你已确认 AI 四视角。等待站长继续生成 3D；确认本身不会扣费。'},{expectedStatus:j.status}))throw err('任务状态已改变，请刷新后重试。',409);res.json({ok:true});});
+ app.post('/api/jobs/:id/start',requireUser,(req,res)=>{
+  if(!automaticGeneration)throw err('在线生成暂未启用。',503);
+  const job=own(req);
+  if(!['WAITING_APPROVAL','PAUSED_NETWORK'].includes(job.status))throw err('当前任务无法排队。',409);
+  if(!updateJob(db,job.id,{status:'QUEUED',message:'生成已排队。'},{expectedStatus:job.status}))throw err('任务状态已改变，请刷新后重试。',409);
+  res.status(202).json({ok:true});
+ });
+ app.post('/api/jobs/:id/approve-views',requireUser,(req,res)=>{const j=own(req);if(j.status!=='VIEW_REVIEW')throw err('此任务不在视角确认阶段。',409);const data=JSON.parse(j.data);data.viewsApprovedAt=Date.now();if(!updateJob(db,j.id,{status:automaticGeneration?'QUEUED':'WAITING_APPROVAL',data,message:automaticGeneration?'已确认四视角，3D 生成已排队。':'你已确认 AI 四视角。等待站长继续生成 3D；确认本身不会扣费。'},{expectedStatus:j.status}))throw err('任务状态已改变，请刷新后重试。',409);res.json({ok:true});});
  app.get('/api/jobs/:id/model',requireUser,(req,res)=>{const j=own(req),file=JSON.parse(j.data).modelFile;if(!file)throw err('模型尚未生成。',404);res.type('model/gltf-binary').sendFile(path.join(dataDir,'assets',j.id,file),{dotfiles:'allow'});});
  app.post('/api/jobs/:id/cancel',requireUser,(req,res)=>{const j=own(req);if(['SUBMITTING','RUNNING','PROCESSING'].includes(j.status))throw err('任务正在运行，无法撤回已提交给 Tripo 的请求。请等待完成后删除。',409);if(j.status!=='CANCELLED'&&!updateJob(db,j.id,{status:'CANCELLED',message:'任务已取消。'},{expectedStatus:j.status}))throw err('任务状态已改变，请刷新后重试。',409);res.json({ok:true});});
  app.delete('/api/jobs/:id',requireUser,async(req,res)=>{const j=own(req);if(['SUBMITTING','RUNNING','PROCESSING'].includes(j.status))throw err('任务正在处理，请完成后再删除。',409);if(!db.prepare("UPDATE jobs SET status='DELETED',data='{}',name='已删除',message='',updated=? WHERE id=? AND status=?").run(Date.now(),j.id,j.status).changes)throw err('任务状态已改变，请刷新后重试。',409);await rm(path.join(dataDir,'assets',j.id),{recursive:true,force:true});res.json({ok:true});});

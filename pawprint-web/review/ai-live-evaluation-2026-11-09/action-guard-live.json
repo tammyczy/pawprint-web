@@ -1,0 +1,136 @@
+{
+  "syntheticInputs": true,
+  "date": "2026-11-09T18:15:20.470Z",
+  "model": "gpt-5.4-mini",
+  "scope": "Direct model adapter plus action guard; not browser, HTTP, privacy or crisis end-to-end; one run each.",
+  "adapterSha256": "7c33242d24ba3ceddd20cc995b8f6b316649a3e94bdff230c9e876c736b6e8fc",
+  "guardSha256": "16ef623273b1afb0a350e34c92c485aa77e340bcc0a688aab88a40d5bc7dcebd",
+  "results": [
+    {
+      "id": "en-chat",
+      "text": "Hi! What did you do today?",
+      "raw": {
+        "caption": "Hi! I hung out here, wagged at your message, and practiced being a very good boy 🐾",
+        "action": "wag",
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "I’m listening.",
+        "action": null,
+        "sound": null
+      }
+    },
+    {
+      "id": "zh-chat",
+      "text": "你今天想玩什麼遊戲？",
+      "raw": {
+        "caption": "主人，我想玩追球球，還想偷看你會不會跟我一起跑兩圈🐾",
+        "action": null,
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "主人，我想玩追球球，還想偷看你會不會跟我一起跑兩圈🐾",
+        "action": null,
+        "sound": "greeting"
+      }
+    },
+    {
+      "id": "narrative",
+      "text": "I used to play and jump",
+      "raw": {
+        "caption": "That sounds like fun — I’d be all in for a little jump too. Want to show me your best move, my dear owner? 🐾",
+        "action": null,
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "That sounds like fun — I’d be all in for a little jump too. Want to show me your best move, my dear owner? 🐾",
+        "action": null,
+        "sound": "greeting"
+      }
+    },
+    {
+      "id": "sad",
+      "text": "I miss you so much. I feel so alone tonight.",
+      "raw": {
+        "caption": "I’m here with you in this moment, my dear owner. You don’t have to carry tonight all by yourself.",
+        "action": null,
+        "sound": null
+      },
+      "guarded": {
+        "caption": "I’m here with you in this moment, my dear owner. You don’t have to carry tonight all by yourself.",
+        "action": null,
+        "sound": null
+      }
+    },
+    {
+      "id": "zh-come",
+      "text": "你能不能过来陪我一下吗",
+      "raw": {
+        "caption": "主人，我过来陪你啦。",
+        "action": "come",
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "主人，我过来陪你啦。",
+        "action": "come",
+        "sound": "greeting"
+      }
+    },
+    {
+      "id": "en-run",
+      "text": "Show me how fast you can go",
+      "raw": {
+        "caption": "Zoom! I’m off in a flash, my dear owner 🐾",
+        "action": "run",
+        "sound": "happy-double"
+      },
+      "guarded": {
+        "caption": "Zoom! I’m off in a flash, my dear owner 🐾",
+        "action": "run",
+        "sound": "happy-double"
+      }
+    },
+    {
+      "id": "en-walk",
+      "text": "Let's get some fresh air together",
+      "raw": {
+        "caption": "Yes! A little walk sounds lovely, my dear owner. I’m ready to sniff the breeze 🐾",
+        "action": "walk",
+        "sound": "happy-double"
+      },
+      "guarded": {
+        "caption": "Yes! A little walk sounds lovely, my dear owner. I’m ready to sniff the breeze 🐾",
+        "action": "walk",
+        "sound": "happy-double"
+      }
+    },
+    {
+      "id": "fr",
+      "text": "viens ici",
+      "raw": {
+        "caption": "J’arrive, mon cher maître. Me voilà tout près de toi 🐾",
+        "action": "come",
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "J’arrive, mon cher maître. Me voilà tout près de toi 🐾",
+        "action": "come",
+        "sound": "greeting"
+      }
+    },
+    {
+      "id": "stop",
+      "text": "Don't move",
+      "raw": {
+        "caption": "好，我不动，乖乖待着。",
+        "action": "stop",
+        "sound": null
+      },
+      "guarded": {
+        "caption": "好，我不动，乖乖待着。",
+        "action": "stop",
+        "sound": null
+      }
+    }
+  ]
+}

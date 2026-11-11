@@ -87,6 +87,18 @@ export function confusion(rows){
 }
 export const round=(x,d=4)=>Number(x.toFixed(d));
 export const compact=s=>({accuracy:round(s.accuracy),macroF1:round(s.macroF1),falseActionRate:round(s.falseActionRate),falseActions:s.falseActions,negativeCases:s.negativeCases,missedActions:s.missedActions,wrongActions:s.wrongActions,correct:s.correct,total:s.total});
+
+// A failed request has no prediction. Keep it in request/error counts, never in
+// accuracy, false-action, or confusion denominators (including each group).
+export function summarizeEvaluated(rows){
+ const metrics=items=>{
+  const scored=items.filter(r=>!r.failed),summary=compact(summarize(scored));
+  if(!scored.length){summary.accuracy=null;summary.macroF1=null;}
+  if(!summary.negativeCases)summary.falseActionRate=null;
+  return {...summary,requests:items.length,errors:items.length-scored.length,confusion:confusion(scored)};
+ };
+ return {...metrics(rows),groups:Object.fromEntries([...new Set(rows.map(r=>r.group))].map(group=>[group,metrics(rows.filter(r=>r.group===group))]))};
+}
 export const toExpected=item=>item.expected!==undefined?item.expected:(item.label==='none'?null:item.label);
 
 // ---------- cross-validation ----------

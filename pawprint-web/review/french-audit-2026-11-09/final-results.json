@@ -1,0 +1,278 @@
+{
+  "notice": "Synthetic inputs with hypothetical model action; not real AI, human blind testing or an estimate of real-world error.",
+  "datasetSha256": "4da1dcc250a067b8ff3d3badb02b6efa8e4ebecde9f93fe48e33d6a1adcd227f",
+  "sourceHashes": {
+    "server/action-guard.mjs": "08357d622cf2210ead8ab2047a900f5eab65965f935fff2d75a61a0fdafd8815",
+    "server/action-intent.mjs": "0506865decd27aabdae98dd49be48fdade3849459ce5bd4d75e578711973f836",
+    "src/commands.js": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e",
+    "src/immediate-stop.js": "abc6d22fde625e093bcf8a6219df58db5b50dad91df39bd35a2d7fabf62dd868"
+  },
+  "cases": [
+    {
+      "id": "h01",
+      "text": "Saute au paragraphe suivant du rapport.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "kind": "metaphor",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "h02",
+      "text": "Saute sur le tapis devant toi.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        "jump"
+      ],
+      "kind": "direct",
+      "recognized": "jump",
+      "actual": "jump",
+      "match": true
+    },
+    {
+      "id": "h03",
+      "text": "Arrête de faire du bruit, s'il te plaît.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "nonphysical",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "h04",
+      "text": "Arrête de bouger tes pattes, s'il te plaît.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "h05",
+      "text": "Ne bouge plus du tout.",
+      "state": "running",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "h06",
+      "text": "Peux-tu cesser de courir ?",
+      "state": "running",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "h07",
+      "text": "Ne cesse pas de marcher.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "negation",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "h08",
+      "text": "Ne saute pas à la conclusion.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "kind": "metaphor",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "h09",
+      "text": "Saute d'abord puis reste immobile.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "multiple",
+      "note": "Project stop-priority convention; does not preserve requested sequence.",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "h10",
+      "text": "À midi, j'ai un cours d'anglais.",
+      "state": "idle",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "kind": "homonym",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "h11",
+      "text": "Demande à mon frère de courir.",
+      "state": "idle",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "kind": "other-subject",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "h12",
+      "text": "Mon amie a dit que tu devrais t'arrêter.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "reported",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "h13",
+      "text": "Tu veux venir tout près de moi ?",
+      "state": "idle",
+      "modelAction": "come",
+      "allowed": [
+        "come"
+      ],
+      "kind": "direct",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "h14",
+      "text": "Ne cours pas, remue ta queue.",
+      "state": "idle",
+      "modelAction": "wag",
+      "allowed": [
+        "wag"
+      ],
+      "kind": "negation",
+      "recognized": "wag",
+      "actual": "wag",
+      "match": true
+    },
+    {
+      "id": "h15",
+      "text": "Je me souviens de nos promenades au parc.",
+      "state": "idle",
+      "modelAction": "walk",
+      "allowed": [
+        null
+      ],
+      "kind": "memory",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "h16",
+      "text": "Tu peux te calmer ?",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null,
+        "stop"
+      ],
+      "kind": "ambiguous",
+      "note": "Could imply physical stopping or emotional quiet; human adjudication.",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "h17",
+      "text": "Ne marche pas, ne bouge plus.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "h18",
+      "text": "Avance lentement vers moi.",
+      "state": "idle",
+      "modelAction": "come",
+      "allowed": [
+        "come",
+        "walk"
+      ],
+      "kind": "direct",
+      "note": "Walk/approach distinction requires human judgment.",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "h19",
+      "text": "Arrête-toi et reviens près de moi.",
+      "state": "walking",
+      "modelAction": "come",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "multiple",
+      "note": "Stop priority reflects product convention, not complete sequential compliance.",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "h20",
+      "text": "Est-ce que courir lui faisait plaisir ?",
+      "state": "idle",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "kind": "question",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    }
+  ]
+}

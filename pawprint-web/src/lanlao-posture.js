@@ -1,4 +1,5 @@
 import {MathUtils, Quaternion, Vector3} from 'three';
+import {lanlaoGallopCollectionPhase} from './lanlao-gait-timing.js';
 import {sampleLanlaoJump} from './lanlao-jump.js';
 
 const poses = ['stand', 'sit', 'lie'];
@@ -9,6 +10,7 @@ const smooth = value => {
 const progressBetween = (value, from, to) => smooth((value - from) / (to - from));
 const sagittalAxis = new Vector3(0, 0, 1);
 const verticalAxis = new Vector3(0, 1, 0);
+const rollAxis = new Vector3(1, 0, 0);
 
 export function createLanlaoPosture(model) {
  const modelOrientation = new Quaternion();
@@ -55,6 +57,7 @@ export function createLanlaoPosture(model) {
  const chest = record('Chest');
  const pelvis = record('Pelvis');
  const tail = record('Tail_Base');
+ const tailTip = record('Tail_Tip');
  const head = record('Head');
  const legs = ['Front_L', 'Front_R', 'Hind_L', 'Hind_R'].map(name => {
   const upper = record(name + '_Upper');
@@ -75,6 +78,9 @@ export function createLanlaoPosture(model) {
  const affected = [body, chest, pelvis, tail, ...legBones];
  const bowBones = [...affected, head];
  const wagBones = [body, chest, pelvis, ...legBones];
+ const happyWagBones = [...wagBones, tail, tailTip];
+ const tailRest = tail.bone.quaternion.clone();
+ const tailTipRest = tailTip.bone.quaternion.clone();
  const wagPaws = legs.map(() => new Vector3());
  const pelvisUp = verticalAxis.clone().applyQuaternion(pelvis.bindOrientation.clone().invert());
  const pelvisBindInverse = pelvis.bone.quaternion.clone().invert();
@@ -194,13 +200,68 @@ export function createLanlaoPosture(model) {
    const next = poses.indexOf(pose);
    if (next >= 0) goal = next;
   },
-  applyGaitContacts(targets) {
-   if (!targets.some(Boolean)) return;
-   savePose(legBones);
+  applyLocomotion({phase,walk,trot,gallop,amount,turn,lean,feet,toes}) {
+   savePose(bowBones);
+   const cycle=phase*Math.PI*2;
+   const fold=Math.cos(cycle-Math.PI*2*lanlaoGallopCollectionPhase)*gallop*amount;
+   const bounce=amount*(-.020*walk-.035*(trot+gallop)+walk*.003*Math.cos(cycle*2)
+    +trot*.009*Math.cos(cycle*2)+gallop*(.010+.022*Math.cos(cycle*2-Math.PI*4*lanlaoGallopCollectionPhase)));
+   const pitch=.035*gallop*amount*Math.sin(cycle-Math.PI*2*lanlaoGallopCollectionPhase);
+   trunk(body,0,bounce,pitch*.4);
+   trunk(chest,.022*fold,bounce-.007*fold-(.050*gallop+.015*Math.abs(turn))*amount,.10*fold+pitch);
+   trunk(pelvis,-.022*fold,bounce+.007*fold-.012*Math.abs(turn)*amount,-.10*fold+pitch*.6);
+   // The neck travels with the shoulders. Holding the head at its standing
+   // height while lowering the chest stretched the shoulder/neck coat.
+   trunk(head,.022*fold-.018*gallop*amount,bounce-.007*fold-(.038*gallop+.010*Math.abs(turn))*amount,.035*fold+.07*gallop*amount);
+   for(const [part,yaw,roll] of [[body,0,1],[chest,.025,1],[pelvis,-.018,.7],[head,.06,.25]]){
+    part.bone.getWorldQuaternion(wagOrientation).premultiply(parentOrientation.copy(modelOrientation).invert());
+    rotation.setFromAxisAngle(verticalAxis,turn*yaw).multiply(wagOrientation);
+    orient(part,wagRotation.setFromAxisAngle(rollAxis,lean*roll).multiply(rotation));
+   }
+   // Let the shoulder/hip yield slightly before a leg reaches its straight-
+   // knee singularity. This preserves the paw target without a knee snap.
+   for(const [part,start] of [[chest,0],[pelvis,2]]){
+    let drop=0;
+    for(let i=start;i<start+2;i++){
+     const leg=legs[i];inModel(leg.upper.bone,hip);
+     const reach=(leg.upperLength+leg.lowerLength)*(leg.front?.975:.95);
+     const lateral=(hip.x-feet[i].x)**2+(hip.z-feet[i].z)**2;
+     drop=Math.max(drop,hip.y-feet[i].y-Math.sqrt(Math.max(0,reach*reach-lateral)));
+    }
+    if(drop>0){inModel(part.bone,desired);desired.y-=Math.min(start===2?.065:.04,drop);place(part,desired);}
+   }
+   rotation.setFromAxisAngle(sagittalAxis,-.08*fold).multiply(tail.bindOrientation);
+   orient(tail,rotation.premultiply(wagRotation.setFromAxisAngle(verticalAxis,-turn*.07)));
+   for(const [i,leg] of legs.entries()){
+    target.copy(feet[i]);plant(leg);
+    rotation.setFromAxisAngle(sagittalAxis,toes[i]).multiply(leg.paw.bindOrientation);
+    orient(leg.paw,rotation);
+   }
+  },
+  applyGaitContacts(targets, {turnRate=0,speed=0,weight=1}={}) {
+   const bend=MathUtils.clamp(turnRate*speed*weight,-.8,.8);
+   const turning=Math.abs(bend)>.00001;
+   if (!targets.some(Boolean)&&!turning) return;
+   savePose(turning?wagBones:legBones);
+   // Keep the clip's paw positions while the torso leans into the curve.
+   // IK then lets the shoulders/hips move over those contacts, not drag them.
+   if(turning){
+    for(const [i,leg] of legs.entries()){
+     inModel(leg.paw.bone,wagPaws[i]);
+     leg.startOrientation=leg.paw.bone.getWorldQuaternion(leg.startOrientation??new Quaternion())
+      .premultiply(parentOrientation.copy(modelOrientation).invert());
+    }
+    for(const [part,yaw,roll] of [[body,0,.010],[chest,.016,.010],[pelvis,-.008,.006]]){
+     part.bone.getWorldQuaternion(wagOrientation).premultiply(parentOrientation.copy(modelOrientation).invert());
+     rotation.setFromAxisAngle(verticalAxis,bend*yaw).multiply(wagOrientation);
+     wagRotation.setFromAxisAngle(rollAxis,bend*roll).multiply(rotation);
+     orient(part,wagRotation);
+    }
+   }
    for (let i = 0; i < legs.length; i++) {
     if (!targets[i]) continue;
     const leg = legs[i];
-    leg.startOrientation = leg.paw.bone.getWorldQuaternion(leg.startOrientation ?? new Quaternion())
+    if(!turning)leg.startOrientation = leg.paw.bone.getWorldQuaternion(leg.startOrientation ?? new Quaternion())
      .premultiply(parentOrientation.copy(modelOrientation).invert());
     target.copy(targets[i]);
     plant(leg, 0);
@@ -273,9 +334,8 @@ export function createLanlaoPosture(model) {
    // Follow the clip's existing hip rhythm, including the mixer's fades.
    wagRotation.copy(pelvisBindInverse).multiply(pelvis.bone.quaternion);
    const lateral = wagRotation.x * pelvisUp.x + wagRotation.y * pelvisUp.y + wagRotation.z * pelvisUp.z;
-   const swing = MathUtils.clamp(2 * Math.atan2(lateral, wagRotation.w), -.045, .045);
-   if (Math.abs(swing) < .0001) return;
-   savePose(wagBones);
+   const swing = MathUtils.clamp(2 * Math.atan2(lateral, wagRotation.w) * 2.8, -.085, .085);
+   savePose(happyWagBones);
    for (let i = 0; i < legs.length; i++) {
     const leg = legs[i];
     inModel(leg.paw.bone, wagPaws[i]);
@@ -283,7 +343,11 @@ export function createLanlaoPosture(model) {
      .premultiply(parentOrientation.copy(modelOrientation).invert());
    }
 
+   // A loose pelvis-led wiggle, absorbed by the legs. The authored clip supplies
+   // the rhythm and fade, so wider tail arcs and torso motion cannot drift apart.
+   const soften = .004 * (swing / .085) ** 2;
    inModel(body.bone, desired).z -= swing * .12;
+   desired.y -= soften;
    place(body, desired);
    inModel(pelvis.bone, desired).z -= swing * .25;
    place(pelvis, desired);
@@ -292,6 +356,13 @@ export function createLanlaoPosture(model) {
    place(chest, desired);
    chest.bone.getWorldQuaternion(wagOrientation).premultiply(parentOrientation.copy(modelOrientation).invert());
    orient(chest, wagOrientation.premultiply(wagRotation.setFromAxisAngle(verticalAxis, -swing * .35)));
+
+   // Keep the curled tail's natural carriage and delayed tip, enlarging the
+   // existing swing rather than spinning a rigid tail around a different axis.
+   wagRotation.copy(tail.bone.quaternion);
+   tail.bone.quaternion.slerpQuaternions(tailRest, wagRotation, 1.75);
+   wagRotation.copy(tailTip.bone.quaternion);
+   tailTip.bone.quaternion.slerpQuaternions(tailTipRest, wagRotation, 1.5);
 
    // Preserve the authored paw contacts while the legs absorb the weight shift.
    for (let i = 0; i < legs.length; i++) {

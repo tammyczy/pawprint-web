@@ -1,0 +1,33 @@
+.memory-card{margin:8px 0 48px;padding:25px 0 30px;border-top:1px solid #dce1d5;border-bottom:1px solid #dce1d5;color:#233f35}
+.memory-card details{max-width:900px}
+.memory-card summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:5px 22px;cursor:pointer;list-style:none;padding:5px 32px 5px 0;position:relative}
+.memory-card summary::-webkit-details-marker{display:none}
+.memory-card summary::after{content:'+';position:absolute;right:2px;top:0;color:#58715b;font-size:24px;font-weight:400}
+.memory-card details[open] summary::after{content:'−'}
+.memory-title{font-size:22px;font-weight:600;letter-spacing:-.02em;line-height:1.35}
+.memory-sub,.memory-intro,.memory-privacy,.memory-review{color:#536958;font-size:13px;line-height:1.7}
+.memory-content{padding:18px 0 0;max-width:760px}
+.memory-card .memory-intro{margin:0 0 18px}
+.memory-card .memory-label,.memory-card .memory-row-label{display:block;margin:0 0 8px;color:#314b3c;font-size:13px;font-weight:650}
+.memory-card textarea{display:block;box-sizing:border-box;width:100%;min-width:0;resize:vertical;border:1px solid #bac9b9;border-radius:12px;padding:13px 14px;background:#fffef9;color:#233f35;font:inherit;font-size:14px;line-height:1.65}
+.memory-card textarea:focus-visible,.memory-card button:focus-visible,.memory-card input:focus-visible,.memory-card summary:focus-visible{outline:3px solid #a66b4e;outline-offset:3px}
+.memory-card .memory-count{display:block;margin:7px 0 0;color:#667765;font-size:12px}
+.memory-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.memory-card button{min-height:42px;padding:10px 16px;border:1px solid #a6b7a2;border-radius:999px;background:#fffef9;color:#294936;font:inherit;font-size:13px;cursor:pointer}
+.memory-card button:hover:not(:disabled){background:#edf3e9}
+.memory-card button:disabled{opacity:.5;cursor:not-allowed}
+.memory-card .memory-generate{background:#294936;color:#fff;border-color:#294936}
+.memory-card .memory-generate:hover:not(:disabled){background:#3f6549}
+.memory-ai{margin-top:24px;padding-top:20px;border-top:1px solid #dce1d5}
+.memory-card .memory-privacy{margin:0 0 12px}
+.memory-card .memory-consent{display:flex;gap:10px;align-items:flex-start;color:#314b3c;font-size:13px;line-height:1.6;cursor:pointer}
+.memory-consent input{margin:4px 0 0;accent-color:#294936;flex:none}
+.memory-status{min-height:1.6em;margin:10px 0 0;color:#4e6754;font-size:13px;line-height:1.6}
+.memory-result{margin-top:18px;padding-top:20px;border-top:1px solid #dce1d5}
+.memory-card .memory-result h3{font-size:19px;line-height:1.35;letter-spacing:-.02em;margin:0 0 8px}
+.memory-card .memory-review{margin:0 0 17px}
+.memory-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;padding:16px 0;border-top:1px solid #e4e8de}
+.memory-card blockquote{margin:0;padding:2px 0 2px 13px;border-left:2px solid #a1b596;color:#526657;font-size:13px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
+.memory-card [hidden]{display:none!important}
+@media(max-width:760px){.memory-card textarea{font-size:16px}}
+@media(max-width:620px){.memory-card{margin-bottom:34px}.memory-card summary{display:block}.memory-sub{display:block;margin-top:4px}.memory-row{grid-template-columns:1fr;gap:15px}.memory-card button{min-height:44px}}

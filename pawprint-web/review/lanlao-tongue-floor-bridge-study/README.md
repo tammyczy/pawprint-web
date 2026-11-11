@@ -1,0 +1,3 @@
+# Tongue root extension experiment
+
+The shortened tongue is a closed, deformable tube. A rear ring extends the tongue root into the mouth along the jaw, connected to the tongue mesh itself. It does not share vertices with the mouth wall, so it must not be described as a welded oral floor. Front and side renders show no meaningful improvement in the obvious wide black mouth and thin side silhouette. This remains an independent diagnostic, not a user-facing result or a website model; no continuous animation, existing motions, GLB export or browser has been validated. build.py depends on a temporary oral base that must be relocated for reproduction.

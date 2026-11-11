@@ -1,0 +1,14 @@
+{
+  "before": {
+    "maximumTailRotationDegrees": 25.285600256798876,
+    "maximumHipSideShift": 0.010609133157190942,
+    "maximumPawHorizontalDrift": 0.0000013690652254514966,
+    "maximumPawVerticalDrift": 0.0020002368765038303
+  },
+  "after": {
+    "maximumTailRotationDegrees": 44.249831623452266,
+    "maximumHipSideShift": 0.026774592128569745,
+    "maximumPawHorizontalDrift": 0.0000013685516581985387,
+    "maximumPawVerticalDrift": 0.0020002381126538737
+  }
+}

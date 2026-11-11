@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "runId": "2026-11-09T18-44-18-476Z-60bee6bf",
+  "startedAt": "2026-11-09T18:44:18.487Z",
+  "datasetSha256": "dadb473f7e2330a487c44a92b15a67ebc604e1fc4378d1bcf10ae553dfc0e80d",
+  "model": "gpt-5.4-mini",
+  "node": "v24.22.1",
+  "author": "AI-generated synthetic cases, not a human independent blind test",
+  "callsPlanned": 90,
+  "maxAttemptsPerCase": 1,
+  "surface": "direct model adapter, offline rule and server guard; not browser, HTTP, crisis-routing or animation execution",
+  "hashes": {
+    "server/companion-ai.mjs": "bc741c4f971afd746e8d9598686da3b8e7498f447fff13fbaeff79e7d00c9e12",
+    "server/action-guard.mjs": "ef398e16ce8b1646350bbfd2cd2073811bb2504d95a773b026c095b8095cbc89",
+    "server/provider-response.mjs": "336305530165b8b85425f061a3332f44edfa4990a919a5b0acc22039eff0ac15",
+    "src/commands.js": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e",
+    "review/frozen-agent-cases-2026-11-09/run.mjs": "976431827270026531fd597178ee5cb519592f69c6ff69eae6dda86f569dc820"
+  }
+}

@@ -1,5 +1,9 @@
-node_modules/
+node_modules
 dist/
 .env
 .data/
 *.log
+.DS_Store
+*.blend[1-9]
+!review/**/tests.log
+!review/**/build.log

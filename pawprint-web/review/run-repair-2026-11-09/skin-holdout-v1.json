@@ -1,0 +1,62 @@
+{
+  "gallop": {
+    "before": {
+      "maximum": 4.850152090619472,
+      "over2": 170
+    },
+    "after": {
+      "maximum": 3.8724108572407947,
+      "over2": 146
+    }
+  },
+  "turn": {
+    "before": {
+      "maximum": 4.760225826486414,
+      "over2": 252
+    },
+    "after": {
+      "maximum": 4.087244432875009,
+      "over2": 226
+    }
+  },
+  "transition": {
+    "before": {
+      "maximum": 4.427863560231367,
+      "over2": 168
+    },
+    "after": {
+      "maximum": 3.640960224263812,
+      "over2": 166
+    }
+  },
+  "brake": {
+    "before": {
+      "maximum": 4.850152090619472,
+      "over2": 170
+    },
+    "after": {
+      "maximum": 3.8724108572407947,
+      "over2": 146
+    }
+  },
+  "sit": {
+    "before": {
+      "maximum": 2.4722881640998207,
+      "over2": 316
+    },
+    "after": {
+      "maximum": 2.2629384650131654,
+      "over2": 28
+    }
+  },
+  "lie": {
+    "before": {
+      "maximum": 3.487551963466448,
+      "over2": 522
+    },
+    "after": {
+      "maximum": 3.4246895944659523,
+      "over2": 348
+    }
+  }
+}

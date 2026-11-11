@@ -1,0 +1,374 @@
+{
+  "notice": "Replay after fixes; input used for debugging; model outputs synthetic",
+  "inputSha256": "e904abc7a8c8edb9db2c2ce07bded226413476ccab490799b52fa8f466554a4f",
+  "sourceHashes": {
+    "server/action-guard.mjs": "d88ab1f890d2f4b61b9b130dcef2b98429ebf0eb2f13d6fadfcf46d55d3693c5",
+    "server/action-intent.mjs": "f91db40bfa3a26634fb41dee8a3f9e38b0e2e082341e1388020c00c10781de0c",
+    "src/commands.js": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e"
+  },
+  "cases": [
+    {
+      "id": "r1-zh-01",
+      "text": "它刚才快跑了几步，可现在它已经累了。",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-zh-02",
+      "text": "快看，窗外的狗在跳！",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-zh-03",
+      "text": "请停下之后再跑。",
+      "modelAction": "run",
+      "allowed": [
+        null,
+        "stop"
+      ],
+      "recognized": "stop",
+      "actual": "stop"
+    },
+    {
+      "id": "r1-zh-04",
+      "text": "现在不要靠近我。",
+      "modelAction": "come",
+      "allowed": [
+        null,
+        "stop"
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-zh-05",
+      "text": "如果蓝老想跑，先休息一下。",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-zh-06",
+      "text": "先走两步，然后停止。",
+      "modelAction": "walk",
+      "allowed": [
+        "stop"
+      ],
+      "recognized": "stop",
+      "actual": "stop"
+    },
+    {
+      "id": "r1-zh-07",
+      "text": "刚才蓝老在跑，现在不要停下来。",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-zh-08",
+      "text": "你能不能别跑，过来陪我？",
+      "modelAction": "come",
+      "allowed": [
+        null,
+        "stop"
+      ],
+      "recognized": "come",
+      "actual": "come"
+    },
+    {
+      "id": "r1-zh-09",
+      "text": "请停止自动续费。",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-zh-10",
+      "text": "今天难过，蓝老，可以摇尾巴给我看吗？",
+      "modelAction": "wag",
+      "allowed": [
+        "wag"
+      ],
+      "recognized": "wag",
+      "actual": "wag"
+    },
+    {
+      "id": "r1-zh-11",
+      "text": "你知道是谁让蓝老跑步的吗？",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-zh-12",
+      "text": "在我的故事里，蓝老听到跑步口令。",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-en-01",
+      "text": "Please stop the background music.",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-en-02",
+      "text": "Stop thinking about the walk.",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-en-03",
+      "text": "Walk me home in the story you are telling.",
+      "modelAction": "walk",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-en-04",
+      "text": "Could you walk through my options?",
+      "modelAction": "walk",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-en-05",
+      "text": "Take a walk in my imagination, not in the scene.",
+      "modelAction": "walk",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-en-06",
+      "text": "Do not stop walking yet.",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-en-07",
+      "text": "Don't walk, but please jump instead.",
+      "modelAction": "jump",
+      "allowed": [
+        "jump"
+      ],
+      "recognized": "jump",
+      "actual": "jump"
+    },
+    {
+      "id": "r1-en-08",
+      "text": "Please walk forward, then stop moving.",
+      "modelAction": "walk",
+      "allowed": [
+        "stop"
+      ],
+      "recognized": "stop",
+      "actual": "stop"
+    },
+    {
+      "id": "r1-en-09",
+      "text": "My brother said: come over!",
+      "modelAction": "come",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-en-10",
+      "text": "I feel lonely. Please wag your tail once.",
+      "modelAction": "wag",
+      "allowed": [
+        "wag"
+      ],
+      "recognized": "wag",
+      "actual": "wag"
+    },
+    {
+      "id": "r1-en-11",
+      "text": "Can you run the idea past me?",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-en-12",
+      "text": "When I mention jumping, tell me what it means.",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-fr-01",
+      "text": "Arrête de parler, s'il te plaît.",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-fr-02",
+      "text": "Arrête la musique, pas tes mouvements.",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-fr-03",
+      "text": "Ne saute pas, marche plutôt.",
+      "modelAction": "walk",
+      "allowed": [
+        "walk"
+      ],
+      "recognized": "walk",
+      "actual": "walk"
+    },
+    {
+      "id": "r1-fr-04",
+      "text": "Peux-tu marcher puis arrêter de bouger ?",
+      "modelAction": "walk",
+      "allowed": [
+        "stop"
+      ],
+      "recognized": "stop",
+      "actual": "stop"
+    },
+    {
+      "id": "r1-fr-05",
+      "text": "La photo montre un chien qui court.",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-fr-06",
+      "text": "Est-ce que tu sais pourquoi mon ami court ?",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-fr-07",
+      "text": "Imagine un chien qui saute dans un livre.",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-fr-08",
+      "text": "Viens me retrouver près de moi, s'il te plaît.",
+      "modelAction": "come",
+      "allowed": [
+        "come"
+      ],
+      "recognized": "come",
+      "actual": "come"
+    },
+    {
+      "id": "r1-fr-09",
+      "text": "Mon amie dit : saute !",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-fr-10",
+      "text": "Quand je te dis marche, que comprends-tu ?",
+      "modelAction": "walk",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-fr-11",
+      "text": "Il court vite, mais moi je préfère rester assis.",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    },
+    {
+      "id": "r1-fr-12",
+      "text": "Raconte-moi le jour où il sautait partout.",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "recognized": null,
+      "actual": null
+    }
+  ]
+}

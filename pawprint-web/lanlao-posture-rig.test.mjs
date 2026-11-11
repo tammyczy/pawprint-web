@@ -5,11 +5,13 @@ import {ALL_EXTENSIONS} from '@gltf-transform/extensions';
 import {MeshoptDecoder} from 'meshoptimizer';
 import {Bone, Group, Matrix4, Vector3, Quaternion} from 'three';
 import {createLanlaoPosture} from './src/lanlao-posture.js';
+import {lanlaoJumpDuration} from './src/lanlao-jump.js';
+import {createLanlaoStepTurn} from './src/lanlao-route.js';
 
 // Exercise the runtime posture code against the same skinned model used by the viewer.
 // Three.js renders JOINTS_0/WEIGHTS_0, normalized to four influences.
 await MeshoptDecoder.ready;
-const file=process.env.LANLAO_RIG_MODEL || 'public/models/lanlao-rig-hip-refined.glb';
+const file=process.env.LANLAO_RIG_MODEL || 'public/models/lanlao-rig-motion-refined.glb';
 const doc=await new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.decoder':MeshoptDecoder}).read(file);
 const skin=doc.getRoot().listSkins()[0], joints=skin.listJoints();
 const primitive=doc.getRoot().listMeshes()[0].listPrimitives()[0];
@@ -49,6 +51,56 @@ function metrics(current){
  return {maxStretch,stretched,minY};
 }
 const initial=Array.from(bones.values()).map(b=>({p:b.position.clone(),q:b.quaternion.clone(),s:b.scale.clone()}));
+test('step turns reposition lifted paws while grounded paws hold their world contacts',()=>{
+ const paws=['Front_L_Paw','Front_R_Paw','Hind_L_Paw','Hind_R_Paw'].map(name=>model.getObjectByName(name));
+ const heights=paws.map(b=>b.getWorldPosition(new Vector3()).y);
+ for(const angle of [-Math.PI,.9,Math.PI]){
+  model.quaternion.identity();
+  const turn=createLanlaoStepTurn(0,angle);
+  let previous=null,done=false;
+  for(let i=0;i<240&&!done;i++){
+   const beat=turn.advance(1/60);done=beat.done;
+   model.quaternion.setFromAxisAngle(new Vector3(0,1,0),beat.yaw);
+   posture.applyGreetingTurn(beat.progress,beat.angle);
+   const points=paws.map(b=>b.getWorldPosition(new Vector3()));
+   points.forEach((p,j)=>{
+    assert(p.y>=heights[j]-.002,'turn paw penetrated ground');
+    if(previous){
+     assert(p.distanceTo(previous[j])<.03,'turn paw jumped');
+     if(p.y<heights[j]+.001&&previous[j].y<heights[j]+.001)
+      assert(p.distanceTo(previous[j])<.003,'grounded turn paw slid');
+    }
+   });
+   previous=points;
+   posture.restore();
+  }
+  assert(done);
+ }
+ model.quaternion.identity();
+});
+test('small jump keeps support paws grounded and returns the real rig to its bind pose',()=>{
+ const paws=['Front_L_Paw','Front_R_Paw','Hind_L_Paw','Hind_R_Paw'].map(name=>model.getObjectByName(name));
+ const base=paws.map(b=>b.getWorldPosition(new Vector3()));
+ let previous=null;
+ for(let i=0;i<=Math.ceil(lanlaoJumpDuration*120);i++){
+  const time=i/120;
+  posture.applyJump(time);
+  const points=paws.map(b=>b.getWorldPosition(new Vector3()));
+  if(previous)points.forEach((p,j)=>assert(p.distanceTo(previous[j])<.025,'jump paw snapped'));
+  points.forEach((p,j)=>{
+   assert(p.y>=base[j].y-.002,'jump foot penetrated ground');
+   const support=j<2?(time<=.14||time>=.58):(time<=.34||time>=.64);
+   if(support)assert(p.distanceTo(base[j])<.002,'support paw moved before takeoff / after landing');
+  });
+  previous=points;
+  if(i%4===0)assert(metrics(deformed()).minY>=-.003,'jump mesh penetrated ground');
+  posture.restore();
+ }
+ Array.from(bones.values()).forEach((bone,i)=>{
+  assert(bone.position.distanceTo(initial[i].p)<1e-7);
+  assert(bone.quaternion.equals(initial[i].q));
+ });
+});
 test('sit, lie and stand transitions retain ground contact and limit local stretching',()=>{
  let lastPositions=null;
  for(const [target,maxStretch,maxEdges] of [['sit',2.95,350],['lie',3.85,620],['stand',3.85,620]]){

@@ -59,3 +59,72 @@ html[lang=zh-CN] .shell h2,html[lang=zh-CN] #app h2{font-size:30px;line-height:1
   .landing .hero-art{position:relative;width:100%;height:390px;object-position:72% center}
   .landing .hero-overlay{display:none}
 }
+@media(max-width:760px){
+ #app #command-form input,
+ .pet-page .shell .chat-form input:not([type=checkbox]):not([type=file]){font-size:16px}
+}
+
+/* Keep Lanlao's replies in their own row, leaving the whole model unobstructed. */
+#app .stage{display:grid;height:550px;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(86px,auto)}
+#app #canvas-wrap{position:relative;inset:auto;grid-area:1/1;min-width:0;min-height:0}
+#app .stage-top,#app .stage-foot{position:relative;inset:auto;grid-area:1/1;margin:23px 24px;pointer-events:none}
+#app .stage-top{align-self:start}
+#app .stage-foot{align-self:end}
+#app .stage-top button,#app .stage-foot button{pointer-events:auto}
+#app #dog-speech{position:relative;inset:auto;grid-area:2/1;transform:none!important;width:auto;max-width:none;max-height:160px;overflow-y:auto;pointer-events:auto;margin:0;padding:14px 24px;border:0;border-top:1px solid #dce5da;border-radius:0;background:#fffdf7;color:#244a36;box-shadow:none}
+#app #dog-speech::after{display:none}
+#app #dog-speech .dog-speech-name{margin-bottom:4px;letter-spacing:.08em}
+#app #dog-speech .dog-speech-text{font-size:14px;line-height:1.6}
+@media(max-width:760px){
+ #app .stage{height:410px}
+ #app .stage-top,#app .stage-foot{margin:18px}
+ #app #dog-speech{padding:12px 18px}
+}
+
+/* One interaction workspace: see the pet while choosing a movement. */
+#app header{height:72px}
+#app main{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(300px,1fr);gap:24px;padding:24px 0;align-items:start}
+#app .intro{grid-column:1/-1;max-width:none;width:100%;padding:0;display:flex;align-items:center;gap:28px}
+#app .intro h1{font-size:44px;line-height:1.1;margin:0;flex-shrink:0}
+#app .intro>p{margin:0;max-width:480px;font-size:12px;line-height:1.7}
+#app .stage{position:sticky;top:16px;margin:0;height:min(610px,calc(100svh - 180px));min-height:390px}
+#app .controls{padding:0;min-width:0}
+#app .controls-heading{display:block}
+#app .controls-heading h2{font-size:26px;margin:0 0 16px;line-height:1.2}
+#app #reply{display:none}
+#app .commands{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#app .commands button{min-height:48px;padding:12px;display:flex;flex-direction:row;align-items:center;gap:10px}
+#app .commands button>svg{width:18px;height:18px;margin:0;flex-shrink:0}
+#app .commands button>span{height:auto;font-size:12px}
+#app .commands small{display:none}
+#app .chat-sim-note{display:block;font-size:10px;line-height:1.5;color:#526750;margin:10px 0}
+#app #command-form{display:block;margin-top:16px;padding:0;background:none;border:0}
+#app #command-form label{display:block;margin-bottom:8px}
+#app #command-form>div{width:100%;max-width:none}
+#app #command-form input{font-size:16px}
+#app #send{min-height:44px}
+#app .controls .voice-box{margin-top:16px;gap:8px}
+#app .controls #mic{min-width:0;width:100%;padding:13px 16px}
+#app #voice-status{margin:0}
+#app .controls .privacy{margin:10px 0;font-size:10px;line-height:1.6}
+#app .controls .experience-settings{margin-top:12px;padding:12px 0}
+#support-actions{display:flex;flex-wrap:wrap;align-items:start;gap:12px;padding:18px 0;border-top:1px solid #dce1d5}
+@media(max-width:760px){
+ #app header{height:64px}
+ #app main{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;padding:16px 0}
+ #app .intro{display:block}
+ #app .intro h1{font-size:32px;margin:0}
+ #app .intro>p{display:none}
+ #app .stage{top:0;z-index:4;height:38svh;min-height:260px;max-height:370px;grid-template-rows:minmax(0,1fr) minmax(64px,auto)}
+ #app .stage-top,#app .stage-foot{margin:10px}
+ #app .stage-top>span:first-child{font-size:9px;letter-spacing:0}
+ #app .stage-top #state{display:none}
+ #app .stage-foot>span{display:none}
+ #app .stage-foot{justify-content:flex-end}
+ #app #dog-speech{padding:10px 14px;max-height:100px}
+ #app #dog-speech .dog-speech-name{display:none}
+ #app .controls-heading h2{font-size:22px;margin-bottom:12px}
+ #app .commands{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ #app .commands button{flex-direction:column;gap:5px;padding:8px 3px;min-height:60px;justify-content:center;text-align:center}
+ #app .commands button>span{font-size:11px}
+}

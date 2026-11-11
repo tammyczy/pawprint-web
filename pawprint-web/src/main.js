@@ -1,7 +1,9 @@
+import {clearSubmittedInput} from './input-completion.js';
 import './style.css';
 import './speech.css';
 import './i18n.css';
 import './app-polish.css';
+import './memory-card.css';
 import {createIcons,PawPrint,ArrowUpRight,Mic,Hand,Footprints,Zap,Waves,Rabbit,CircleStop,RotateCcw,ArrowDownRight,ArrowDownToLine,ArrowUpFromLine} from 'lucide';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -10,27 +12,43 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { respond } from './companion.js';
 import { createAIChat } from './ai-chat.js';
 import { createConversationStatus } from './conversation-status.js';
-import { createVoicePanel } from './voice-ui.js';
+import {directPetCommand} from './direct-pet-command.js';
+import {recognitionStatus,bindRecognitionErrors,createRecognitionWatchdog} from './recognition-status.js';
 import { createWebFur } from './web-fur.js';
 import {softenLanlaoEarColor} from './lanlao-ear-color.js';
 import {initI18n,tr,locale} from './i18n.js';
-import {createCare} from './care.js';
+import {createCare,detectDistress} from './care.js';
+import {isImmediateStop} from './immediate-stop.js';
+import {createMemoryCard} from './memory-card.js';
+import {loadWithIdleTimeout} from './pet-load-timeout.js';
+import {createLanlaoViewerFailure,guardLanlaoInput} from './lanlao-viewer-failure.js';
 import {createLanlaoIdle} from './lanlao-idle.js';
 import {createLanlaoBlink} from './lanlao-blink.js';
 import {createLanlaoPosture} from './lanlao-posture.js';
 import {lanlaoJumpDuration} from './lanlao-jump.js';
-import {createLanlaoLocomotion} from './lanlao-locomotion.js';
-import {createLanlaoGaitContacts} from './lanlao-gait-contacts.js';
+import {createLanlaoLocomotion,LANLAO_TURN_RATE_LIMIT} from './lanlao-locomotion.js';
+import {createLanlaoAutonomy} from './lanlao-autonomy.js';
+import {createLanlaoRoamingArea} from './lanlao-roaming-area.js';
+import {createLanlaoStride} from './lanlao-stride.js';
+import {planLanlaoRequestedTravel} from './lanlao-travel-view.js';
+import {planLanlaoApproach,LANLAO_APPROACH_FOCUS_HEIGHT} from './lanlao-approach.js';
 import {createLanlaoAttention,createLanlaoGreeting} from './lanlao-attention.js';
 import {createLanlaoExpression} from './lanlao-expression.js';
-import {createLanlaoPetting} from './lanlao-petting.js';
+import {createLanlaoPetting,createPettingRequest} from './lanlao-petting.js';
 import {parseCommand} from './commands.js';
 
 const webFurMode=new URLSearchParams(location.search).get('fur')==='web';
-let webFur, idle, eyelids, posture, gaitContacts, expression, petBody;
+let webFur, idle, eyelids, posture, stride, expression, petBody;
 const attention=createLanlaoAttention();
 const greeting=createLanlaoGreeting(attention);
-let queuedMove=null, brakingCommand=null, gaitSettle=0, quietTime=0, nextActivity=2.1, automaticRest=false;
+let queuedMove=null, brakingCommand=null, gaitSettle=0, quietTime=0, nextActivity=7+Math.random()*5, automaticRest=false;
+const autonomy=createLanlaoAutonomy(Math.random,()=>createLanlaoRoamingArea(camera));
+let autonomousPace=1;
+let activeRoute=null,onwardTravel=null,queuedMoveDelay=0;
+let travelViewTarget=null,travelFocusTarget=null,pendingTravelStart=null,approachView=false,approachCameraMove=null,closeGreetingTime=0;
+const normalViewTarget=new THREE.Vector3(0,.43,0),approachFocus=new THREE.Vector3();
+let pendingQuietActivity=null;
+let quietRestDuration=null;
 let playCount=0, gestureTime=0, gestureDepth=0, gestureLook=0, gestureExit=null;
 let greetingPhase='look', greetingLandingAge, greetingPlayful=false;
 let greetingQueued=false, peelSide=1, landingCommand=null;
@@ -42,13 +60,14 @@ const autonomousGaits=new Set(['explore','dash','approach','peel']);
 const movingCommands=new Set(['come','home','walk','run']);
 const isAutonomousGait=()=>autonomousGaits.has(mode);
 const isLocomoting=()=>movingCommands.has(mode)||isAutonomousGait();
+const facingYaw=()=>Math.atan2(2*dog.quaternion.w*dog.quaternion.y,1-2*dog.quaternion.y**2);
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
 let stageVisible=false, stageWidth=0, stageHeight=0, bubbleHeight=0;
 let pettingTime=0, petHoverTime=0, petHover=false, petHoverTriggered=false, lastPetHit=0, petMesh, petSide=0;
 
-const $=s=>document.querySelector(s), wrap=$('#canvas-wrap');
+const $=s=>document.querySelector(s), wrap=$('#canvas-wrap'),stage=wrap.closest('.stage');
 new IntersectionObserver(([entry])=>{stageVisible=entry.isIntersecting;}).observe(wrap);
-const state=$('#state'),reply=$('#reply'),mic=$('#mic'),greetButton=$('#greet-lanlao');
+const state=$('#state'),reply=$('#reply'),mic=$('#mic'),greetButton=$('#greet-lanlao'),petButton=$('#pet-lanlao');
 const bubble=document.createElement('div');bubble.id='dog-speech';bubble.hidden=true;bubble.setAttribute('role','status');bubble.setAttribute('aria-live','polite');
 const bubbleName=document.createElement('span');bubbleName.className='dog-speech-name';bubbleName.textContent='Lanlao';
 const bubbleText=document.createElement('div');bubbleText.className='dog-speech-text';bubbleText.textContent='I’m here! Say hello.';bubble.append(bubbleName,bubbleText);document.querySelector('.stage').append(bubble);
@@ -68,17 +87,31 @@ if(webFurMode){
 const settingsContent=document.querySelector('.settings-content');
 const dialogueNote=document.createElement('small');dialogueNote.textContent='Checking AI conversation…';dialogueNote.style.display='block';document.querySelector('.voice-box').append(dialogueNote);
 const conversationStatus=createConversationStatus();
-const renderConversationStatus=()=>{dialogueNote.textContent=tr(conversationStatus.key);};
+let conversationNeedsLogin=false;
+const renderConversationStatus=()=>{
+ dialogueNote.textContent=tr(conversationStatus.key);
+ if(conversationNeedsLogin&&conversationStatus.key==='conversationUnavailable'){
+  const link=document.createElement('a');
+  link.href=`/studio.html?lang=${locale()}`;
+  link.textContent=tr('conversationLogin');
+  dialogueNote.replaceChildren(link);
+ }
+};
 fetch('/api/health',{signal:AbortSignal.timeout(8000)}).then(r=>{if(!r.ok)throw new Error('Health check failed');return r.json();}).then(data=>{conversationStatus.health(data.conversation==='openai');renderConversationStatus();voicePlayback.setAvailable(data.speech==='openai');}).catch(()=>{conversationStatus.healthFailed();renderConversationStatus();voicePlayback.setAvailable(false);});
 const languageLabel=document.createElement('label');languageLabel.textContent='Speech language ';const languageSelect=document.createElement('select');for(const [value,label] of [['en-US','English'],['zh-CN','中文'],['fr-FR','Français'],['es-ES','Español'],['de-DE','Deutsch'],['ja-JP','日本語'],['ko-KR','한국어']]){const option=document.createElement('option');option.value=value;option.textContent=label;languageSelect.append(option);}languageLabel.append(languageSelect);document.querySelector('.voice-box').append(languageLabel);
-settingsContent.append(languageLabel);
-const voicePlayback=createVoicePanel({container:settingsContent,locale,beforeSpeak:()=>recognition?.abort()});
+const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+let recognition,voiceErrorCode=Recognition?null:'unsupported';
+// Lanlao responds through movement; no human-sounding narration on this page.
+const voicePlayback={stop(){},render(){},setAvailable(){},speak(){}};
 let ready=false;
 const voiceLocales={zh:'zh-CN',en:'en-US',fr:'fr-FR'};
 const lucideIcons={PawPrint,ArrowUpRight,Mic,Hand,Footprints,Zap,Waves,Rabbit,CircleStop,RotateCcw,ArrowDownRight,ArrowDownToLine,ArrowUpFromLine};
 const renderIcons=()=>createIcons({icons:lucideIcons,attrs:{'stroke-width':1.7}});
-const care=createCare({locale,petName:()=>tr('brand'),petKey:'lanlao',controls:document.querySelector('.controls'),stage:document.querySelector('.stage'),onGoodbye:line=>{if(!ready)return;voicePlayback.stop();execute('wag',true);setTimeout(()=>execute('home',true),2600);reply.textContent=`${tr('brand')}: ${line}`;}});
-initI18n('home',()=>{care.render();languageSelect.value=voiceLocales[locale()];languageLabel.firstChild.textContent=tr('speechLanguage');voicePlayback.render();renderConversationStatus();const studioText=[...studioLink.childNodes].find(n=>n.nodeType===Node.TEXT_NODE);if(studioText)studioText.textContent=tr('createPet')+' ';else studioLink.prepend(document.createTextNode(tr('createPet')+' '));furLink.textContent=tr(webFurMode?'furBack':'furTry');bubbleName.textContent=tr('brand');if(ready){state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: ${tr('hello')}`;}for(const button of document.querySelectorAll('[data-command]')){const label=button.querySelector('span');if(label)label.textContent=tr(button.dataset.command);const hint=button.querySelector('small');if(hint)hint.textContent=tr(`hint_${button.dataset.command}`);}renderIcons();});
+const care=createCare({locale,petName:()=>tr('brand'),petKey:'lanlao',controls:document.querySelector('#support-actions'),stage:document.querySelector('.stage'),onGoodbye:line=>{if(!ready)return;commandVersion++;cancelPending();const version=commandVersion;voicePlayback.stop();execute('wag',true);setTimeout(()=>{if(ready&&version===commandVersion)execute('home',true);},2600);reply.textContent=`${tr('brand')}: ${line}`;conversationStatus.local();renderConversationStatus();}});
+const memoryCard=createMemoryCard({container:document.querySelector('#memory-card'),locale});
+const viewerFailure=createLanlaoViewerFailure({loading:$('#loading'),state,locale,reload:()=>location.reload(),document});
+function fail(code){ready=false;greetButton.disabled=true;petButton.disabled=true;mic.disabled=true;document.querySelectorAll('[data-command],#send').forEach(button=>button.disabled=true);bubble.hidden=true;viewerFailure.show(code);}
+initI18n('home',()=>{care.render();memoryCard.render();languageSelect.value=voiceLocales[locale()];languageLabel.firstChild.textContent=tr('speechLanguage');voicePlayback.render();renderConversationStatus();if(voiceErrorCode)$('#voice-status').textContent=recognitionStatus(voiceErrorCode,locale());const studioText=[...studioLink.childNodes].find(n=>n.nodeType===Node.TEXT_NODE);if(studioText)studioText.textContent=tr('createPet')+' ';else studioLink.prepend(document.createTextNode(tr('createPet')+' '));furLink.textContent=tr(webFurMode?'furBack':'furTry');bubbleName.textContent=tr('brand');if(ready){state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: Hi, Josh.`;}for(const button of document.querySelectorAll('[data-command]')){const label=button.querySelector('span');if(label)label.textContent=tr(button.dataset.command);const hint=button.querySelector('small');if(hint)hint.textContent=tr(`hint_${button.dataset.command}`);}renderIcons();viewerFailure.render();});
 let renderer,mixer,model,activeAction,finishedAction,mode='stop',destination=null;
 const actions={},rest=[],morphWeights=[],home=new THREE.Vector3(0,0,0);
 const scene=new THREE.Scene();scene.background=new THREE.Color('#e8e9df');
@@ -86,13 +119,23 @@ const camera=new THREE.PerspectiveCamera(35,1,.05,50);
 // The rig faces -X. Start closer to its front so looking at the viewer takes a small turn.
 camera.position.set(-2.33,1.02,2.16);
 try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});}
-catch(e){$('#loading').innerHTML='<b>This browser cannot display 3D right now.</b><span>Enable hardware acceleration or try a browser with WebGL support.</span>';throw e;}
+catch(e){fail('webgl');throw e;}
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;
 renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
 wrap.append(renderer.domElement);
+let contextLost=false,stopRenderActivity=()=>{};
+renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();contextLost=true;renderer.setAnimationLoop(null);stopRenderActivity();fail('context');});
 const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,.43,0);controls.enableDamping=true;controls.enablePan=false;controls.minDistance=1.5;controls.maxDistance=5;controls.maxPolarAngle=Math.PI/2-.04;
-controls.saveState();$('#reset-view').onclick=()=>{attention.disengage();controls.reset();};
+controls.saveState();$('#reset-view').onclick=()=>{attention.disengage();approachView=false;approachCameraMove=null;controls.reset();};
+controls.addEventListener('start',()=>{approachView=false;approachCameraMove=null;});
 greetButton.onclick=()=>engageViewer('button');
+petButton.onclick=createPettingRequest({
+ getState:()=>({ready,visible:stageVisible,mode,postureReady:posture?.ready,queuedMove,gaitSettle}),
+ onWait:()=>{state.textContent=tr('petWait');},
+ // The existing expression and torso controllers already honour reduced motion.
+ // Repeated deliberate presses extend the same gentle response, without stacking it.
+ onPet:duration=>{attention.disengage();petSide=0;pettingTime=duration;quietTime=0;nextActivity=3;state.textContent=tr('petting');}
+});
 const canvas=renderer.domElement;
 const petRaycaster=new THREE.Raycaster();
 const petPointer=new THREE.Vector2();
@@ -154,7 +197,7 @@ function engageViewer(source){
  if(reducedMotion.matches){
   if(source==='canvas'||source==='button'){
    bubble.hidden=false;
-   reply.textContent=`${tr('brand')}: ${tr('hello')}`;
+   reply.textContent=`${tr('brand')}: Hi, Josh.`;
   }
   return;
  }
@@ -164,11 +207,14 @@ function engageViewer(source){
 scene.add(new THREE.HemisphereLight(0xfffaf2,0xb1afa3,2.4));
 const sun=new THREE.DirectionalLight(0xfff7ea,2.1);sun.position.set(-3,5,3);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-3;sun.shadow.camera.right=3;sun.shadow.camera.top=3;sun.shadow.camera.bottom=-3;sun.shadow.normalBias=.025;scene.add(sun);
 const fill=new THREE.DirectionalLight(0xffffff,1.5);fill.position.set(3,2,-2);scene.add(fill);
+const faceFill=new THREE.DirectionalLight(0xffffff,.35);faceFill.position.set(-4,1.4,2.2);faceFill.target.position.set(-.3,.7,0);scene.add(faceFill,faceFill.target);
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:'#e8e9df',roughness:1}));ground.rotation.x=-Math.PI/2;ground.position.y=-.009;ground.receiveShadow=true;scene.add(ground);
 const dog=new THREE.Group();scene.add(dog);
 const locomotion=createLanlaoLocomotion(dog);
-const loader=new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
-loader.load(`${import.meta.env.BASE_URL}models/lanlao-rig-hip-refined.glb`,gltf=>{
+const manager=new THREE.LoadingManager();
+const loader=new GLTFLoader(manager).setMeshoptDecoder(MeshoptDecoder);
+loadWithIdleTimeout({start:(resolve,progress,reject)=>{loader.load(`${import.meta.env.BASE_URL}models/lanlao-rig-motion-refined.glb`,resolve,progress,reject);return ()=>manager.abort();},onProgress:e=>{if(!contextLost&&e.total)$('#progress').textContent=`Loading · ${Math.round(e.loaded/e.total*100)}%`;}}).then(gltf=>{
+ if(contextLost)return;
  model=gltf.scene;dog.add(model);
  model.traverse(o=>{if(o.isSkinnedMesh && !petMesh)petMesh=o;});
  speechHead=model.getObjectByName('Head');
@@ -176,7 +222,7 @@ loader.load(`${import.meta.env.BASE_URL}models/lanlao-rig-hip-refined.glb`,gltf=
  expression=createLanlaoExpression(model);
  petBody=createLanlaoPetting(model);
  posture=createLanlaoPosture(model);
- gaitContacts=createLanlaoGaitContacts(model);
+ stride=createLanlaoStride(model,dog,posture);
  eyelids=createLanlaoBlink(model,`${import.meta.env.BASE_URL}models/lanlao-eye-coat.png`);
  model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=false;o.frustumCulled=false;for(const material of [o.material].flat()){if(material.normalScale)material.normalScale.set(.4,.4);material.metalness=0;material.roughness=1;}}if(o.morphTargetInfluences)morphWeights.push(o.morphTargetInfluences);if(o.isBone)rest.push({o,p:o.position.clone(),q:o.quaternion.clone(),s:o.scale.clone()});});
  mixer=new THREE.AnimationMixer(model);
@@ -185,15 +231,14 @@ loader.load(`${import.meta.env.BASE_URL}models/lanlao-rig-hip-refined.glb`,gltf=
  if(webFurMode){$('#fur-toggle').disabled=webFur.count===0;document.querySelector('footer>span:last-child').textContent='Web fur preview · Original colors and four animations';}
  for(const clip of gltf.animations)actions[clip.name]=mixer.clipAction(clip);
  const required=['Walk_Refined','Run_Trot_Natural','Tail_Wag_Natural'];
- if(required.some(n=>!actions[n])){fail('The model is missing required animations. Please use the included Lanlao GLB.');return;}
+ if(required.some(n=>!actions[n])){fail('animation');return;}
  mixer.addEventListener('finished',e=>{if(e.action===activeAction)finishedAction=e.action;});
- ready=true;greetButton.disabled=false;$('#loading').classList.add('hidden');document.querySelectorAll('[data-command],#send').forEach(b=>b.disabled=false);
- mic.disabled=!Recognition;state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: ${tr('hello')}`;bubble.hidden=false;
-},e=>{if(e.total)$('#progress').textContent=`Loading · ${Math.round(e.loaded/e.total*100)}%`;},()=>fail('The model could not load. Please refresh and check that models/lanlao.glb is present.'));
-function fail(message){$('#loading').innerHTML='';const b=document.createElement('b');b.textContent=message;$('#loading').append(b);state.textContent='Loading failed';}
+ ready=true;greetButton.disabled=false;petButton.disabled=false;$('#loading').classList.add('hidden');document.querySelectorAll('[data-command],#send').forEach(b=>b.disabled=false);
+ mic.disabled=!Recognition;state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: Hi, Josh.`;bubble.hidden=false;
+}).catch(error=>{if(!contextLost)fail(error?.code==='MODEL_LOAD_STALLED'?'timeout':'model');});
 function play(name,once=false){
  const next=actions[name];if(activeAction===next&&next.isRunning())return;
- const previous=activeAction;gaitContacts.reset();next.reset().setEffectiveTimeScale(1).setEffectiveWeight(1);next.setLoop(once?THREE.LoopOnce:THREE.LoopRepeat,once?1:Infinity);next.clampWhenFinished=once;next.play();
+ const previous=activeAction;next.reset().setEffectiveTimeScale(1).setEffectiveWeight(1);next.setLoop(once?THREE.LoopOnce:THREE.LoopRepeat,once?1:Infinity);next.clampWhenFinished=once;next.play();
  if(previous&&previous!==next){
   if(isGaitAction(previous)&&isGaitAction(next)){
    const walkToTrot=next===actions.Run_Trot_Natural;
@@ -210,14 +255,23 @@ function isGaitAction(action){
 }
 function stopGait(){
  locomotion.reset();
- gaitContacts.reset();
+ onwardTravel=null;
+ if(stride.active){
+  posture.beginGaitSettle();posture.restore();stride.stop();
+  mixer.stopAllAction();activeAction=null;return;
+ }
  if(!activeAction)return;
  if(isGaitAction(activeAction)){
   posture.beginGaitSettle();
   posture.restore();
   mixer.stopAllAction();activeAction=null;return;
  }
+ // Capture the widened, planted wag pose before blending back to rest.
+ // Render overlays are normally restored after drawing; omitting this would
+ // drop the tail back to the smaller authored angle on an interrupted wag.
+ if(activeAction===actions.Tail_Wag_Natural&&!reducedMotion.matches)posture.applyTailWag();
  const pose=rest.map(({o})=>[o.position.clone(),o.quaternion.clone(),o.scale.clone()]);
+ posture.restore();
  mixer.stopAllAction();
  activeAction=null;
  rest.forEach(({o},i)=>{
@@ -229,10 +283,45 @@ function startMove(command){
  mode=command;
  if(command==='jump'){
   groundedActionTime=0;
- }else if(command==='come'||command==='home'){
-  destination=command==='home'?home.clone():new THREE.Vector3(camera.position.x,0,camera.position.z).normalize().multiplyScalar(.85);
-  play('Walk_Refined');
- }else play({walk:'Walk_Refined',run:'Run_Trot_Natural',wag:'Tail_Wag_Natural'}[command],command==='wag');
+ }else if(command==='come'){
+  const plan=planLanlaoApproach({camera,position:dog.position});
+  travelViewTarget=null;travelFocusTarget=null;approachView=true;
+  approachCameraMove=plan.cameraPosition?{from:camera.position.clone(),to:plan.cameraPosition,start:dog.position.clone(),distance:plan.advance}:null;
+  prepareTravel({...plan,mode:command,route:null,run:false});
+ }else if(command==='home'){
+  approachView=false;travelFocusTarget=normalViewTarget.clone();
+  prepareTravel({mode:command,destination:home.clone(),route:null,run:false,pace:1});
+ }else if(command==='walk'||command==='run'){
+  const plan=planLanlaoRequestedTravel({camera,target:normalViewTarget,position:dog.position,heading:facingYaw(),run:command==='run'});
+  if(!plan){mode='stop';return false;}
+  const request={...plan.activity,mode:command,run:command==='run'};
+  prepareFramedTravel(plan,request);
+ }else play('Tail_Wag_Natural',true);
+ return true;
+}
+function prepareFramedTravel(plan,request){
+ approachView=false;approachCameraMove=null;
+ if(camera.position.distanceTo(plan.cameraPosition)>.02||controls.target.distanceTo(normalViewTarget)>.02){
+  controls.maxDistance=Math.max(controls.maxDistance,plan.cameraPosition.distanceTo(normalViewTarget));
+  travelViewTarget=plan.cameraPosition;travelFocusTarget=normalViewTarget.clone();pendingTravelStart=request;mode='framing';
+ }else prepareTravel(request);
+}
+function prepareTravel(request){
+ activateTravel(request);
+}
+function activateTravel(request,continuous=false){
+ if(request.mode!=='come')approachView=false;
+ mode=request.mode;destination=request.destination;activeRoute=request.route;
+ autonomousPace=request.pace;
+ const label=request.mode==='dash'?'run':request.mode==='explore'?'walk':request.mode==='approach'?'come':request.mode;
+ state.textContent=tr(`action_${label}`);
+ if(!continuous)locomotion.reset();
+ mixer.stopAllAction();activeAction=null;stride.start();
+ onwardTravel=null;
+ if(activeRoute&&(mode==='walk'||mode==='run')){
+  const next=autonomy.roam(activeRoute.end,request.run,{playful:true,heading:activeRoute.sample(activeRoute.length).yaw,startCurvature:activeRoute.curvature(activeRoute.length)});
+  if(next.route)onwardTravel=next;
+ }
 }
 function updateRestControl(){
  const button=$('#rest-command');
@@ -259,6 +348,10 @@ function announceCommand(command,quiet){
 }
 function execute(command,quiet=false){
  if(!ready)return;
+ pendingTravelStart=null;
+ approachCameraMove=null;
+ closeGreetingTime=0;
+ if(command==='come'){travelViewTarget=null;travelFocusTarget=null;}
  if(!quiet)commandVersion++;
  attention.disengage();
  pettingTime=0;
@@ -273,8 +366,15 @@ function execute(command,quiet=false){
   return;
  }
  bubble.hidden=false;
- automaticRest=false;greetingQueued=false;queuedMove=null;quietTime=0;playCount=0;nextActivity=10;
- if(isLocomoting()&&!movingCommands.has(command)&&!reducedMotion.matches){
+ automaticRest=false;quietRestDuration=null;pendingQuietActivity=null;greetingQueued=false;queuedMove=null;queuedMoveDelay=0;quietTime=0;playCount=0;nextActivity=10;
+ if(isLocomoting()&&!reducedMotion.matches){
+  if(activeRoute&&(command==='walk'||command==='run')){
+   mode=command;autonomousPace=command==='run'?2.4+Math.random()*.3:.95;
+   const plan=planLanlaoRequestedTravel({camera,target:normalViewTarget,position:activeRoute.end,
+    heading:activeRoute.sample(activeRoute.length).yaw,run:command==='run',startCurvature:activeRoute.curvature(activeRoute.length)});
+   if(plan){onwardTravel=plan.activity;if(camera.position.distanceTo(plan.cameraPosition)>.02){controls.maxDistance=Math.max(controls.maxDistance,plan.cameraPosition.distanceTo(normalViewTarget));travelViewTarget=plan.cameraPosition;travelFocusTarget=normalViewTarget.clone();}}
+   brakingCommand=null;announceCommand(command,quiet);return;
+  }
   brakingCommand=command;
   announceCommand(command,quiet);
   return;
@@ -284,35 +384,28 @@ function execute(command,quiet=false){
 function applyCommand(command,quiet){
  brakingCommand=null;
  destination=null;
- if(command==='jump')stopGait();
+ activeRoute=null;
+ if(command==='jump'||stride.active||isGaitAction(activeAction)||(movingCommands.has(command)&&activeAction))stopGait();
  const resting=command==='sit'||command==='lie'||command==='stand'||command==='stop';
  if(resting){
   stopGait();mode='stop';
   posture.set(command==='sit'||command==='lie'?command:'stand');
  }else if(!posture.ready||posture.current!=='stand'||gaitSettle>0){
   posture.set('stand');mode='stop';queuedMove=command;
- }else startMove(command);
+ }else if(startMove(command)===false){
+  announceCommand('stop',quiet);state.textContent=tr('travelNeedsView');return;
+ }
  announceCommand(command,quiet);
 }
 function startAutonomousGait(dash){
- const viewer=dog.worldToLocal(camera.position.clone());
- const turn=Math.abs(viewer.z)>.5?Math.sign(viewer.z):(Math.random()<.5?-1:1);
- const direction=new THREE.Vector3(-1,0,turn*(dash?.55:.36)).applyQuaternion(dog.quaternion).normalize();
- destination=dog.position.clone().addScaledVector(direction,dash?.61:.34);
- if(destination.lengthSq()>.62*.62)destination.setLength(.62);
- if(destination.distanceToSquared(dog.position)<.14*.14)destination.copy(dog.position).lerp(home,.8);
- mode=dash?'dash':'explore';
- state.textContent=tr(dash?'action_run':'findingRestSpot');
- play(dash?'Run_Trot_Natural':'Walk_Refined');
-
+ beginQuietActivity(autonomy.roam(dog.position,dash,{heading:facingYaw()}));
 }
 function startGreetingApproach(){
  const toward=camera.position.clone().sub(dog.position).setY(0).normalize();
- destination=dog.position.clone().addScaledVector(toward,.38).clampLength(0,.61);
- mode='approach';
+ const target=dog.position.clone().addScaledVector(toward,.38).clampLength(0,.61);
  state.textContent=tr('action_come');
- bubble.hidden=true;
- play('Walk_Refined');
+ // Keep the fixed caption visible during idle movements.
+ prepareTravel({mode:'approach',destination:target,route:null,run:false,pace:1.25});
 
 }
 function choosePeelSide(){
@@ -339,7 +432,8 @@ function startPeelAway(){
  const available=-radial+Math.sqrt(Math.max(0,radial*radial+.67*.67-dog.position.lengthSq()));
  destination=dog.position.clone().addScaledVector(forward,THREE.MathUtils.clamp(available,0,greetingPlayful?.29:.22));
  mode='peel';
- play('Walk_Refined');
+ activeRoute=null;onwardTravel=null;locomotion.reset();
+ mixer.stopAllAction();activeAction=null;stride.start();
 
 }
 function animateGroundedAction(dt, canPlay){
@@ -369,22 +463,38 @@ function landApproach(){
 }
 function finishActivity(restHere=false){
  destination=null;
+ activeRoute=null;
  greetingQueued=false;
  mode='stop';
  stopGait();
  if(restHere){
-  automaticRest=true;
-  nextActivity=quietTime+12+Math.random()*5;
-  posture.set('lie');
-  updateRestControl();
-  $('#rest-command').classList.remove('active');
-  $('#rest-command').setAttribute('aria-pressed','false');
-  bubble.hidden=true;
-  state.textContent=tr('action_lie');
+  beginQuietActivity(autonomy.afterTravel());
  }else{
   nextActivity=Math.max(nextActivity,quietTime+4+Math.random()*3);
   state.textContent=tr('stateReady');
  }
+}
+function beginQuietActivity(activity){
+ document.querySelectorAll('[data-command]').forEach(button=>{
+  button.classList.remove('active');button.setAttribute('aria-pressed','false');
+ });
+ if(activity.type==='walk'||activity.type==='run'){
+  const running=activity.type==='run';
+  state.textContent=tr(running?'action_run':'action_walk');
+  const request={...activity,mode:running?'dash':'explore',run:running};
+  if(activity.viewPlan)prepareFramedTravel(activity.viewPlan,request);
+  else prepareTravel(request);
+  return;
+ }
+ mode='stop';
+ destination=null;
+ automaticRest=activity.type!=='stand';
+ posture.set(activity.type);
+ // Start the rest clock only once the sit/lie transition has settled.
+ quietRestDuration=activity.duration;
+ nextActivity=Infinity;
+ updateRestControl();
+ state.textContent=tr(activity.type==='stand'?'stateReady':`action_${activity.type}`);
 }
 function endGesture(command=null){
  if(gestureExit){gestureExit.command=command;return;}
@@ -401,7 +511,7 @@ function popAt(time,start,peak,release,end){
 function startGesture(name){
  mode=name;
  gestureTime=0;gestureDepth=0;gestureLook=0;gestureExit=null;
- bubble.hidden=true;
+ // Keep the fixed caption visible during idle movements.
  if(name==='greeting'){
   greeting.reset();
   greetingPhase='look';greetingPlayful=false;greetingLandingAge=undefined;
@@ -447,8 +557,19 @@ function animateGesture(dt,interrupted){
   posture.applyGreetingPop(gestureDepth,gestureLook*glance+turnIntent*peelSide*.27,gestureLook);
  }else posture.applyPlayBow(gestureDepth,gestureTime,glance);
 }
+function nextQuietActivity(){
+ const activity=autonomy.next(dog.position,{heading:facingYaw()});
+ // A close portrait is deliberately outside the full-body roaming footprint.
+ // A failed departure must not strand the dog in endless standing rests.
+ if(activity.type==='stand'&&approachView&&!createLanlaoRoamingArea(camera).contains(dog.position,.22)){
+  const plan=planLanlaoRequestedTravel({camera,target:normalViewTarget,position:dog.position,heading:facingYaw(),run:false});
+  if(plan)return {...plan.activity,viewPlan:plan};
+ }
+ return activity;
+}
 function updateAutonomy(){
  if(mode!=='stop'||!posture.ready||gaitSettle>0||queuedMove)return;
+ if(quietRestDuration!==null){nextActivity=quietTime+quietRestDuration;quietRestDuration=null;}
  if(greetingQueued){
   greetingQueued=false;
   startGesture('greeting');
@@ -456,47 +577,69 @@ function updateAutonomy(){
  }
  const engaged=attention.fresh;
  if(!engaged&&quietTime<nextActivity)return;
+ if(pendingQuietActivity){
+  const activity=pendingQuietActivity;pendingQuietActivity=null;
+  if(engaged)startGreetingApproach();
+  else beginQuietActivity(activity);
+  return;
+ }
  if(automaticRest){
   automaticRest=false;
   playCount=0;
+  const activity=engaged?null:nextQuietActivity();
+  if(activity&&activity.type!=='walk'&&activity.type!=='run'){
+   beginQuietActivity(activity);return;
+  }
+  pendingQuietActivity=activity;
   posture.set('stand');
   updateRestControl();
   state.textContent=tr('action_stand');
-  nextActivity=quietTime+(engaged?.25:3);
+  quietRestDuration=engaged?.25:.6+Math.random()*.5;
+  nextActivity=Infinity;
  }else if(posture.current==='stand'){
-  if(engaged||playCount===0){playCount=1;startGreetingApproach();}
-  else if(playCount===1){playCount++;startGesture('bow');}
-  else startAutonomousGait(false);
+  if(engaged)startGreetingApproach();
+  else beginQuietActivity(nextQuietActivity());
  }
 }
-const askAI=createAIChat();let answering=false, commandVersion=0;
-async function accept(text){if(answering)return;quietTime=0;nextActivity=10;greetingQueued=false;bubble.hidden=false;const careReply=care.check(text);if(careReply){voicePlayback.stop();execute('stop',true);reply.textContent=`${tr('brand')}: ${careReply}`;$('#command-text').value='';return;}voicePlayback.stop();
+const askAI=createAIChat();let answering=false, commandVersion=0, requestSerial=0;
+const commandInput=$('#command-text'),sendCommand=$('#send');
+function updateSend(){sendCommand.disabled=!ready||(answering&&!isImmediateStop(commandInput.value)&&!detectDistress(commandInput.value));}
+function cancelPending(){if(!answering)return;requestSerial++;answering=false;askAI.cancel();updateSend();}
+commandInput.addEventListener('input',updateSend);
+stopRenderActivity=()=>{commandVersion++;cancelPending();voicePlayback.stop();recognition?.abort();};
+const accept=guardLanlaoInput({isAvailable:()=>ready&&!contextLost,handle:async text=>{const careReply=care.check(text);if(careReply){cancelPending();voicePlayback.stop();execute('stop');reply.textContent=`${tr('brand')}: ${careReply}`;conversationStatus.local();renderConversationStatus();commandInput.value='';updateSend();return;}
+ if(/^(?:hi|hello|hey)(?:[, ]+(?:lanlao))?[.!?]*$/i.test(text.trim())){commandVersion++;cancelPending();bubble.hidden=false;reply.textContent='Hi, Josh.';conversationStatus.local();renderConversationStatus();clearSubmittedInput(commandInput,text);return;}
  const action=parseCommand(text,{postures:true});
- if(!action)engageViewer('text');
- if(['sit','lie','stand'].includes(action)){execute(action);$('#command-text').value='';care.noteActivity();return;}
- const requestVersion=commandVersion;
- answering=true;$('#send').disabled=true;reply.textContent=`${tr('brand')}: ${tr('thinking')}`;
- try{const answer=await askAI(text);if(requestVersion!==commandVersion)return;if(answer.action)execute(answer.action);reply.textContent=`${tr('brand')}: ${answer.caption}`;void voicePlayback.speak(answer.caption);conversationStatus.succeeded();renderConversationStatus();$('#command-text').value='';}
- catch(error){if(requestVersion!==commandVersion)return;const answer=respond(text,locale());if(answer.action)execute(answer.action);reply.textContent=`${tr('brand')}: ${answer.caption}`;void voicePlayback.speak(answer.caption);conversationStatus.failed();renderConversationStatus();}
- finally{answering=false;$('#send').disabled=!ready;care.noteActivity();}}
-document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>{voicePlayback.stop();execute(b.dataset.command);if(b.dataset.command!=='stop')void voicePlayback.speak(tr(`action_${b.dataset.command}`)+'.');});
+ // A direct stop is a control, not a request that should wait for a network
+ // response. It also invalidates any older pending reply and its history.
+ if(isImmediateStop(text)){cancelPending();voicePlayback.stop();execute('stop');conversationStatus.local();renderConversationStatus();commandInput.value='';updateSend();care.noteActivity();return;}
+ const direct=directPetCommand(text);
+ if(direct||['sit','lie','stand'].includes(action)){commandVersion++;cancelPending();voicePlayback.stop();quietTime=0;nextActivity=10;greetingQueued=false;execute(direct||action);conversationStatus.local();renderConversationStatus();$('#command-text').value='';care.noteActivity();return;}
+ if(answering)return;quietTime=0;nextActivity=10;greetingQueued=false;bubble.hidden=false;voicePlayback.stop();
+ // A new message also supersedes any delayed farewell motion.
+ const requestVersion=++commandVersion;
+ const currentRequest=++requestSerial;answering=true;updateSend();reply.textContent=`${tr('brand')}: ${tr('thinking')}`;
+ try{const answer=await askAI(text,()=>requestVersion===commandVersion);if(requestVersion!==commandVersion)return;if(answer.action)execute(answer.action);reply.textContent=`${tr(answer.source==='system-privacy'?'systemPrivacy':answer.source==='system-action'?'systemAction':'brand')}: ${answer.caption}`;void voicePlayback.speak(answer.caption);conversationNeedsLogin=false;conversationStatus.succeeded(answer.source);renderConversationStatus();clearSubmittedInput(commandInput,text);}
+ catch(error){if(requestVersion!==commandVersion)return;const answer=respond(text,locale());if(answer.action)execute(answer.action);reply.textContent=`${tr('brand')}: ${answer.caption}`;void voicePlayback.speak(answer.caption);conversationNeedsLogin=error.status===401;conversationStatus.failed();renderConversationStatus();clearSubmittedInput(commandInput,text);}
+ finally{if(currentRequest===requestSerial){answering=false;updateSend();care.noteActivity();}}}});
+document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>{cancelPending();voicePlayback.stop();execute(b.dataset.command);conversationStatus.local();renderConversationStatus();if(b.dataset.command!=='stop')void voicePlayback.speak(tr(`action_${b.dataset.command}`)+'.');});
 $('#command-form').onsubmit=e=>{e.preventDefault();const v=$('#command-text').value.trim();if(v)accept(v);};
 
 // Explicit, one-utterance microphone sessions. No background listening or audio storage.
-const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-let recognition,listening=false,voiceError=false;
-if(!Recognition)$('#voice-status').textContent='Voice recognition is unavailable here. Use the buttons or type instead.';
+let listening=false,voiceError=false;
+if(!Recognition)$('#voice-status').textContent=recognitionStatus('unsupported',locale());
 mic.setAttribute('aria-pressed','false');
 mic.onclick=()=>{
  if(!Recognition||!ready)return;
- if(listening){recognition.stop();return;}
+ if(recognition){recognition.stop();return;}
  voicePlayback.stop();
- recognition=new Recognition();recognition.lang=languageSelect.value;recognition.continuous=false;recognition.interimResults=true;recognition.maxAlternatives=1;voiceError=false;
- recognition.onstart=()=>{listening=true;engageViewer('voice');mic.setAttribute('aria-pressed','true');mic.classList.add('listening');mic.textContent=tr('listening');$('#voice-status').textContent=tr('listening');showSpeech(tr('listening'));};
- recognition.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;$('#voice-status').textContent=`${tr('heard')}${t}`;if(e.results[i].isFinal)accept(t);}};
- recognition.onerror=e=>{voiceError=true;const errors={'not-allowed':'Microphone access was not granted. Allow it in your browser and try again.','audio-capture':'No microphone is available. Check your device.','network':'Speech recognition could not connect. Please type or use a button.','no-speech':'I didn’t catch that. Try again.','service-not-allowed':'Speech recognition is unavailable here. Please type or use a button.','aborted':'Listening stopped.'};$('#voice-status').textContent=errors[e.error]||`Voice is unavailable (${e.error}). Please type or use a button.`;};
- recognition.onend=()=>{listening=false;mic.setAttribute('aria-pressed','false');mic.classList.remove('listening');mic.innerHTML=tr('micStart');renderIcons();if(!voiceError)$('#voice-status').textContent=tr('micStatus');};
- try{recognition.start();}catch{listening=false;$('#voice-status').textContent='Voice could not start. Please try again or type instead.';}
+ recognition=new Recognition();recognition.lang=languageSelect.value;recognition.continuous=false;recognition.interimResults=true;recognition.maxAlternatives=1;voiceError=false;voiceErrorCode=null;
+ const session=recognition,previousSpeech=bubbleText.textContent;let heardText='';const watchdog=createRecognitionWatchdog(session,{onTimeout:()=>{if(recognition!==session)return;recognition=null;listening=false;voiceError=true;voiceErrorCode=voiceErrorCode||'timeout';mic.setAttribute('aria-pressed','false');mic.classList.remove('listening');mic.innerHTML=tr('micStart');renderIcons();$('#voice-status').textContent=recognitionStatus(voiceErrorCode,locale());showSpeech(recognitionStatus(voiceErrorCode,locale()));}});
+ session.onstart=()=>{if(watchdog.expired||recognition!==session)return;listening=true;mic.setAttribute('aria-pressed','true');mic.classList.add('listening');mic.textContent=tr('listening');$('#voice-status').textContent=tr('listening');showSpeech(tr('listening'));};
+ session.onresult=e=>{if(watchdog.expired||recognition!==session||!ready||contextLost)return;for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;heardText=t;$('#voice-status').textContent=`${tr('heard')}${t}`;if(e.results[i].isFinal)accept(t);}};
+ bindRecognitionErrors(session,{locale,onError:(code,message)=>{if(watchdog.expired||recognition!==session)return;voiceError=true;voiceErrorCode=code;$('#voice-status').textContent=message;showSpeech(message);}});
+ session.onend=()=>{watchdog.cancel();if(watchdog.expired||recognition!==session)return;recognition=null;listening=false;mic.setAttribute('aria-pressed','false');mic.classList.remove('listening');mic.innerHTML=tr('micStart');renderIcons();if(!voiceError){$('#voice-status').textContent=heardText?`${tr('heard')}${heardText}`:tr('micStatus');if(bubbleText.textContent===tr('listening'))showSpeech(previousSpeech);}};
+ watchdog.start();try{session.start();}catch{watchdog.cancel();recognition=null;listening=false;voiceErrorCode='start';$('#voice-status').textContent=recognitionStatus(voiceErrorCode,locale());}
 };
 document.addEventListener('visibilitychange',()=>{
  if(document.hidden){attention.disengage();tapStart=null;if(recognition)recognition.abort();voicePlayback.stop();}
@@ -519,6 +662,30 @@ renderer.setAnimationLoop(now=>{
  lastTime=now;
  if(document.hidden)return;
  controls.update();
+ if(travelViewTarget||travelFocusTarget){
+  if(travelViewTarget)camera.position.lerp(travelViewTarget,1-Math.exp(-dt*9));
+  if(travelFocusTarget)controls.target.lerp(travelFocusTarget,1-Math.exp(-dt*9));
+  controls.update();
+  if((!travelViewTarget||camera.position.distanceTo(travelViewTarget)<.012)
+   &&(!travelFocusTarget||controls.target.distanceTo(travelFocusTarget)<.012)){
+   if(travelViewTarget)camera.position.copy(travelViewTarget);
+   if(travelFocusTarget)controls.target.copy(travelFocusTarget);
+   travelViewTarget=null;travelFocusTarget=null;controls.update();
+   if(pendingTravelStart){const request=pendingTravelStart;pendingTravelStart=null;activateTravel(request);}
+  }
+ }
+ if(approachView&&ready){
+  if(approachCameraMove){
+   const motion=approachCameraMove;
+   if(mode==='come'&&motion.distance>.03)camera.position.lerpVectors(motion.from,motion.to,ease(dog.position.distanceTo(motion.start)/motion.distance));
+   else camera.position.lerp(motion.to,1-Math.exp(-dt*5));
+   if(camera.position.distanceTo(motion.to)<.004)approachCameraMove=null;
+  }
+  approachFocus.copy(dog.position);approachFocus.y+=LANLAO_APPROACH_FOCUS_HEIGHT;
+  controls.target.lerp(approachFocus,1-Math.exp(-dt*5));controls.update();
+ }
+ closeGreetingTime=Math.max(0,closeGreetingTime-dt);
+ stage.classList.toggle('is-close',approachView);
  attention.advance(elapsed,{available:stageVisible&&ready&&!reducedMotion.matches});
  if(petHover && !petHoverTriggered && mode==='stop' && posture.ready && !queuedMove && ready){
   petHoverTime+=elapsed;
@@ -536,14 +703,15 @@ renderer.setAnimationLoop(now=>{
  }
  const canPlay=stageVisible&&!reducedMotion.matches&&!listening&&!answering;
  if(ready){
-  if(isAutonomousGait()&&!canPlay&&!brakingCommand)finishActivity();
+  if(isAutonomousGait()&&!canPlay&&!brakingCommand)brakingCommand='stop';
   let arrived=false;
+  let travel;
   if(isLocomoting()){
    const run=mode==='run'||mode==='dash';
-   const pace=mode==='dash'?.8:mode==='approach'?1.25:mode==='peel'?(greetingPlayful?1.25:.9):1;
-   const travel=locomotion.move(dt,{destination,loop:mode==='walk'||mode==='run',
-    run,pace,brake:!!brakingCommand});
-   if(isGaitAction(activeAction))activeAction.setEffectiveTimeScale(travel.clipRate);
+   const pace=activeRoute||mode==='come'?autonomousPace:mode==='approach'?1.25:mode==='peel'?(greetingPlayful?1.25:.9):1;
+   travel=locomotion.move(dt,{destination,route:activeRoute,nextRoute:onwardTravel?.route,
+    run,pace,brake:!!brakingCommand,faceBeforeMoving:mode==='come',faceOnArrival:mode==='come'?camera.position:null,exitSpeed:onwardTravel?Math.min(run?1.05:.22,
+     LANLAO_TURN_RATE_LIMIT/Math.max(.001,Math.abs(activeRoute.curvature(activeRoute.length)),Math.abs(onwardTravel.route.curvature(0)))):0});
    arrived=travel.arrived;
   }
   mixer.update(dt);
@@ -552,16 +720,16 @@ renderer.setAnimationLoop(now=>{
    finishedAction=null;
    if(completed===activeAction)execute('stop',true);
   }
-  if(isLocomoting()&&isGaitAction(activeAction)){
-   posture.applyGaitContacts(gaitContacts.update({
-    run:activeAction===actions.Run_Trot_Natural,
-    weight:activeAction.getEffectiveWeight()
-   }));
-  }
+  if(isLocomoting()&&stride.active)stride.update(dt,travel);
   if(arrived){
    if(brakingCommand)applyCommand(brakingCommand,true);
+   else if(mode==='come'){applyCommand('stop',true);quietTime=0;nextActivity=12+Math.random()*5;closeGreetingTime=2;state.textContent=tr('comeClose');}
    else if(mode==='approach')landApproach();
-   else if(isAutonomousGait())finishActivity(mode==='explore');
+   else if(isAutonomousGait())finishActivity(mode==='explore'||mode==='dash');
+   else if(mode==='walk'||mode==='run'){
+    if(onwardTravel)activateTravel({...onwardTravel,mode,run:mode==='run',pace:autonomousPace},true);
+    else{const command=mode;finishActivity();queuedMove=command;queuedMoveDelay=.4+Math.random()*.8;}
+   }
    else applyCommand('stop',true);
   }
   if(webFur)webFur.update(dt,mode);
@@ -576,23 +744,26 @@ renderer.setAnimationLoop(now=>{
   }
  }
  if(ready){
-  if(canPlay&&!petHover){quietTime+=dt;updateAutonomy();}
+  if(canPlay&&!petHover&&pettingTime===0){quietTime+=dt;updateAutonomy();}
   if(mode==='turn'||mode==='jump')animateGroundedAction(dt,canPlay);
   else if(isGesture())animateGesture(dt,!canPlay);
   else if(mode==='wag'&&!reducedMotion.matches)posture.applyTailWag();
   if(mode==='stop'&&gaitSettle===0){
    const activeStage=stageVisible||!automaticRest;
    posture.apply(activeStage?dt:0,{snap:reducedMotion.matches&&!automaticRest});
-   if(posture.ready&&queuedMove){const command=queuedMove;queuedMove=null;startMove(command);}
+   if(posture.ready&&queuedMove){
+    queuedMoveDelay=Math.max(0,queuedMoveDelay-dt);
+    if(queuedMoveDelay===0){const command=queuedMove;queuedMove=null;if(startMove(command)===false){announceCommand('stop',true);state.textContent=tr('travelNeedsView');}}
+   }
    if(posture.ready&&mode==='stop')idle.apply(dt,{visible:stageVisible,reduced:reducedMotion.matches,
     listening:listening||answering,camera:camera.position,body:dog,posture:posture.current});
-   else idle.settle();
-  }else idle.settle();
+   else idle.fade(dt);
+  }else idle.fade(dt);
   petBody.apply(dt,{active:pettingTime>0,available:mode==='stop'&&posture.ready&&gaitSettle===0&&stageVisible&&!reducedMotion.matches,side:petSide});
-  expression.apply(dt,{mode,visible:stageVisible,reduced:reducedMotion.matches,engaged:attention.recent,
+  expression.apply(dt,{mode,visible:stageVisible,reduced:reducedMotion.matches,engaged:attention.recent||closeGreetingTime>0,
    listening:listening||answering,body:dog,camera:camera.position,gestureDepth,gestureTime,gestureLook,
-   jumpTime:groundedActionTime,greetingLandingAge,petting:pettingTime>0,
-   gaitPhase:isGaitAction(activeAction)?activeAction.time/activeAction.getClip().duration:undefined});
+   jumpTime:groundedActionTime,greetingLandingAge,petting:pettingTime>0||closeGreetingTime>0,
+   gaitPhase:stride.active?stride.phase:undefined});
   eyelids.value=Math.max(idle.blink,expression.blink);
  }
  if(stageVisible)renderer.render(scene,camera);

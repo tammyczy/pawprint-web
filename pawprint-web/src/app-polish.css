@@ -40,13 +40,15 @@ h1 em{font-style:normal;color:#839d89}
 .stage-dot{width:6px;height:6px;border-radius:50%;background:#71a37b;box-shadow:0 0 0 4px #71a37b22}
 .stage-top #state{background:#fffef9e8;color:#4f6d55;padding:8px 12px;border:1px solid #e6ede2}
 .stage-foot{bottom:19px;font-weight:500}
+/* Close framing keeps the paws clear; the disclosure remains beside the controls. */
+.stage.is-close .stage-foot>span{visibility:hidden}
 .stage-foot button{display:flex;align-items:center;gap:7px;background:#ffffffc9;border:1px solid #e0e9de;border-radius:100px;padding:8px 12px;color:#536e5a}
 .stage-foot button svg{width:13px;height:13px}
 .stage-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
-.stage-top #greet-lanlao{min-height:34px;padding:7px 12px;background:#edf2e6;border:1px solid #aaba99;border-radius:100px;color:#263e31;font:700 10px var(--font-body,sans-serif);white-space:nowrap}
-.stage-top #greet-lanlao:hover:not(:disabled){background:#e1ebd7;border-color:#7d956c}
-.stage-top #greet-lanlao:active:not(:disabled){background:#d7e4ca}
-@media(max-width:430px){.stage-actions{gap:5px}.stage-top #greet-lanlao{padding-inline:8px}}
+.stage-top #greet-lanlao,.stage-top #pet-lanlao{min-height:44px;padding:7px 12px;background:#edf2e6;border:1px solid #aaba99;border-radius:100px;color:#263e31;font:700 10px var(--font-body,sans-serif);white-space:nowrap}
+.stage-top #greet-lanlao:hover:not(:disabled),.stage-top #pet-lanlao:hover:not(:disabled){background:#e1ebd7;border-color:#7d956c}
+.stage-top #greet-lanlao:active:not(:disabled),.stage-top #pet-lanlao:active:not(:disabled){background:#d7e4ca}
+@media(max-width:430px){.stage-actions{gap:5px;flex-wrap:wrap}.stage-top #greet-lanlao,.stage-top #pet-lanlao{padding-inline:8px}}
 #loading{background:#e7ece4}
 .controls{padding:20px 0 52px}
 .controls-heading{align-items:end;gap:28px}
@@ -70,6 +72,18 @@ footer{font:700 10px 'Manrope',sans-serif;letter-spacing:1.3px;border-color:#e0e
 #dog-speech{border-color:#fff;background:#fffdf7;color:#244a36;box-shadow:0 15px 38px #284c302c}
 @media(max-width:1100px){main{grid-template-columns:minmax(220px,.75fr) minmax(0,1.25fr);gap:26px}.stage{min-height:520px}.commands{grid-template-columns:repeat(4,minmax(0,1fr))}.commands button{min-height:135px}.controls-heading{align-items:start;flex-direction:column;gap:0}#reply{margin:0 0 18px;max-width:none}}
 @media(max-width:760px){#app{padding:0 18px}header{height:74px}.brand small{display:none}header nav{gap:10px}header nav>a:first-child{display:none}header nav #studio-link{padding:8px 11px;font-size:10px}main{display:block;padding:27px 0 25px}.intro{padding:0;max-width:none}.intro h1{font-size:58px;margin:15px 0}.intro>p{max-width:520px;margin:0}.voice-box{margin-top:22px}.intro .privacy{margin-top:17px}.experience-settings{margin:20px 0}.stage{min-height:420px}.controls{padding:8px 0 35px}.commands{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.commands button{min-height:120px;padding:12px}.commands button>svg{width:22px;height:22px;margin-bottom:6px}.commands button>span{font-size:11px}.commands small{font-size:9px}#command-form{display:block}#command-form label{display:block;padding-top:4px}#command-form>div{width:100%}footer{display:block;line-height:1.8}footer>span{display:block}}
-@media(max-width:430px){header nav #studio-link svg{display:none}.stage{min-height:360px}.commands{grid-template-columns:repeat(2,1fr)}.stage-foot>span{max-width:140px;line-height:1.4}}
+@media(max-width:430px){
+ #app header{gap:8px}
+ #app .brand{flex:0 0 auto}
+ #app header nav{min-width:0;flex:0 1 auto}
+ #app header nav #studio-link{white-space:normal;justify-content:center;text-align:center;line-height:1.25}
+ #app header nav #studio-link svg{display:none}
+ #app .locale-picker{flex:0 0 auto;margin:0}
+ .stage{min-height:360px}.commands{grid-template-columns:repeat(2,1fr)}.stage-foot>span{max-width:140px;line-height:1.4}
+}
+
+@media(max-width:760px){
+ #send{min-height:44px}
+}
 
 }

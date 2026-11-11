@@ -1,6 +1,6 @@
 // Small trained intent classifier (multinomial logistic regression over character n-grams).
 // Browser-safe: no Node APIs. The model JSON is produced by eval/intent/train.mjs from a
-// small team-reviewed dataset; it is a learned fallback, not general language understanding.
+// small AI-drafted dataset pending team review; this offline experiment is not connected to the website.
 import {explainCommand} from './commands.js';
 
 export const INTENT_LABELS=['none','come','home','walk','run','wag','jump','stop'];

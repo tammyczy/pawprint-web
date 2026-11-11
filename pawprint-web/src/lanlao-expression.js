@@ -6,7 +6,7 @@ const gaitModes = new Set(['approach', 'come', 'dash', 'explore', 'home', 'peel'
 const gestures = new Set(['bow', 'greeting', 'jump', 'turn', 'wag']);
 const viewerWeight = {
  approach: .9, bow: 0, come: .9, dash: .12, explore: .15,
- greeting: .22, home: 0, jump: .25, peel: 0, run: .13, turn: 0, wag: .65, walk: .25
+ greeting: .22, home: 0, jump: .25, peel: 0, run: .13, turn: 0, wag: .85, walk: .25
 };
 
 function blinkPulse(elapsed) {
@@ -70,7 +70,7 @@ export function createLanlaoExpression(model) {
   get blink() {return eyelid;},
   apply(dt, {mode, visible, reduced, body, camera, engaged = false, listening = false,
    gestureDepth = 0, gestureTime = 0, gestureLook = 1, greetingLandingAge, jumpTime = 0, gaitPhase, petting = false}) {
-   if (!visible || reduced || mode === 'wag') {
+   if (!visible || reduced) {
     offsets.fill(0);
     strength = 0;
     eyelid = 0;
@@ -85,7 +85,7 @@ export function createLanlaoExpression(model) {
    const active = moving || checkingIn || beingPetted || gestures.has(mode);
    strength += ((active ? 1 : 0) - strength) * (1 - Math.exp(-dt * (beingPetted ? 3 : active ? 13 : 4)));
    eyelid = mode === 'greeting' ? blinkPulse((greetingLandingAge ?? -1) - .04)
-    : mode === 'jump' ? blinkPulse(jumpTime - .587) : 0;
+    : mode === 'jump' ? blinkPulse(jumpTime - .61) : 0;
    if (strength < .001) {initialized = false; return;}
    clock += dt;
    head.bone.getWorldPosition(headPosition);
@@ -109,10 +109,10 @@ export function createLanlaoExpression(model) {
     * (1 - MathUtils.smoothstep(Math.abs(viewerYaw), .85, 1.85));
    const interest = towardViewer * (listening || engaged ? 1 : checkIn);
    const perk = mode === 'greeting' ? lift(gestureTime / .12) * gestureLook
-    : mode === 'approach' ? .72 : mode === 'bow' ? gestureDepth * .19 : beingPetted ? .22 : checkingIn ? .74 : interest * .65;
+    : mode === 'wag' ? .85 : mode === 'approach' ? .72 : mode === 'bow' ? gestureDepth * .19 : beingPetted ? .22 : checkingIn ? .74 : interest * .65;
    const turnLead = mode === 'turn' || moving ? turnSpeed * .030 : 0;
    const yaw = follow(0, MathUtils.clamp(viewerYaw * interest * .32 + turnLead, -.22, .22), 15, dt);
-   const pitch = follow(1, MathUtils.clamp((currentPitch - desiredPitch) * interest * .24 - perk * .045, -.13, .10), 14, dt);
+   const pitch = follow(1, MathUtils.clamp((currentPitch - desiredPitch) * interest * .30 - perk * .065, -.15, .10), 10, dt);
    const roll = follow(2, MathUtils.clamp(viewerYaw, -.65, .65) * perk * .10, 9, dt);
 
    // The ears pick up the head motion, then relax at slightly different rates.
@@ -124,7 +124,7 @@ export function createLanlaoExpression(model) {
    const leftPitch = follow(3, recoil + bounce - perk * .12, 19, dt);
    const rightPitch = follow(4, recoil * .81 + bounce * .64 - perk * .082, 13, dt);
    const earIn = follow(5, perk * .063, 12, dt);
-   const wag = beingPetted ? .11 : mode === 'greeting' || mode === 'approach' ? .185 : mode === 'peel' ? .095 : travel * .070;
+   const wag = beingPetted ? .20 : mode === 'greeting' || mode === 'approach' ? .30 : mode === 'peel' ? .095 : travel * .070;
    const wagPhase = clock * turn * (beingPetted ? 1.4 : 3.5);
    const tailYaw = follow(6, wag * Math.sin(wagPhase), 26, dt);
    const tipYaw = follow(7, wag * .63 * Math.sin(wagPhase - .68), 21, dt);
@@ -133,8 +133,9 @@ export function createLanlaoExpression(model) {
    rotate(head, yaw * strength, pitch * strength, roll * strength);
    rotate(left, -earIn * strength, leftPitch * strength, (.023 * perk + bounce) * strength);
    rotate(right, earIn * strength, rightPitch * strength, (-.016 * perk + bounce * .64) * strength);
-   rotate(tail, tailYaw * strength, tailLift * strength, 0);
-   rotate(tip, tipYaw * strength, tailLift * .5 * strength, 0);
+   // The wag controller owns this rhythm; only the head and ears add attention.
+   rotate(tail, mode === 'wag' ? 0 : tailYaw * strength, mode === 'wag' ? 0 : tailLift * strength, 0);
+   rotate(tip, mode === 'wag' ? 0 : tipYaw * strength, mode === 'wag' ? 0 : tailLift * .5 * strength, 0);
    applied = true;
   },
   restore() {

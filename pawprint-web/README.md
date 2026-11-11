@@ -2,11 +2,11 @@
 
 **Problem.** Pet loss can be deeply distressing. In a UK study of adults who identified a pet's death as their most distressing bereavement, 7.5% reported symptoms consistent with prolonged grief; this is not an estimate for young people ([Hyland, PLOS ONE, 2026](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0339213)). Current diagnostic guidelines do not allow a prolonged grief disorder diagnosis after pet loss. Researchers have also raised concerns about AI "griefbots", including potential dependence ([Hollanek & Nowaczyk-Basińska, 2024](https://lcfi.ac.uk/news-events/news/deathbots-griefbots-and-the-digital-afterlife)). Pawprint's effect on grief has not been established.
 
-**Who it is for.** Teens (12–18) and families who have lost, or are about to lose, a pet. 94 million U.S. households live with a pet ([APPA, 2025](https://americanpetproducts.org/news/the-american-pet-products-association-appa-releases-2025-state-of-the-industry-report-archive)).
+**Who it is for.** People remembering a pet who has died. The prototype has not yet been evaluated with users; use by children and teens needs additional age-appropriate safeguards and review. 94 million U.S. households live with a pet ([APPA, 2025](https://americanpetproducts.org/news/the-american-pet-products-association-appa-releases-2025-state-of-the-industry-report-archive)).
 
 **Design principles.** Not a resurrection (always an AI simulation) · no notifications or streaks · photos sent for generation only with consent · gentle referral to real people and professional help when distress is serious.
 
-問題陳述：寵物離世的哀傷可以和失去親友一樣深，卻很少被承認。Pawprint 用照片建立 3D 陪伴，幫助青少年與家人誠實地紀念寵物，並且不假裝寵物還活著。
+問題陳述：有些人的寵物離世後，哀傷可能被忽視。Pawprint 探索以照片、3D 形象與主人提供的故事紀念寵物；這是數位模擬，是否對使用者有幫助仍須研究。
 
 ---
 
@@ -28,6 +28,8 @@
 完整迁移记录见上一级目录的 `Pawprint迁移记录.md`。下方保留旧项目说明，其中端口、标题和旧首页描述以当前迁移记录为准。
 
 当前互动页已经接入 OpenAI 人声回复：六种声音可选，默认 Verse；蓝老是男孩子，声音以明亮、轻快的少年感男声为方向；可选择自然陪伴、开心俏皮、温柔安慰三种语气，支持试听、重听、停止和自动朗读。麦克风只在点击后开启。声音为 AI 生成；正文与语音使用服务器现有的 `OPENAI_API_KEY`，可通过 `OPENAI_SPEECH_MODEL` 更换语音模型。官方接口说明：https://developers.openai.com/api/docs/guides/text-to-speech 。
+
+互动页与宠物页的「留下一段回忆」可直接下载或清空用户写的原文；内容保留在当前页面，不会由应用自动保存到数据库。只有用户勾选同意并选择 AI 整理时，原文才发送至 OpenAI，并使用服务器现有的模型配置；服务未配置或失败时原文仍可用。AI 草稿旁的引用经过原文子串检查，但不能证明改写符合事实，需用户逐句核对。删除或取消本地内容不能保证供应商删除或停止处理已收到的数据。当前测试使用模拟供应商；真实 AI 整理质量和用户反馈尚未验证。
 
 官网 `/#keepsakes` 展示创作者在景德镇手作的两件陶瓷茶器，图片由内置 imagegen 基于实物照片分别重建。这是实体纪念周边方向的作品展示，尚未接入实体下单或制造流程。
 

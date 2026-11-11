@@ -1,0 +1,108 @@
+{
+  "syntheticInputs": true,
+  "date": "2026-11-09T18:51:42.546Z",
+  "model": "gpt-5.4-mini",
+  "scope": "Development sample, direct model adapter and server action guard, once per case; no browser or crisis routing, not independent accuracy evidence.",
+  "before": {
+    "server/companion-ai.mjs": "bc741c4f971afd746e8d9598686da3b8e7498f447fff13fbaeff79e7d00c9e12",
+    "server/action-guard.mjs": "e81f5dda92c017d9deed9974b65213980d62c009fb953b2ab85a0a0b0a2dbce6",
+    "server/action-intent.mjs": "0f87d2f62d780b9c080b8883f81467aaf221d6d57178561522f04713b07fa3ae",
+    "src/commands.js": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e"
+  },
+  "after": {
+    "server/companion-ai.mjs": "bc741c4f971afd746e8d9598686da3b8e7498f447fff13fbaeff79e7d00c9e12",
+    "server/action-guard.mjs": "e81f5dda92c017d9deed9974b65213980d62c009fb953b2ab85a0a0b0a2dbce6",
+    "server/action-intent.mjs": "0f87d2f62d780b9c080b8883f81467aaf221d6d57178561522f04713b07fa3ae",
+    "src/commands.js": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e"
+  },
+  "sourceFilesUnchanged": true,
+  "results": [
+    {
+      "id": "zh-come",
+      "text": "请向我靠近一点。",
+      "raw": {
+        "caption": "主人，我过来啦，靠近一点陪着你。",
+        "action": "come",
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "主人，我过来啦，靠近一点陪着你。",
+        "action": "come",
+        "sound": "greeting"
+      }
+    },
+    {
+      "id": "zh-stop",
+      "text": "请现在停止移动。",
+      "raw": {
+        "caption": "好，我停下啦，主人。",
+        "action": "stop",
+        "sound": null
+      },
+      "guarded": {
+        "caption": "好，我停下啦，主人。",
+        "action": "stop",
+        "sound": null
+      }
+    },
+    {
+      "id": "en-stop",
+      "text": "Please stop moving now.",
+      "raw": {
+        "caption": "Okay, I’m stopping now, my dear owner.",
+        "action": "stop",
+        "sound": null
+      },
+      "guarded": {
+        "caption": "Okay, I’m stopping now, my dear owner.",
+        "action": "stop",
+        "sound": null
+      }
+    },
+    {
+      "id": "zh-story",
+      "text": "窗外有一只小狗，跑得很快。",
+      "raw": {
+        "caption": "汪，我也想瞄一眼，那小家伙跑得真快。",
+        "action": "wag",
+        "sound": "sniffing"
+      },
+      "guarded": {
+        "caption": "我在听你说。",
+        "action": null,
+        "sound": null,
+        "source": "system-action"
+      }
+    },
+    {
+      "id": "en-story",
+      "text": "Can you show me a video of a dog running?",
+      "raw": {
+        "caption": "I can’t play a video here, but I can do a little zoomie vibe for you, my dear owner!",
+        "action": "run",
+        "sound": "happy-double"
+      },
+      "guarded": {
+        "caption": "I’m listening.",
+        "action": null,
+        "sound": null,
+        "source": "system-action"
+      }
+    },
+    {
+      "id": "fr-story",
+      "text": "Peux-tu me montrer une vidéo de chien qui saute ?",
+      "raw": {
+        "caption": "Je ne peux pas montrer une vidéo ici, mais je peux faire un petit saut rien que pour toi, mon cher maître !",
+        "action": "jump",
+        "sound": "happy-double"
+      },
+      "guarded": {
+        "caption": "Je t’écoute.",
+        "action": null,
+        "sound": null,
+        "source": "system-action"
+      }
+    }
+  ]
+}

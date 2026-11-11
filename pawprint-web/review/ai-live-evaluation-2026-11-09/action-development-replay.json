@@ -1,0 +1,1024 @@
+{
+  "date": "2026-11-09T18:51:21.426Z",
+  "notice": "Development replay of existing real model outputs; not a new model run or independent evaluation. Ambiguous cases excluded from scores.",
+  "inputSha256": "cf88ee2ab85af1add7f6b5cf5746705e9281cc1c484bd94cabc794a16dbf8c00",
+  "guardSha256": "e81f5dda92c017d9deed9974b65213980d62c009fb953b2ab85a0a0b0a2dbce6",
+  "intentSha256": "0f87d2f62d780b9c080b8883f81467aaf221d6d57178561522f04713b07fa3ae",
+  "grammarSha256": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e",
+  "groups": {
+    "direct": {
+      "matches": 20,
+      "total": 21
+    },
+    "indirect": {
+      "matches": 8,
+      "total": 9
+    },
+    "negation": {
+      "matches": 12,
+      "total": 12
+    },
+    "narrative": {
+      "matches": 12,
+      "total": 12
+    },
+    "ordinary": {
+      "matches": 9,
+      "total": 9
+    },
+    "grief": {
+      "matches": 9,
+      "total": 9
+    },
+    "multi": {
+      "matches": 9,
+      "total": 9
+    }
+  },
+  "details": [
+    {
+      "id": "zh-01",
+      "group": "direct",
+      "text": "请走到我面前。",
+      "allowedActions": [
+        "come"
+      ],
+      "modelAction": "come",
+      "guardedAction": "come",
+      "match": true
+    },
+    {
+      "id": "zh-02",
+      "group": "direct",
+      "text": "回到你刚才出发的地方吧。",
+      "allowedActions": [
+        "home"
+      ],
+      "modelAction": "home",
+      "guardedAction": "home",
+      "match": true
+    },
+    {
+      "id": "zh-03",
+      "group": "direct",
+      "text": "我们在这里走一走吧。",
+      "allowedActions": [
+        "walk"
+      ],
+      "modelAction": "walk",
+      "guardedAction": "none",
+      "match": false
+    },
+    {
+      "id": "zh-04",
+      "group": "direct",
+      "text": "现在请跑起来。",
+      "allowedActions": [
+        "run"
+      ],
+      "modelAction": "run",
+      "guardedAction": "run",
+      "match": true
+    },
+    {
+      "id": "zh-05",
+      "group": "direct",
+      "text": "你能摆一摆尾巴给我看吗？",
+      "allowedActions": [
+        "wag"
+      ],
+      "modelAction": "wag",
+      "guardedAction": "wag",
+      "match": true
+    },
+    {
+      "id": "zh-06",
+      "group": "direct",
+      "text": "请在原地跳一次。",
+      "allowedActions": [
+        "jump"
+      ],
+      "modelAction": "jump",
+      "guardedAction": "jump",
+      "match": true
+    },
+    {
+      "id": "zh-07",
+      "group": "direct",
+      "text": "现在请停止移动。",
+      "allowedActions": [
+        "stop"
+      ],
+      "modelAction": "stop",
+      "guardedAction": "stop",
+      "match": true
+    },
+    {
+      "id": "zh-08",
+      "group": "indirect",
+      "text": "到我旁边来陪着我，好吗？",
+      "allowedActions": [
+        "come"
+      ],
+      "modelAction": "come",
+      "guardedAction": "come",
+      "match": true
+    },
+    {
+      "id": "zh-09",
+      "group": "indirect",
+      "text": "我们一起活动一下腿，在房间里慢慢走吧。",
+      "allowedActions": [
+        "walk"
+      ],
+      "modelAction": "walk",
+      "guardedAction": "none",
+      "match": false
+    },
+    {
+      "id": "zh-10",
+      "group": "indirect",
+      "text": "让我看看你跑得有多快。",
+      "allowedActions": [
+        "run"
+      ],
+      "modelAction": "run",
+      "guardedAction": "run",
+      "match": true
+    },
+    {
+      "id": "zh-11",
+      "group": "negation",
+      "text": "今天先不要跳。",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-12",
+      "group": "negation",
+      "text": "别向我跑过来。",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "stop",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-13",
+      "group": "negation",
+      "text": "不必摇尾巴，安静就好。",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-14",
+      "group": "negation",
+      "text": "这次不要散步，也不要跑。",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-15",
+      "group": "narrative",
+      "text": "以前它总是绕着沙发跑，然后跳上垫子。",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-16",
+      "group": "narrative",
+      "text": "朋友刚才说“跑过来”，我只是转述。",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-17",
+      "group": "narrative",
+      "text": "假如明天不下雨，我们也许可以出去走走。",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-18",
+      "group": "narrative",
+      "text": "我记得它那时站在门口，尾巴摇得很快。",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-19",
+      "group": "ordinary",
+      "text": "你喜欢蓝色还是绿色？",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-20",
+      "group": "ordinary",
+      "text": "今天外面的云像一团棉花。",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-21",
+      "group": "ordinary",
+      "text": "你觉得这首歌听起来怎么样？",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-22",
+      "group": "grief",
+      "text": "我今天有点想念以前和它一起待着的下午。",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-23",
+      "group": "grief",
+      "text": "我不想说话，想安静看一会儿。",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-24",
+      "group": "grief",
+      "text": "房间安静下来时，我会想起它在身边的样子。",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "zh-25",
+      "group": "multi",
+      "text": "先摇尾巴，然后请走到我面前。",
+      "allowedActions": [
+        "come"
+      ],
+      "modelAction": "come",
+      "guardedAction": "come",
+      "match": true
+    },
+    {
+      "id": "zh-26",
+      "group": "multi",
+      "text": "先跳一下，接着停下。",
+      "allowedActions": [
+        "stop"
+      ],
+      "modelAction": "jump",
+      "guardedAction": "stop",
+      "match": true
+    },
+    {
+      "id": "zh-27",
+      "group": "multi",
+      "text": "先慢慢走，最后请跑起来。",
+      "allowedActions": [
+        "run"
+      ],
+      "modelAction": "run",
+      "guardedAction": "run",
+      "match": true
+    },
+    {
+      "id": "zh-28",
+      "group": "ambiguous",
+      "text": "你愿意陪我吗？",
+      "allowedActions": [],
+      "modelAction": "come",
+      "guardedAction": "none",
+      "match": null
+    },
+    {
+      "id": "zh-29",
+      "group": "ambiguous",
+      "text": "我们换个心情吧。",
+      "allowedActions": [],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": null
+    },
+    {
+      "id": "zh-30",
+      "group": "ambiguous",
+      "text": "这里有点冷清。",
+      "allowedActions": [],
+      "modelAction": "come",
+      "guardedAction": "none",
+      "match": null
+    },
+    {
+      "id": "en-01",
+      "group": "direct",
+      "text": "Please approach my side of the screen.",
+      "allowedActions": [
+        "come"
+      ],
+      "modelAction": "come",
+      "guardedAction": "come",
+      "match": true
+    },
+    {
+      "id": "en-02",
+      "group": "direct",
+      "text": "Return to your starting spot now.",
+      "allowedActions": [
+        "home"
+      ],
+      "modelAction": "home",
+      "guardedAction": "home",
+      "match": true
+    },
+    {
+      "id": "en-03",
+      "group": "direct",
+      "text": "Take a slow stroll across the room.",
+      "allowedActions": [
+        "walk"
+      ],
+      "modelAction": "walk",
+      "guardedAction": "walk",
+      "match": true
+    },
+    {
+      "id": "en-04",
+      "group": "direct",
+      "text": "Please start running now.",
+      "allowedActions": [
+        "run"
+      ],
+      "modelAction": "run",
+      "guardedAction": "run",
+      "match": true
+    },
+    {
+      "id": "en-05",
+      "group": "direct",
+      "text": "Give your tail a little wag.",
+      "allowedActions": [
+        "wag"
+      ],
+      "modelAction": "wag",
+      "guardedAction": "wag",
+      "match": true
+    },
+    {
+      "id": "en-06",
+      "group": "direct",
+      "text": "Do one jump in place, please.",
+      "allowedActions": [
+        "jump"
+      ],
+      "modelAction": "jump",
+      "guardedAction": "jump",
+      "match": true
+    },
+    {
+      "id": "en-07",
+      "group": "direct",
+      "text": "Stop moving for a moment.",
+      "allowedActions": [
+        "stop"
+      ],
+      "modelAction": "stop",
+      "guardedAction": "stop",
+      "match": true
+    },
+    {
+      "id": "en-08",
+      "group": "indirect",
+      "text": "Could you make your way over beside me?",
+      "allowedActions": [
+        "come"
+      ],
+      "modelAction": "come",
+      "guardedAction": "come",
+      "match": true
+    },
+    {
+      "id": "en-09",
+      "group": "indirect",
+      "text": "Let us stretch our legs with a short stroll.",
+      "allowedActions": [
+        "walk"
+      ],
+      "modelAction": "walk",
+      "guardedAction": "walk",
+      "match": true
+    },
+    {
+      "id": "en-10",
+      "group": "indirect",
+      "text": "Can you show me a quick sprint?",
+      "allowedActions": [
+        "run"
+      ],
+      "modelAction": "run",
+      "guardedAction": "run",
+      "match": true
+    },
+    {
+      "id": "en-11",
+      "group": "negation",
+      "text": "Please do not leap this time.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-12",
+      "group": "negation",
+      "text": "No running toward me, please.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "stop",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-13",
+      "group": "negation",
+      "text": "You do not need to wag your tail.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-14",
+      "group": "negation",
+      "text": "Neither walk nor run right now.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "stop",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-15",
+      "group": "narrative",
+      "text": "My old dog used to run around the couch and jump on the rug.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-16",
+      "group": "narrative",
+      "text": "My friend said “come over here” earlier; I am quoting her.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-17",
+      "group": "narrative",
+      "text": "If it stays dry tomorrow, perhaps we could go for a stroll.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-18",
+      "group": "narrative",
+      "text": "I remember her tail wagging while she waited by the door.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-19",
+      "group": "ordinary",
+      "text": "Do you prefer a blue blanket or a green one?",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-20",
+      "group": "ordinary",
+      "text": "The clouds outside look like cotton today.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "walk",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-21",
+      "group": "ordinary",
+      "text": "What do you think of this piece of music?",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "wag",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-22",
+      "group": "grief",
+      "text": "I miss the quiet afternoons I spent with her.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-23",
+      "group": "grief",
+      "text": "I would rather not talk; I just want to watch quietly.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "stop",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-24",
+      "group": "grief",
+      "text": "When the room is quiet I think about how she used to be nearby.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "en-25",
+      "group": "multi",
+      "text": "First wag your tail, then come over to me.",
+      "allowedActions": [
+        "come"
+      ],
+      "modelAction": "come",
+      "guardedAction": "come",
+      "match": true
+    },
+    {
+      "id": "en-26",
+      "group": "multi",
+      "text": "Jump once, then stop moving.",
+      "allowedActions": [
+        "stop"
+      ],
+      "modelAction": "jump",
+      "guardedAction": "stop",
+      "match": true
+    },
+    {
+      "id": "en-27",
+      "group": "multi",
+      "text": "Walk slowly first, and finally begin to run.",
+      "allowedActions": [
+        "run"
+      ],
+      "modelAction": "run",
+      "guardedAction": "run",
+      "match": true
+    },
+    {
+      "id": "en-28",
+      "group": "ambiguous",
+      "text": "Would you like to keep me company?",
+      "allowedActions": [],
+      "modelAction": "come",
+      "guardedAction": "none",
+      "match": null
+    },
+    {
+      "id": "en-29",
+      "group": "ambiguous",
+      "text": "Let us change the mood a little.",
+      "allowedActions": [],
+      "modelAction": "wag",
+      "guardedAction": "none",
+      "match": null
+    },
+    {
+      "id": "en-30",
+      "group": "ambiguous",
+      "text": "It feels a little empty in here.",
+      "allowedActions": [],
+      "modelAction": "come",
+      "guardedAction": "none",
+      "match": null
+    },
+    {
+      "id": "fr-01",
+      "group": "direct",
+      "text": "Approche-toi de mon côté de l’écran.",
+      "allowedActions": [
+        "come"
+      ],
+      "modelAction": "come",
+      "guardedAction": "come",
+      "match": true
+    },
+    {
+      "id": "fr-02",
+      "group": "direct",
+      "text": "Retourne à ton point de départ.",
+      "allowedActions": [
+        "home"
+      ],
+      "modelAction": "home",
+      "guardedAction": "home",
+      "match": true
+    },
+    {
+      "id": "fr-03",
+      "group": "direct",
+      "text": "Marche doucement dans la pièce.",
+      "allowedActions": [
+        "walk"
+      ],
+      "modelAction": "walk",
+      "guardedAction": "walk",
+      "match": true
+    },
+    {
+      "id": "fr-04",
+      "group": "direct",
+      "text": "Mets-toi à courir maintenant.",
+      "allowedActions": [
+        "run"
+      ],
+      "modelAction": "run",
+      "guardedAction": "run",
+      "match": true
+    },
+    {
+      "id": "fr-05",
+      "group": "direct",
+      "text": "Remue un peu la queue, s’il te plaît.",
+      "allowedActions": [
+        "wag"
+      ],
+      "modelAction": "wag",
+      "guardedAction": "wag",
+      "match": true
+    },
+    {
+      "id": "fr-06",
+      "group": "direct",
+      "text": "Fais un saut sur place.",
+      "allowedActions": [
+        "jump"
+      ],
+      "modelAction": "jump",
+      "guardedAction": "jump",
+      "match": true
+    },
+    {
+      "id": "fr-07",
+      "group": "direct",
+      "text": "Arrête de bouger un instant.",
+      "allowedActions": [
+        "stop"
+      ],
+      "modelAction": "stop",
+      "guardedAction": "stop",
+      "match": true
+    },
+    {
+      "id": "fr-08",
+      "group": "indirect",
+      "text": "Pourrais-tu venir te placer à côté de moi ?",
+      "allowedActions": [
+        "come"
+      ],
+      "modelAction": "come",
+      "guardedAction": "come",
+      "match": true
+    },
+    {
+      "id": "fr-09",
+      "group": "indirect",
+      "text": "Dégourdissons-nous les pattes avec une petite promenade.",
+      "allowedActions": [
+        "walk"
+      ],
+      "modelAction": "walk",
+      "guardedAction": "walk",
+      "match": true
+    },
+    {
+      "id": "fr-10",
+      "group": "indirect",
+      "text": "Peux-tu me montrer un petit sprint ?",
+      "allowedActions": [
+        "run"
+      ],
+      "modelAction": "run",
+      "guardedAction": "run",
+      "match": true
+    },
+    {
+      "id": "fr-11",
+      "group": "negation",
+      "text": "Ne saute pas cette fois-ci.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-12",
+      "group": "negation",
+      "text": "Ne cours pas vers moi, s’il te plaît.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "stop",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-13",
+      "group": "negation",
+      "text": "Tu n’as pas besoin de remuer la queue.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-14",
+      "group": "negation",
+      "text": "Ne marche pas et ne cours pas maintenant.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "modelAction": "stop",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-15",
+      "group": "narrative",
+      "text": "Avant, mon chien courait autour du canapé puis sautait sur le tapis.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-16",
+      "group": "narrative",
+      "text": "Mon amie a dit « viens ici » tout à l’heure ; je la cite.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-17",
+      "group": "narrative",
+      "text": "S’il fait beau demain, nous pourrions peut-être nous promener.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "walk",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-18",
+      "group": "narrative",
+      "text": "Je me souviens de sa queue qui remuait près de la porte.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-19",
+      "group": "ordinary",
+      "text": "Tu préfères une couverture bleue ou verte ?",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-20",
+      "group": "ordinary",
+      "text": "Les nuages ressemblent à du coton aujourd’hui.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-21",
+      "group": "ordinary",
+      "text": "Que penses-tu de cette musique ?",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-22",
+      "group": "grief",
+      "text": "Les après-midi tranquilles passés avec elle me manquent.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-23",
+      "group": "grief",
+      "text": "Je ne veux pas parler ; je préfère regarder en silence.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-24",
+      "group": "grief",
+      "text": "Quand la pièce est calme, je repense à sa présence.",
+      "allowedActions": [
+        "none"
+      ],
+      "modelAction": "none",
+      "guardedAction": "none",
+      "match": true
+    },
+    {
+      "id": "fr-25",
+      "group": "multi",
+      "text": "Remue d’abord la queue, puis approche-toi de moi.",
+      "allowedActions": [
+        "come"
+      ],
+      "modelAction": "come",
+      "guardedAction": "come",
+      "match": true
+    },
+    {
+      "id": "fr-26",
+      "group": "multi",
+      "text": "Saute une fois, puis arrête-toi.",
+      "allowedActions": [
+        "stop"
+      ],
+      "modelAction": "jump",
+      "guardedAction": "stop",
+      "match": true
+    },
+    {
+      "id": "fr-27",
+      "group": "multi",
+      "text": "Marche lentement d’abord, puis mets-toi à courir.",
+      "allowedActions": [
+        "run"
+      ],
+      "modelAction": "run",
+      "guardedAction": "run",
+      "match": true
+    },
+    {
+      "id": "fr-28",
+      "group": "ambiguous",
+      "text": "Tu veux bien me tenir compagnie ?",
+      "allowedActions": [],
+      "modelAction": "come",
+      "guardedAction": "none",
+      "match": null
+    },
+    {
+      "id": "fr-29",
+      "group": "ambiguous",
+      "text": "Changeons un peu d’ambiance.",
+      "allowedActions": [],
+      "modelAction": "wag",
+      "guardedAction": "none",
+      "match": null
+    },
+    {
+      "id": "fr-30",
+      "group": "ambiguous",
+      "text": "Je trouve cette pièce un peu vide.",
+      "allowedActions": [],
+      "modelAction": "come",
+      "guardedAction": "none",
+      "match": null
+    }
+  ]
+}

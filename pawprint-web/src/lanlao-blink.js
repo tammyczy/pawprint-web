@@ -20,6 +20,7 @@ export function createLanlaoBlink(model, textureUrl) {
   shader.vertexShader = `
    uniform mat4 lanlaoRest;
    varying vec3 lanlaoFace;
+
   ` + shader.vertexShader.replace('#include <begin_vertex>', `
    #include <begin_vertex>
    lanlaoFace = (lanlaoRest * vec4(position, 1.0)).xyz;
@@ -28,6 +29,30 @@ export function createLanlaoBlink(model, textureUrl) {
    uniform float lanlaoClosure;
    uniform sampler2D lanlaoCoat;
    varying vec3 lanlaoFace;
+
+   float lanlaoEyeSurface(vec3 coatColor) {
+    if (lanlaoFace.x > -0.32) return 0.0;
+    vec2 pixel = vec2(lanlaoFace.z * 700.0 + 240.0, (0.88 - lanlaoFace.y) * 700.0);
+    bool right = pixel.x > 260.0;
+    vec2 center = right ? vec2(299.0, 114.0) : vec2(222.0, 115.0);
+    vec2 radii = right ? vec2(11.5, 13.0) : vec2(15.0, 14.0);
+    float area = 1.0 - smoothstep(0.76, 1.04, length((pixel - center) / radii));
+    float dark = 1.0 - smoothstep(0.028, 0.10, dot(coatColor, vec3(0.2126, 0.7152, 0.0722)));
+    return area * dark * (1.0 - smoothstep(0.0, 0.65, lanlaoClosure));
+   }
+
+   vec3 lanlaoRelaxedEyeCoat(vec3 coatColor) {
+    if (lanlaoFace.x > -0.32) return coatColor;
+    vec2 pixel = vec2(lanlaoFace.z * 700.0 + 240.0, (0.88 - lanlaoFace.y) * 700.0);
+    bool right = pixel.x > 260.0;
+    vec2 center = right ? vec2(299.0, 114.0) : vec2(222.0, 115.0);
+    vec2 radii = right ? vec2(11.5, 13.0) : vec2(15.0, 14.0);
+    float distance = length((pixel - center) / radii);
+    float orbit = smoothstep(0.92, 1.12, distance) * (1.0 - smoothstep(1.45, 1.85, distance));
+    float luminance = dot(coatColor, vec3(0.2126, 0.7152, 0.0722));
+    float fur = smoothstep(0.045, 0.12, luminance) * (1.0 - smoothstep(0.32, 0.55, luminance));
+    return coatColor + vec3(0.025, 0.021, 0.016) * orbit * fur;
+   }
 
    vec3 lanlaoLids(vec3 openCoat) {
     if (lanlaoClosure <= 0.0 || lanlaoFace.x > -0.32) return openCoat;
@@ -59,10 +84,14 @@ export function createLanlaoBlink(model, textureUrl) {
    }
   ` + shader.fragmentShader.replace('#include <map_fragment>', `
    #include <map_fragment>
-   diffuseColor.rgb = lanlaoLids(diffuseColor.rgb);
+   diffuseColor.rgb = lanlaoLids(lanlaoRelaxedEyeCoat(diffuseColor.rgb));
+  `).replace('#include <roughnessmap_fragment>', `
+   #include <roughnessmap_fragment>
+   // The corneal surface catches the scene lights while the coat stays matte.
+   roughnessFactor = mix(roughnessFactor, 0.24, lanlaoEyeSurface(diffuseColor.rgb));
   `);
  };
- material.customProgramCacheKey = () => 'lanlao-eyelid-v1';
+ material.customProgramCacheKey = () => 'lanlao-eyelid-eye-surface-v2';
  material.needsUpdate = true;
  return closure;
 }

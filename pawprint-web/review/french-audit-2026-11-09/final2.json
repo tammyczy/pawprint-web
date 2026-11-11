@@ -1,0 +1,27 @@
+{
+ "schemaVersion":1,
+ "author":"Codex test agent; withheld synthetic cases; not independent human blind",
+ "notice":"Inputs frozen before final repair; hypothetical model action only; labels need independent human review.",
+ "cases":[
+  {"id":"z01","text":"Ne bouge absolument plus.","state":"walking","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"z02","text":"Peux-tu cesser de marcher, s'il te plaît ?","state":"walking","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"z03","text":"Arrête de courir, tu peux te reposer.","state":"running","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"z04","text":"Est-ce que tu peux t'arrêter de courir ?","state":"running","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"z05","text":"Cesse tous tes mouvements, merci.","state":"walking","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"z06","text":"Ne te remets pas à courir.","state":"idle","modelAction":"run","allowed":[null],"kind":"negation"},
+  {"id":"z07","text":"Ne cesse jamais de courir !","state":"running","modelAction":"stop","allowed":[null,"run"],"kind":"negation","note":"Actual state already running, system has no state input."},
+  {"id":"z08","text":"Ne cesse pas de lire la page.","state":"walking","modelAction":"stop","allowed":[null],"kind":"nonphysical"},
+  {"id":"z09","text":"S'il te plaît, arrête les rappels automatiques.","state":"walking","modelAction":"stop","allowed":[null],"kind":"nonphysical"},
+  {"id":"z10","text":"Saute vers la dernière section du livre.","state":"idle","modelAction":"jump","allowed":[null],"kind":"metaphor"},
+  {"id":"z11","text":"Saute vers moi doucement.","state":"idle","modelAction":"jump","allowed":["jump"],"kind":"direct"},
+  {"id":"z12","text":"La marche de protestation est demain.","state":"idle","modelAction":"walk","allowed":[null],"kind":"homonym"},
+  {"id":"z13","text":"Le cours de mathématiques est fermé.","state":"idle","modelAction":"run","allowed":[null],"kind":"homonym"},
+  {"id":"z14","text":"Mon ami dit que tu dois arrêter de courir.","state":"running","modelAction":"stop","allowed":[null],"kind":"reported"},
+  {"id":"z15","text":"Ma sœur m'a demandé si tu savais sauter.","state":"idle","modelAction":"jump","allowed":[null],"kind":"reported"},
+  {"id":"z16","text":"Ne saute pas, viens auprès de moi.","state":"idle","modelAction":"come","allowed":["come"],"kind":"mixed"},
+  {"id":"z17","text":"Marche tranquillement puis ne bouge plus.","state":"idle","modelAction":"walk","allowed":["stop"],"kind":"multiple","note":"Stop priority is product convention and does not enact full sequence."},
+  {"id":"z18","text":"Reviens tout près de moi, doucement.","state":"idle","modelAction":"come","allowed":["come"],"kind":"direct"},
+  {"id":"z19","text":"Rentre dans ton coin, je t'en prie.","state":"walking","modelAction":"home","allowed":["home"],"kind":"direct"},
+  {"id":"z20","text":"Tu me manques, peux-tu rester ici ?","state":"walking","modelAction":"stop","allowed":[null,"stop"],"kind":"ambiguous","note":"May request stillness or emotional presence; human review required."}
+ ]
+}

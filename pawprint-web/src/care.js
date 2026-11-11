@@ -4,6 +4,7 @@ import './care.css';
 // Everything here runs in the browser; letters are never sent to a server or an AI model.
 
 import {HELPLINE_URL,detectDistress,careText,readFarewell,saveFarewell,createBreakTimer,safeStorage} from './care-core.js';
+import {createPetLossResources} from './pet-loss-resources.js';
 export {detectDistress} from './care-core.js';
 
 function element(tag,className,text){const node=document.createElement(tag);if(className)node.className=className;if(text!=null)node.textContent=text;return node;}
@@ -16,6 +17,7 @@ export function createCare({locale,petName,petKey,controls,stage,onGoodbye=()=>{
  const goodbyeButton=element('button','care-link');goodbyeButton.type='button';
  const helpButton=element('button','care-link');helpButton.type='button';
  row.append(goodbyeButton,helpButton);controls.append(row);
+ const resources=createPetLossResources({container:controls,locale});
 
  const card=element('section','care-card');card.hidden=true;card.tabIndex=-1;card.setAttribute('role','region');card.setAttribute('aria-live','polite');
  const cardTitle=element('h2','care-card-title');cardTitle.id='care-card-title';card.setAttribute('aria-labelledby',cardTitle.id);
@@ -60,6 +62,7 @@ export function createCare({locale,petName,petKey,controls,stage,onGoodbye=()=>{
  });
 
  function render(){
+  resources.render();
   goodbyeButton.textContent=t('goodbyeOpen');helpButton.textContent=t('helpOpen');
   if(cardKind==='break'){cardTitle.textContent=t('breakTitle');cardBody.textContent=t('breakBody');cardUrgent.hidden=true;cardLink.hidden=true;cardClose.textContent=t('breakClose');}
   else{cardTitle.textContent=t('helpTitle');cardBody.textContent=t('helpBody');cardUrgent.hidden=false;cardUrgent.textContent=t('helpUrgent');cardLink.hidden=false;cardLink.textContent=`${t('helpLink')} ↗`;cardClose.textContent=t('helpClose');}

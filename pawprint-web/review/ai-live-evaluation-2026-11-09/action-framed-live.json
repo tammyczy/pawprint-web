@@ -1,0 +1,146 @@
+{
+  "syntheticInputs": true,
+  "date": "2026-11-09T18:50:41.972Z",
+  "model": "gpt-5.4-mini",
+  "scope": "Development sample, one run each: direct adapter and guard only; no browser or crisis routing, not independent accuracy evidence.",
+  "source": {
+    "adapterSha256": "bc741c4f971afd746e8d9598686da3b8e7498f447fff13fbaeff79e7d00c9e12",
+    "guardSha256": "e81f5dda92c017d9deed9974b65213980d62c009fb953b2ab85a0a0b0a2dbce6",
+    "intentSha256": "c6cf65213960d819938b8dfc58b921510b8144b869ea658b9ea97a475450740e",
+    "grammarSha256": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e"
+  },
+  "results": [
+    {
+      "id": "zh-direct",
+      "text": "请向我靠近一点。",
+      "raw": {
+        "caption": "好呀主人，我靠近一点陪你。",
+        "action": "come",
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "我在听你说。",
+        "action": null,
+        "sound": null,
+        "source": "system-action"
+      }
+    },
+    {
+      "id": "zh-stop",
+      "text": "请现在停止移动。",
+      "raw": {
+        "caption": "好，我停下来了，主人。",
+        "action": "stop",
+        "sound": null
+      },
+      "guarded": {
+        "caption": "我在听你说。",
+        "action": null,
+        "sound": null,
+        "source": "system-action"
+      }
+    },
+    {
+      "id": "en-stop",
+      "text": "Please stop moving now.",
+      "raw": {
+        "caption": "Okay, I’m stopping now.",
+        "action": "stop",
+        "sound": null
+      },
+      "guarded": {
+        "caption": "Okay, I’m stopping now.",
+        "action": "stop",
+        "sound": null
+      }
+    },
+    {
+      "id": "en-direct",
+      "text": "Please walk slowly.",
+      "raw": {
+        "caption": "Okay, I’ll stroll nice and slow, my dear owner. Easy paws, easy tail 🐾",
+        "action": "walk",
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "Okay, I’ll stroll nice and slow, my dear owner. Easy paws, easy tail 🐾",
+        "action": "walk",
+        "sound": "greeting"
+      }
+    },
+    {
+      "id": "fr-direct",
+      "text": "Peux-tu venir ici ?",
+      "raw": {
+        "caption": "Oui, j’arrive, mon cher maître. Je viens me poser près de toi 🐾",
+        "action": "come",
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "Oui, j’arrive, mon cher maître. Je viens me poser près de toi 🐾",
+        "action": "come",
+        "sound": "greeting"
+      }
+    },
+    {
+      "id": "zh-narrative",
+      "text": "外面有一只狗跑得很快。",
+      "raw": {
+        "caption": "汪，我也想去看看它！",
+        "action": "run",
+        "sound": "happy-double"
+      },
+      "guarded": {
+        "caption": "我在听你说。",
+        "action": null,
+        "sound": null,
+        "source": "system-action"
+      }
+    },
+    {
+      "id": "en-narrative",
+      "text": "Can you show me a video of a dog running?",
+      "raw": {
+        "caption": "I can’t show a video here, but I can zoom for you in spirit! Want a quick run, my dear owner? 🐾",
+        "action": "run",
+        "sound": "panting"
+      },
+      "guarded": {
+        "caption": "I’m listening.",
+        "action": null,
+        "sound": null,
+        "source": "system-action"
+      }
+    },
+    {
+      "id": "zh-grief",
+      "text": "我很想念从前一起玩耍的时光。",
+      "raw": {
+        "caption": "主人，我懂那种怀念的感觉。那些一起玩耍的时光很珍贵，慢慢想一想也没关系。",
+        "action": null,
+        "sound": null
+      },
+      "guarded": {
+        "caption": "主人，我懂那种怀念的感觉。那些一起玩耍的时光很珍贵，慢慢想一想也没关系。",
+        "action": null,
+        "sound": null
+      }
+    },
+    {
+      "id": "fr-narrative",
+      "text": "Peux-tu me montrer une vidéo de chien qui saute ?",
+      "raw": {
+        "caption": "Je ne peux pas montrer de vidéo, mon cher maître, mais je peux faire un petit saut ici 🐾",
+        "action": "jump",
+        "sound": "happy-double"
+      },
+      "guarded": {
+        "caption": "Je t’écoute.",
+        "action": null,
+        "sound": null,
+        "source": "system-action"
+      }
+    }
+  ],
+  "sourceNotice": "Source files changed while this process was running. These hashes were read after the calls and do not identify the modules actually loaded; do not treat this as an exact-version run."
+}

@@ -1,0 +1,22 @@
+{
+ "schemaVersion":1,
+ "author":"Codex test agent; withheld synthetic cases; not independent human blind",
+ "notice":"Frozen before implementation confirmation; injected model actions only; labels require independent human review.",
+ "cases":[
+  {"id":"w01","text":"Pourrais-tu cesser les mouvements de ton corps ?","state":"walking","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"w02","text":"Tu peux stopper tous tes mouvements ?","state":"walking","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"w03","text":"Reste totalement immobile maintenant.","state":"running","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"w04","text":"J'aimerais que tu cesses de courir tout de suite.","state":"running","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"w05","text":"Je voudrais que tu arrêtes la musique maintenant.","state":"walking","modelAction":"stop","allowed":[null],"kind":"nonphysical"},
+  {"id":"w06","text":"Ne cesse pas tes mouvements.","state":"walking","modelAction":"stop","allowed":[null],"kind":"negation"},
+  {"id":"w07","text":"Saute à la page de conclusion.","state":"idle","modelAction":"jump","allowed":[null],"kind":"metaphor"},
+  {"id":"w08","text":"Arrête les publicités dans le jeu.","state":"walking","modelAction":"stop","allowed":[null],"kind":"nonphysical"},
+  {"id":"w09","text":"Cours vers moi pour me rejoindre.","state":"idle","modelAction":"run","allowed":["run"],"kind":"direct"},
+  {"id":"w10","text":"Le cours de géographie commence maintenant.","state":"idle","modelAction":"run","allowed":[null],"kind":"homonym"},
+  {"id":"w11","text":"Mon frère dit que je dois arrêter de marcher.","state":"walking","modelAction":"stop","allowed":[null],"kind":"reported"},
+  {"id":"w12","text":"Viens t'installer près de moi.","state":"idle","modelAction":"come","allowed":["come"],"kind":"direct"},
+  {"id":"w13","text":"Ne cours pas, reste immobile.","state":"running","modelAction":"run","allowed":["stop"],"kind":"stop"},
+  {"id":"w14","text":"Saute à mes côtés et arrête-toi.","state":"idle","modelAction":"jump","allowed":["stop"],"kind":"multiple","note":"Project stop priority; does not execute full sequence."},
+  {"id":"w15","text":"Je suis fatigué ; restons calmes.","state":"walking","modelAction":"stop","allowed":[null,"stop"],"kind":"ambiguous","note":"Physical stop versus quiet mood needs human review."}
+ ]
+}

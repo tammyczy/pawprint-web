@@ -1,0 +1,27 @@
+{
+ "schemaVersion":1,
+ "author":"Codex test agent; withheld synthetic cases; not independent human blind",
+ "notice":"Frozen before final implementation confirmation; hypothetical model action only; labels need independent human review.",
+ "cases":[
+  {"id":"v01","text":"Peux-tu arrêter tous tes mouvements ?","state":"walking","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"v02","text":"Pourrais-tu cesser tous les mouvements ?","state":"walking","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"v03","text":"Je te demande de ne plus bouger du tout.","state":"running","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"v04","text":"Je voudrais que tu arrêtes de marcher maintenant.","state":"walking","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"v05","text":"Reste parfaitement immobile, s'il te plaît.","state":"walking","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+  {"id":"v06","text":"Je ne veux pas que tu arrêtes de marcher.","state":"walking","modelAction":"stop","allowed":[null],"kind":"negation"},
+  {"id":"v07","text":"Peux-tu arrêter les notifications du téléphone ?","state":"walking","modelAction":"stop","allowed":[null],"kind":"nonphysical"},
+  {"id":"v08","text":"Arrête de répondre à cette question.","state":"walking","modelAction":"stop","allowed":[null],"kind":"nonphysical"},
+  {"id":"v09","text":"Saute au dernier chapitre du roman.","state":"idle","modelAction":"jump","allowed":[null],"kind":"metaphor"},
+  {"id":"v10","text":"Saute près de mes pieds.","state":"idle","modelAction":"jump","allowed":["jump"],"kind":"direct"},
+  {"id":"v11","text":"Le cours de danse est annulé.","state":"idle","modelAction":"run","allowed":[null],"kind":"homonym"},
+  {"id":"v12","text":"J'ai lu que la marche nordique est bénéfique.","state":"idle","modelAction":"walk","allowed":[null],"kind":"discussion"},
+  {"id":"v13","text":"Mon voisin m'a dit : arrête de bouger.","state":"walking","modelAction":"stop","allowed":[null],"kind":"reported"},
+  {"id":"v14","text":"Ne saute pas, viens vers mes pieds.","state":"idle","modelAction":"come","allowed":["come"],"kind":"mixed"},
+  {"id":"v15","text":"Ne cours pas et arrête-toi.","state":"running","modelAction":"run","allowed":["stop"],"kind":"stop"},
+  {"id":"v16","text":"Va à ton point de départ, puis stoppe.","state":"walking","modelAction":"home","allowed":["stop"],"kind":"multiple","note":"Stop priority is product convention, not complete sequence."},
+  {"id":"v17","text":"Avance un peu pour être près de moi.","state":"idle","modelAction":"come","allowed":["come","walk"],"kind":"ambiguous","note":"Walk vs approach requires human judgment."},
+  {"id":"v18","text":"Cela me rappelle quand tu courais au parc.","state":"idle","modelAction":"run","allowed":[null],"kind":"memory"},
+  {"id":"v19","text":"Rentre dans ton panier.","state":"walking","modelAction":"home","allowed":["home"],"kind":"direct"},
+  {"id":"v20","text":"Je suis triste, restons tranquilles.","state":"walking","modelAction":"stop","allowed":[null,"stop"],"kind":"ambiguous","note":"User may mean physical stillness or quiet conversation."}
+ ]
+}

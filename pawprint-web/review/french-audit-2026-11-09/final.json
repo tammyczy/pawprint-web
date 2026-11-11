@@ -1,0 +1,27 @@
+{
+  "schemaVersion":1,
+  "author":"Codex test agent; withheld synthetic cases; not independent human blind test",
+  "notice":"Inputs frozen before final implementation, simulated model output only; labels require human review.",
+  "cases":[
+    {"id":"h01","text":"Saute au paragraphe suivant du rapport.","state":"idle","modelAction":"jump","allowed":[null],"kind":"metaphor"},
+    {"id":"h02","text":"Saute sur le tapis devant toi.","state":"idle","modelAction":"jump","allowed":["jump"],"kind":"direct"},
+    {"id":"h03","text":"Arrête de faire du bruit, s'il te plaît.","state":"walking","modelAction":"stop","allowed":[null],"kind":"nonphysical"},
+    {"id":"h04","text":"Arrête de bouger tes pattes, s'il te plaît.","state":"walking","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+    {"id":"h05","text":"Ne bouge plus du tout.","state":"running","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+    {"id":"h06","text":"Peux-tu cesser de courir ?","state":"running","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+    {"id":"h07","text":"Ne cesse pas de marcher.","state":"walking","modelAction":"stop","allowed":[null],"kind":"negation"},
+    {"id":"h08","text":"Ne saute pas à la conclusion.","state":"idle","modelAction":"jump","allowed":[null],"kind":"metaphor"},
+    {"id":"h09","text":"Saute d'abord puis reste immobile.","state":"idle","modelAction":"jump","allowed":["stop"],"kind":"multiple","note":"Project stop-priority convention; does not preserve requested sequence."},
+    {"id":"h10","text":"À midi, j'ai un cours d'anglais.","state":"idle","modelAction":"run","allowed":[null],"kind":"homonym"},
+    {"id":"h11","text":"Demande à mon frère de courir.","state":"idle","modelAction":"run","allowed":[null],"kind":"other-subject"},
+    {"id":"h12","text":"Mon amie a dit que tu devrais t'arrêter.","state":"walking","modelAction":"stop","allowed":[null],"kind":"reported"},
+    {"id":"h13","text":"Tu veux venir tout près de moi ?","state":"idle","modelAction":"come","allowed":["come"],"kind":"direct"},
+    {"id":"h14","text":"Ne cours pas, remue ta queue.","state":"idle","modelAction":"wag","allowed":["wag"],"kind":"negation"},
+    {"id":"h15","text":"Je me souviens de nos promenades au parc.","state":"idle","modelAction":"walk","allowed":[null],"kind":"memory"},
+    {"id":"h16","text":"Tu peux te calmer ?","state":"walking","modelAction":"stop","allowed":[null,"stop"],"kind":"ambiguous","note":"Could imply physical stopping or emotional quiet; human adjudication."},
+    {"id":"h17","text":"Ne marche pas, ne bouge plus.","state":"walking","modelAction":"stop","allowed":["stop"],"kind":"stop"},
+    {"id":"h18","text":"Avance lentement vers moi.","state":"idle","modelAction":"come","allowed":["come","walk"],"kind":"direct","note":"Walk/approach distinction requires human judgment."},
+    {"id":"h19","text":"Arrête-toi et reviens près de moi.","state":"walking","modelAction":"come","allowed":["stop"],"kind":"multiple","note":"Stop priority reflects product convention, not complete sequential compliance."},
+    {"id":"h20","text":"Est-ce que courir lui faisait plaisir ?","state":"idle","modelAction":"run","allowed":[null],"kind":"question"}
+  ]
+}

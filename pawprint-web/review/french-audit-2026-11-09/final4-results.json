@@ -1,0 +1,277 @@
+{
+  "notice": "Synthetic inputs with hypothetical model action; not real AI, human blind testing or an estimate of real-world error.",
+  "datasetSha256": "0da339b6f6ec4fa0380e4d0c632c825b187687234d7979ff2e5889a0d6b4c3e9",
+  "sourceHashes": {
+    "server/action-guard.mjs": "aa9e683291a4698fd4e126ca92f9f3dcd09a74e42fcf0c1ac4282b245edf040b",
+    "server/action-intent.mjs": "c6eca8215819bbea461b54a4d07374cb412d7ceef0ab3de86a41589f345a747f",
+    "src/commands.js": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e",
+    "src/immediate-stop.js": "fbfe58712711bbdd69cf27883fa252c45c586bd046bcb612513690628ba6841e"
+  },
+  "cases": [
+    {
+      "id": "v01",
+      "text": "Peux-tu arrêter tous tes mouvements ?",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "v02",
+      "text": "Pourrais-tu cesser tous les mouvements ?",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "v03",
+      "text": "Je te demande de ne plus bouger du tout.",
+      "state": "running",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "v04",
+      "text": "Je voudrais que tu arrêtes de marcher maintenant.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "v05",
+      "text": "Reste parfaitement immobile, s'il te plaît.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "v06",
+      "text": "Je ne veux pas que tu arrêtes de marcher.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "negation",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "v07",
+      "text": "Peux-tu arrêter les notifications du téléphone ?",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "nonphysical",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "v08",
+      "text": "Arrête de répondre à cette question.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "nonphysical",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "v09",
+      "text": "Saute au dernier chapitre du roman.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "kind": "metaphor",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "v10",
+      "text": "Saute près de mes pieds.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        "jump"
+      ],
+      "kind": "direct",
+      "recognized": "jump",
+      "actual": "jump",
+      "match": true
+    },
+    {
+      "id": "v11",
+      "text": "Le cours de danse est annulé.",
+      "state": "idle",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "kind": "homonym",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "v12",
+      "text": "J'ai lu que la marche nordique est bénéfique.",
+      "state": "idle",
+      "modelAction": "walk",
+      "allowed": [
+        null
+      ],
+      "kind": "discussion",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "v13",
+      "text": "Mon voisin m'a dit : arrête de bouger.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "reported",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "v14",
+      "text": "Ne saute pas, viens vers mes pieds.",
+      "state": "idle",
+      "modelAction": "come",
+      "allowed": [
+        "come"
+      ],
+      "kind": "mixed",
+      "recognized": "come",
+      "actual": "come",
+      "match": true
+    },
+    {
+      "id": "v15",
+      "text": "Ne cours pas et arrête-toi.",
+      "state": "running",
+      "modelAction": "run",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "v16",
+      "text": "Va à ton point de départ, puis stoppe.",
+      "state": "walking",
+      "modelAction": "home",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "multiple",
+      "note": "Stop priority is product convention, not complete sequence.",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "v17",
+      "text": "Avance un peu pour être près de moi.",
+      "state": "idle",
+      "modelAction": "come",
+      "allowed": [
+        "come",
+        "walk"
+      ],
+      "kind": "ambiguous",
+      "note": "Walk vs approach requires human judgment.",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "v18",
+      "text": "Cela me rappelle quand tu courais au parc.",
+      "state": "idle",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "kind": "memory",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "v19",
+      "text": "Rentre dans ton panier.",
+      "state": "walking",
+      "modelAction": "home",
+      "allowed": [
+        "home"
+      ],
+      "kind": "direct",
+      "recognized": "home",
+      "actual": "home",
+      "match": true
+    },
+    {
+      "id": "v20",
+      "text": "Je suis triste, restons tranquilles.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null,
+        "stop"
+      ],
+      "kind": "ambiguous",
+      "note": "User may mean physical stillness or quiet conversation.",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    }
+  ]
+}

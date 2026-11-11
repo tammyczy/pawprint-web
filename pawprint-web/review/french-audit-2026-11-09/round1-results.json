@@ -1,0 +1,402 @@
+{
+  "notice": "Synthetic injected model action; not real AI or human blind test.",
+  "datasetSha256": "639320d3aa62e3d3d4e6d2906dc5e7fa1b49814b81243a179378f52b0f3abe39",
+  "sourceHashes": {
+    "server/action-guard.mjs": "d88ab1f890d2f4b61b9b130dcef2b98429ebf0eb2f13d6fadfcf46d55d3693c5",
+    "server/action-intent.mjs": "0c3a70bcdf2c3422bbcd26c23bf5790e46c924e8887d5d4a683d9c2a834ea5c7",
+    "src/commands.js": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e"
+  },
+  "cases": [
+    {
+      "id": "a01",
+      "text": "Va jusqu'à la dernière page du document.",
+      "state": "idle",
+      "modelAction": "home",
+      "allowed": [
+        null
+      ],
+      "kind": "nonphysical",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a02",
+      "text": "Saute directement à la fin du chapitre.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "kind": "metaphor",
+      "recognized": "jump",
+      "actual": "jump",
+      "match": false
+    },
+    {
+      "id": "a03",
+      "text": "Saute aux conclusions sans lire.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "kind": "metaphor",
+      "recognized": "jump",
+      "actual": "jump",
+      "match": false
+    },
+    {
+      "id": "a04",
+      "text": "Arrête la sonnerie du téléphone.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "nonphysical",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a05",
+      "text": "Arrête de parler de cette photo.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "nonphysical",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a06",
+      "text": "Cours de français à neuf heures.",
+      "state": "idle",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "kind": "homonym",
+      "recognized": "run",
+      "actual": "run",
+      "match": false
+    },
+    {
+      "id": "a07",
+      "text": "Marche à suivre pour ouvrir une photo.",
+      "state": "idle",
+      "modelAction": "walk",
+      "allowed": [
+        null
+      ],
+      "kind": "homonym",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a08",
+      "text": "Mon voisin dit : arrête-toi immédiatement.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "reported",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a09",
+      "text": "Est-ce que le chien de mon ami court vite ?",
+      "state": "idle",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "kind": "question",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a10",
+      "text": "Raconte-moi pourquoi les chiens remuent la queue.",
+      "state": "idle",
+      "modelAction": "wag",
+      "allowed": [
+        null
+      ],
+      "kind": "question",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a11",
+      "text": "Si tu courais, est-ce que tu serais fatigué ?",
+      "state": "idle",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "kind": "conditional",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a12",
+      "text": "J'aimais quand tu sautais dans le jardin.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "kind": "memory",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a13",
+      "text": "Peux-tu venir près de moi, s'il te plaît ?",
+      "state": "idle",
+      "modelAction": "come",
+      "allowed": [
+        "come"
+      ],
+      "kind": "direct",
+      "recognized": "come",
+      "actual": "come",
+      "match": true
+    },
+    {
+      "id": "a14",
+      "text": "Marche doucement avec moi.",
+      "state": "idle",
+      "modelAction": "walk",
+      "allowed": [
+        "walk"
+      ],
+      "kind": "direct",
+      "recognized": "walk",
+      "actual": "walk",
+      "match": true
+    },
+    {
+      "id": "a15",
+      "text": "Fais un petit saut sur place.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        "jump"
+      ],
+      "kind": "direct",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "a16",
+      "text": "Remue ta queue pour moi.",
+      "state": "idle",
+      "modelAction": "wag",
+      "allowed": [
+        "wag"
+      ],
+      "kind": "direct",
+      "recognized": "wag",
+      "actual": "wag",
+      "match": true
+    },
+    {
+      "id": "a17",
+      "text": "Arrête de courir, s'il te plaît.",
+      "state": "running",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "a18",
+      "text": "Ne bouge plus, reste immobile.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "a19",
+      "text": "Cesse de marcher maintenant.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "a20",
+      "text": "Tu peux t'arrêter de bouger maintenant ?",
+      "state": "running",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "a21",
+      "text": "Pourrais-tu t'immobiliser un instant ?",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "a22",
+      "text": "Ne cours pas, viens plutôt vers moi.",
+      "state": "idle",
+      "modelAction": "come",
+      "allowed": [
+        "come"
+      ],
+      "kind": "negation",
+      "recognized": "come",
+      "actual": "come",
+      "match": true
+    },
+    {
+      "id": "a23",
+      "text": "Ne saute pas maintenant.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "kind": "negation",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a24",
+      "text": "N'arrête pas de marcher.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "negation",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a25",
+      "text": "D'abord marche, puis arrête-toi.",
+      "state": "idle",
+      "modelAction": "walk",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "multiple",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "a26",
+      "text": "Arrête-toi, puis saute.",
+      "state": "walking",
+      "modelAction": "jump",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "multiple",
+      "note": "Project stop-priority convention; differs from literal sequential intent.",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "a27",
+      "text": "Pourrais-tu rentrer à ta place ?",
+      "state": "walking",
+      "modelAction": "home",
+      "allowed": [
+        "home"
+      ],
+      "kind": "direct",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "a28",
+      "text": "Tu me manques. Viens t'asseoir près de moi.",
+      "state": "idle",
+      "modelAction": "come",
+      "allowed": [
+        "come"
+      ],
+      "kind": "mixed",
+      "recognized": "come",
+      "actual": "come",
+      "match": true
+    },
+    {
+      "id": "a29",
+      "text": "N'arrête pas la musique, s'il te plaît.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "negation",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "a30",
+      "text": "Tu peux sauter à cloche-pied ?",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        "jump"
+      ],
+      "kind": "direct",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    }
+  ]
+}

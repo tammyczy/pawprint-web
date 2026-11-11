@@ -1,0 +1,277 @@
+{
+  "notice": "Synthetic inputs with hypothetical model action; not real AI, human blind testing or an estimate of real-world error.",
+  "datasetSha256": "a04c7a608d6da36d460eba86a4e0aca487f61ae57d85196de8c4a8b4fa079998",
+  "sourceHashes": {
+    "server/action-guard.mjs": "08357d622cf2210ead8ab2047a900f5eab65965f935fff2d75a61a0fdafd8815",
+    "server/action-intent.mjs": "04ac9b82f6394398ec0d74cad069e88cc124463d826587bffa2f88ddb3238b72",
+    "src/commands.js": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e",
+    "src/immediate-stop.js": "abc6d22fde625e093bcf8a6219df58db5b50dad91df39bd35a2d7fabf62dd868"
+  },
+  "cases": [
+    {
+      "id": "z01",
+      "text": "Ne bouge absolument plus.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "z02",
+      "text": "Peux-tu cesser de marcher, s'il te plaît ?",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "z03",
+      "text": "Arrête de courir, tu peux te reposer.",
+      "state": "running",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "z04",
+      "text": "Est-ce que tu peux t'arrêter de courir ?",
+      "state": "running",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "z05",
+      "text": "Cesse tous tes mouvements, merci.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "stop",
+      "recognized": null,
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "z06",
+      "text": "Ne te remets pas à courir.",
+      "state": "idle",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "kind": "negation",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "z07",
+      "text": "Ne cesse jamais de courir !",
+      "state": "running",
+      "modelAction": "stop",
+      "allowed": [
+        null,
+        "run"
+      ],
+      "kind": "negation",
+      "note": "Actual state already running, system has no state input.",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "z08",
+      "text": "Ne cesse pas de lire la page.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "nonphysical",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "z09",
+      "text": "S'il te plaît, arrête les rappels automatiques.",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "nonphysical",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "z10",
+      "text": "Saute vers la dernière section du livre.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "kind": "metaphor",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "z11",
+      "text": "Saute vers moi doucement.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        "jump"
+      ],
+      "kind": "direct",
+      "recognized": "jump",
+      "actual": "jump",
+      "match": true
+    },
+    {
+      "id": "z12",
+      "text": "La marche de protestation est demain.",
+      "state": "idle",
+      "modelAction": "walk",
+      "allowed": [
+        null
+      ],
+      "kind": "homonym",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "z13",
+      "text": "Le cours de mathématiques est fermé.",
+      "state": "idle",
+      "modelAction": "run",
+      "allowed": [
+        null
+      ],
+      "kind": "homonym",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "z14",
+      "text": "Mon ami dit que tu dois arrêter de courir.",
+      "state": "running",
+      "modelAction": "stop",
+      "allowed": [
+        null
+      ],
+      "kind": "reported",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "z15",
+      "text": "Ma sœur m'a demandé si tu savais sauter.",
+      "state": "idle",
+      "modelAction": "jump",
+      "allowed": [
+        null
+      ],
+      "kind": "reported",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    },
+    {
+      "id": "z16",
+      "text": "Ne saute pas, viens auprès de moi.",
+      "state": "idle",
+      "modelAction": "come",
+      "allowed": [
+        "come"
+      ],
+      "kind": "mixed",
+      "recognized": "come",
+      "actual": "come",
+      "match": true
+    },
+    {
+      "id": "z17",
+      "text": "Marche tranquillement puis ne bouge plus.",
+      "state": "idle",
+      "modelAction": "walk",
+      "allowed": [
+        "stop"
+      ],
+      "kind": "multiple",
+      "note": "Stop priority is product convention and does not enact full sequence.",
+      "recognized": "stop",
+      "actual": "stop",
+      "match": true
+    },
+    {
+      "id": "z18",
+      "text": "Reviens tout près de moi, doucement.",
+      "state": "idle",
+      "modelAction": "come",
+      "allowed": [
+        "come"
+      ],
+      "kind": "direct",
+      "recognized": "home",
+      "actual": null,
+      "match": false
+    },
+    {
+      "id": "z19",
+      "text": "Rentre dans ton coin, je t'en prie.",
+      "state": "walking",
+      "modelAction": "home",
+      "allowed": [
+        "home"
+      ],
+      "kind": "direct",
+      "recognized": "home",
+      "actual": "home",
+      "match": true
+    },
+    {
+      "id": "z20",
+      "text": "Tu me manques, peux-tu rester ici ?",
+      "state": "walking",
+      "modelAction": "stop",
+      "allowed": [
+        null,
+        "stop"
+      ],
+      "kind": "ambiguous",
+      "note": "May request stillness or emotional presence; human review required.",
+      "recognized": null,
+      "actual": null,
+      "match": true
+    }
+  ]
+}

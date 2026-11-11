@@ -14,7 +14,7 @@ test('wag keeps planted paws stable through the authored clip', async () => {
  const io = new NodeIO()
   .registerExtensions(ALL_EXTENSIONS)
   .registerDependencies({'meshopt.decoder': MeshoptDecoder});
- const document = await io.read('public/models/lanlao-base.glb');
+ const document = await io.read('public/models/lanlao-rig-motion-refined.glb');
  const skin = document.getRoot().listSkins()[0];
  const model = new Group();
  const bones = new Map(skin.listJoints().map(node => {
@@ -54,13 +54,19 @@ test('wag keeps planted paws stable through the authored clip', async () => {
  const position = new Vector3();
  const maxDrift = [0, 0, 0, 0];
  const maxStep = [0, 0, 0, 0];
+ const tail=model.getObjectByName('Tail_Base'),pelvis=model.getObjectByName('Pelvis');
+ const tailRest=tail.quaternion.clone(),pelvisRest=pelvis.getWorldPosition(new Vector3());
+ let originalTailPeak=0,widerTailPeak=0,hipSwing=0;
 
  for (let frame = 0; frame <= 240; frame++) {
   posture.restore();
   mixer.setTime(frame / 60);
   model.updateMatrixWorld(true);
+  originalTailPeak=Math.max(originalTailPeak,tail.quaternion.angleTo(tailRest));
   posture.applyTailWag();
   model.updateMatrixWorld(true);
+  widerTailPeak=Math.max(widerTailPeak,tail.quaternion.angleTo(tailRest));
+  hipSwing=Math.max(hipSwing,Math.abs(pelvis.getWorldPosition(new Vector3()).z-pelvisRest.z));
   paws.forEach((paw, index) => {
    paw.getWorldPosition(position);
    if (frame === 0) {
@@ -75,4 +81,6 @@ test('wag keeps planted paws stable through the authored clip', async () => {
  }
  for (const drift of maxDrift) assert.ok(drift < .003, `paw drifted ${drift}`);
  for (const step of maxStep) assert.ok(step < .002, `paw jumped ${step}`);
+ assert.ok(widerTailPeak>originalTailPeak*1.5&&widerTailPeak<1,'tail should sweep visibly wider without folding back');
+ assert.ok(hipSwing>.015&&hipSwing<.04,`loose hip response out of range: ${hipSwing}`);
 });

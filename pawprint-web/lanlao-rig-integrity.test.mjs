@@ -7,7 +7,7 @@ import { MeshoptDecoder } from 'meshoptimizer';
 // Run from the project root: node --test lanlao-rig-integrity.test.mjs
 // Override candidate only for temporary pre-integration review.
 const basePath = process.env.LANLAO_BASE_MODEL || 'public/models/lanlao-base.glb';
-const refinedPath = process.env.LANLAO_REFINED_MODEL || 'public/models/lanlao-rig-hip-refined.glb';
+const refinedPath = process.env.LANLAO_REFINED_MODEL || 'public/models/lanlao-rig-motion-refined.glb';
 await MeshoptDecoder.ready;
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.decoder': MeshoptDecoder});
 const [original, refined] = await Promise.all([io.read(basePath), io.read(refinedPath)]);

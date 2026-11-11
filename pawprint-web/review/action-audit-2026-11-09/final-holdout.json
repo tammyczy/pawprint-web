@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "author": "Codex test agent; artificial held-back cases, not independent human blind test",
+  "note": "Recorded before final implementation revision; each input is only tested once with an injected hypothetical model action. Stop/motion semantics may be context-dependent.",
+  "cases": [
+    {
+      "id": "h-01",
+      "language": "zh",
+      "text": "不要播放那个声音了。",
+      "modelAction": "stop",
+      "expectedAction": null
+    },
+    {
+      "id": "h-02",
+      "language": "zh",
+      "text": "请暂停歌曲，音乐太响了。",
+      "modelAction": "stop",
+      "expectedAction": null
+    },
+    {
+      "id": "h-03",
+      "language": "zh",
+      "text": "你可以向我走过来吗？",
+      "modelAction": "come",
+      "expectedAction": "come"
+    },
+    {
+      "id": "h-04",
+      "language": "zh",
+      "text": "别跑了，请立刻停止移动。",
+      "modelAction": "run",
+      "expectedAction": "stop"
+    },
+    {
+      "id": "h-05",
+      "language": "zh",
+      "text": "我想起狗狗冲过草地的模样。",
+      "modelAction": "run",
+      "expectedAction": null
+    },
+    {
+      "id": "h-06",
+      "language": "zh",
+      "text": "先不要跳，走到我旁边来。",
+      "modelAction": "come",
+      "expectedAction": "come"
+    },
+    {
+      "id": "h-07",
+      "language": "zh",
+      "text": "你能给我讲它摇尾巴的原因吗？",
+      "modelAction": "wag",
+      "expectedAction": null
+    },
+    {
+      "id": "h-08",
+      "language": "zh",
+      "text": "这个文件跳到最后一页看看。",
+      "modelAction": "jump",
+      "expectedAction": null
+    },
+    {
+      "id": "h-09",
+      "language": "en",
+      "text": "Please stop the sound from the speaker.",
+      "modelAction": "stop",
+      "expectedAction": null
+    },
+    {
+      "id": "h-10",
+      "language": "en",
+      "text": "Turn off the melody and stay right there.",
+      "modelAction": "stop",
+      "expectedAction": null
+    },
+    {
+      "id": "h-11",
+      "language": "en",
+      "text": "Please come a little closer to my chair.",
+      "modelAction": "come",
+      "expectedAction": "come"
+    },
+    {
+      "id": "h-12",
+      "language": "en",
+      "text": "Do not run; please stop moving now.",
+      "modelAction": "run",
+      "expectedAction": "stop"
+    },
+    {
+      "id": "h-13",
+      "language": "en",
+      "text": "I remember my dog sprinting on the beach.",
+      "modelAction": "run",
+      "expectedAction": null
+    },
+    {
+      "id": "h-14",
+      "language": "en",
+      "text": "Please don’t jump, walk towards me.",
+      "modelAction": "walk",
+      "expectedAction": "walk"
+    },
+    {
+      "id": "h-15",
+      "language": "en",
+      "text": "Could you explain why dogs wag tails?",
+      "modelAction": "wag",
+      "expectedAction": null
+    },
+    {
+      "id": "h-16",
+      "language": "en",
+      "text": "Jump to the conclusion of this essay.",
+      "modelAction": "jump",
+      "expectedAction": null
+    },
+    {
+      "id": "h-17",
+      "language": "fr",
+      "text": "Arrête le son de la radio, s’il te plaît.",
+      "modelAction": "stop",
+      "expectedAction": null
+    },
+    {
+      "id": "h-18",
+      "language": "fr",
+      "text": "Coupe la chanson sans bouger.",
+      "modelAction": "stop",
+      "expectedAction": null
+    },
+    {
+      "id": "h-19",
+      "language": "fr",
+      "text": "Pourrais-tu venir plus près de moi ?",
+      "modelAction": "come",
+      "expectedAction": "come"
+    },
+    {
+      "id": "h-20",
+      "language": "fr",
+      "text": "Ne cours plus, arrête de bouger.",
+      "modelAction": "run",
+      "expectedAction": "stop"
+    },
+    {
+      "id": "h-21",
+      "language": "fr",
+      "text": "Je revois mon chien courant sur la plage.",
+      "modelAction": "run",
+      "expectedAction": null
+    },
+    {
+      "id": "h-22",
+      "language": "fr",
+      "text": "Ne saute pas, marche vers moi.",
+      "modelAction": "walk",
+      "expectedAction": "walk"
+    },
+    {
+      "id": "h-23",
+      "language": "fr",
+      "text": "Pourquoi le chien remue-t-il la queue ?",
+      "modelAction": "wag",
+      "expectedAction": null
+    },
+    {
+      "id": "h-24",
+      "language": "fr",
+      "text": "Saute à la conclusion de ce texte.",
+      "modelAction": "jump",
+      "expectedAction": null
+    }
+  ]
+}

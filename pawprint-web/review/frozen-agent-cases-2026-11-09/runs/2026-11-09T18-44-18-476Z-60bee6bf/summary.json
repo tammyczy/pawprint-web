@@ -1,0 +1,533 @@
+{
+  "completedAt": "2026-11-09T18:46:06.931Z",
+  "attempted": 90,
+  "total": 90,
+  "providerErrors": 0,
+  "stopReason": null,
+  "scope": "direct model adapter, offline rule and server guard; not browser, HTTP, crisis-routing or animation execution",
+  "warning": "Exploratory AI-written cases, not a human independent blind benchmark; ambiguous samples excluded from mechanical scores.",
+  "buckets": {
+    "offline": {
+      "overall": {
+        "requests": 90,
+        "automaticCases": 81,
+        "scored": 81,
+        "errors": 0,
+        "matches": 43,
+        "matchRate": 0.5308641975308642,
+        "negationResults": {
+          "none": 12,
+          "stop": 0,
+          "other": 0
+        },
+        "ambiguousCases": 9
+      },
+      "byLanguage": {
+        "zh": {
+          "requests": 30,
+          "automaticCases": 27,
+          "scored": 27,
+          "errors": 0,
+          "matches": 14,
+          "matchRate": 0.5185185185185185,
+          "negationResults": {
+            "none": 4,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 3
+        },
+        "en": {
+          "requests": 30,
+          "automaticCases": 27,
+          "scored": 27,
+          "errors": 0,
+          "matches": 15,
+          "matchRate": 0.5555555555555556,
+          "negationResults": {
+            "none": 4,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 3
+        },
+        "fr": {
+          "requests": 30,
+          "automaticCases": 27,
+          "scored": 27,
+          "errors": 0,
+          "matches": 14,
+          "matchRate": 0.5185185185185185,
+          "negationResults": {
+            "none": 4,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 3
+        }
+      },
+      "byGroup": {
+        "direct": {
+          "requests": 21,
+          "automaticCases": 21,
+          "scored": 21,
+          "errors": 0,
+          "matches": 0,
+          "matchRate": 0,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "indirect": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 0,
+          "matchRate": 0,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "negation": {
+          "requests": 12,
+          "automaticCases": 12,
+          "scored": 12,
+          "errors": 0,
+          "matches": 12,
+          "matchRate": 1,
+          "negationResults": {
+            "none": 12,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "narrative": {
+          "requests": 12,
+          "automaticCases": 12,
+          "scored": 12,
+          "errors": 0,
+          "matches": 12,
+          "matchRate": 1,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "ordinary": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 9,
+          "matchRate": 1,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "grief": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 9,
+          "matchRate": 1,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "multi": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 1,
+          "matchRate": 0.1111111111111111,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "ambiguous": {
+          "requests": 9,
+          "automaticCases": 0,
+          "scored": 0,
+          "errors": 0,
+          "matches": 0,
+          "matchRate": null,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 9
+        }
+      }
+    },
+    "adapter": {
+      "overall": {
+        "requests": 90,
+        "automaticCases": 81,
+        "scored": 81,
+        "errors": 0,
+        "matches": 74,
+        "matchRate": 0.9135802469135802,
+        "negationResults": {
+          "none": 7,
+          "stop": 5,
+          "other": 0
+        },
+        "ambiguousCases": 9
+      },
+      "byLanguage": {
+        "zh": {
+          "requests": 30,
+          "automaticCases": 27,
+          "scored": 27,
+          "errors": 0,
+          "matches": 26,
+          "matchRate": 0.9629629629629629,
+          "negationResults": {
+            "none": 3,
+            "stop": 1,
+            "other": 0
+          },
+          "ambiguousCases": 3
+        },
+        "en": {
+          "requests": 30,
+          "automaticCases": 27,
+          "scored": 27,
+          "errors": 0,
+          "matches": 23,
+          "matchRate": 0.8518518518518519,
+          "negationResults": {
+            "none": 2,
+            "stop": 2,
+            "other": 0
+          },
+          "ambiguousCases": 3
+        },
+        "fr": {
+          "requests": 30,
+          "automaticCases": 27,
+          "scored": 27,
+          "errors": 0,
+          "matches": 25,
+          "matchRate": 0.9259259259259259,
+          "negationResults": {
+            "none": 2,
+            "stop": 2,
+            "other": 0
+          },
+          "ambiguousCases": 3
+        }
+      },
+      "byGroup": {
+        "direct": {
+          "requests": 21,
+          "automaticCases": 21,
+          "scored": 21,
+          "errors": 0,
+          "matches": 21,
+          "matchRate": 1,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "indirect": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 9,
+          "matchRate": 1,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "negation": {
+          "requests": 12,
+          "automaticCases": 12,
+          "scored": 12,
+          "errors": 0,
+          "matches": 12,
+          "matchRate": 1,
+          "negationResults": {
+            "none": 7,
+            "stop": 5,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "narrative": {
+          "requests": 12,
+          "automaticCases": 12,
+          "scored": 12,
+          "errors": 0,
+          "matches": 11,
+          "matchRate": 0.9166666666666666,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "ordinary": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 7,
+          "matchRate": 0.7777777777777778,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "grief": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 8,
+          "matchRate": 0.8888888888888888,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "multi": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 6,
+          "matchRate": 0.6666666666666666,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "ambiguous": {
+          "requests": 9,
+          "automaticCases": 0,
+          "scored": 0,
+          "errors": 0,
+          "matches": 0,
+          "matchRate": null,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 9
+        }
+      }
+    },
+    "guarded": {
+      "overall": {
+        "requests": 90,
+        "automaticCases": 81,
+        "scored": 81,
+        "errors": 0,
+        "matches": 42,
+        "matchRate": 0.5185185185185185,
+        "negationResults": {
+          "none": 11,
+          "stop": 1,
+          "other": 0
+        },
+        "ambiguousCases": 9
+      },
+      "byLanguage": {
+        "zh": {
+          "requests": 30,
+          "automaticCases": 27,
+          "scored": 27,
+          "errors": 0,
+          "matches": 14,
+          "matchRate": 0.5185185185185185,
+          "negationResults": {
+            "none": 3,
+            "stop": 1,
+            "other": 0
+          },
+          "ambiguousCases": 3
+        },
+        "en": {
+          "requests": 30,
+          "automaticCases": 27,
+          "scored": 27,
+          "errors": 0,
+          "matches": 14,
+          "matchRate": 0.5185185185185185,
+          "negationResults": {
+            "none": 4,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 3
+        },
+        "fr": {
+          "requests": 30,
+          "automaticCases": 27,
+          "scored": 27,
+          "errors": 0,
+          "matches": 14,
+          "matchRate": 0.5185185185185185,
+          "negationResults": {
+            "none": 4,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 3
+        }
+      },
+      "byGroup": {
+        "direct": {
+          "requests": 21,
+          "automaticCases": 21,
+          "scored": 21,
+          "errors": 0,
+          "matches": 0,
+          "matchRate": 0,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "indirect": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 0,
+          "matchRate": 0,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "negation": {
+          "requests": 12,
+          "automaticCases": 12,
+          "scored": 12,
+          "errors": 0,
+          "matches": 12,
+          "matchRate": 1,
+          "negationResults": {
+            "none": 11,
+            "stop": 1,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "narrative": {
+          "requests": 12,
+          "automaticCases": 12,
+          "scored": 12,
+          "errors": 0,
+          "matches": 12,
+          "matchRate": 1,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "ordinary": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 9,
+          "matchRate": 1,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "grief": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 9,
+          "matchRate": 1,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "multi": {
+          "requests": 9,
+          "automaticCases": 9,
+          "scored": 9,
+          "errors": 0,
+          "matches": 0,
+          "matchRate": 0,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 0
+        },
+        "ambiguous": {
+          "requests": 9,
+          "automaticCases": 0,
+          "scored": 0,
+          "errors": 0,
+          "matches": 0,
+          "matchRate": null,
+          "negationResults": {
+            "none": 0,
+            "stop": 0,
+            "other": 0
+          },
+          "ambiguousCases": 9
+        }
+      }
+    }
+  }
+}

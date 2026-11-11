@@ -4,7 +4,8 @@ import {createHash} from 'node:crypto';
 import {parseCommand} from '../../src/commands.js';
 import {baselineCommand} from '../baseline-commands.js';
 import {predictIntent,hybridCommand} from '../../src/intent-model.js';
-import {summarize,confusion,compact,round,crossValidate,sweep,toExpected,THRESHOLDS} from './trainer.mjs';
+import {summarize,compact,round,crossValidate,sweep,toExpected,THRESHOLDS} from './trainer.mjs';
+import {evaluateComparison} from './compare-evaluation.mjs';
 
 const read=path=>readFile(new URL(path,import.meta.url));
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -30,25 +31,10 @@ const systems={
  classifier:text=>predictIntent(model,text).action,
  hybrid:text=>hybridCommand(model,text).action
 };
-async function evaluate(data){
- const rows=[];
- for(const item of data){
-  const row={id:item.id,group:item.group,text:item.text,expected:item.expected};
-  for(const [name,run] of Object.entries(systems))row[name]=run(item.text);
-  const h=hybridCommand(model,item.text);row.hybridSource=h.source;row.classifierConfidence=round(predictIntent(model,item.text).confidence,3);
-  if(llm){const a=await llm(item.text);if(a&&typeof a==='object'){row.llmError=a.error;row.llm=null;}else row.llm=a;}
-  rows.push(row);
- }
- const names=[...Object.keys(systems),...(llm?['llm']:[])],out={};
- for(const name of names){
-  const view=rows.map(r=>({group:r.group,expected:r.expected,actual:r[name]}));
-  out[name]={...compact(summarize(view)),errors:name==='llm'?rows.filter(r=>r.llmError).length:undefined,
-   groups:Object.fromEntries([...new Set(view.map(r=>r.group))].map(g=>[g,compact(summarize(view.filter(r=>r.group===g)))])),
-   confusion:confusion(view)};
- }
- if(!llm)out.llm={status:llmStatus};
- return {systems:out,rows};
-}
+const evaluate=data=>evaluateComparison(data,{systems,llm,llmStatus,describe:text=>({
+ hybridSource:hybridCommand(model,text).source,
+ classifierConfidence:round(predictIntent(model,text).confidence,3)
+})});
 
 const dev=await evaluate(cases);
 const blindResult=blind?await evaluate(blind):{status:'not present: create eval/intent/blind-test.json (see 盲測集填寫說明.md)'};
@@ -71,7 +57,7 @@ const thresholdSweep={chosen:model.threshold,rule:model.thresholdRule,thresholds
 
 const report={schemaVersion:1,generatedAt:new Date().toISOString(),
  scope:'Offline command-intent recognition only (text -> one of come/home/walk/run/wag/jump/stop or none). No user outcomes, speech recognition, clinical efficacy, or competition score measured. LLM column only when an API key is present.',
- method:'cases.json is a DEVELOPMENT set (author-written, seen while building; not blind). Classifier: softmax regression on character 1-3 grams, trained on train.json seed drafts written by an AI assistant for the team to review. train.mjs refuses to train if any training sentence is identical or near-identical (>=0.85 char similarity) to cases.json. Learning curve and threshold choice use 5-fold cross-validation on train.json only. blind-test.json, when present, should be written by people who never saw train.json. Small datasets: differences of one or two cases are noise.',
+ method:'cases.json is a DEVELOPMENT set (author-written, seen while building; not blind). Classifier: softmax regression on character 1-3 grams, trained on train.json seed drafts written by an AI assistant for the team to review. train.mjs refuses to train if any training sentence is identical or near-identical (>=0.85 char similarity) to cases.json. Learning curve and threshold choice use 5-fold cross-validation on train.json only. blind-test.json, when present, should be written by people who never saw train.json. Provider failures are excluded from scored totals and confusion matrices and listed separately as errors and requests; no scored outputs means metrics are unavailable. Small datasets: differences of one or two cases are noise.',
  datasetSha256:{cases:sha(casesBytes),train:sha(trainBytes),blindTest:blindBytes?sha(blindBytes):null},
  modelSha256:sha(modelBytes),codeSha256:{intentModel:sha(await read('../../src/intent-model.js')),rules:sha(await read('../../src/commands.js'))},
  model:{features:model.features,bytes:modelBytes.length,trainingExamples:model.trainingExamples,threshold:model.threshold},
@@ -80,7 +66,8 @@ const report={schemaVersion:1,generatedAt:new Date().toISOString(),
 await mkdir(new URL('../../public/evidence/',import.meta.url),{recursive:true});
 await writeFile(new URL('../../public/evidence/intent-comparison.json',import.meta.url),JSON.stringify(report,null,1)+'\n');
 
-const line=s=>s.status||`acc ${s.accuracy.toFixed(3)}  macroF1 ${s.macroF1.toFixed(3)}  falseAction ${s.falseActions}/${s.negativeCases} (${s.falseActionRate.toFixed(3)})  missed ${s.missedActions}  wrong ${s.wrongActions}`;
+const fmt=value=>value===null?'n/a':value.toFixed(3);
+const line=s=>s.status||`acc ${fmt(s.accuracy)}  macroF1 ${fmt(s.macroF1)}  falseAction ${s.falseActions}/${s.negativeCases} (${fmt(s.falseActionRate)})  missed ${s.missedActions}  wrong ${s.wrongActions}  scored ${s.total}/${s.requests}  errors ${s.errors}`;
 console.log('DEV set (cases.json, not blind), n='+cases.length);
 for(const [n,s] of Object.entries(dev.systems))console.log(' '+n.padEnd(11)+line(s));
 if(blind){console.log('BLIND set, n='+blind.length);for(const [n,s] of Object.entries(blindResult.systems))console.log(' '+n.padEnd(11)+line(s));}

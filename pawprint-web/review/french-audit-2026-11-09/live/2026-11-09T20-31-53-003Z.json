@@ -1,0 +1,487 @@
+{
+  "notice": "Fictitious development cases, one real model call each, directly through adapter and guard; not a user study, independent benchmark or browser test.",
+  "date": "2026-11-09T20:31:53.017Z",
+  "model": "gpt-5.4-mini",
+  "hashes": {
+    "server/action-guard.mjs": "aa9e683291a4698fd4e126ca92f9f3dcd09a74e42fcf0c1ac4282b245edf040b",
+    "server/action-intent.mjs": "c6eca8215819bbea461b54a4d07374cb412d7ceef0ab3de86a41589f345a747f",
+    "server/french-physical-stop.mjs": "73930e12c55f1bde7df58753445e7e15ac4906adb0dd6d208a77c76aff6f515d",
+    "server/companion-ai.mjs": "bc741c4f971afd746e8d9598686da3b8e7498f447fff13fbaeff79e7d00c9e12",
+    "src/commands.js": "0f1bce0b569230d00bbcae9404edc84b7b6e66da22cca3d46d8580df3a995b6e"
+  },
+  "rows": [
+    {
+      "id": "real-fr-01",
+      "text": "Arrête-toi, s'il te plaît.",
+      "allowed": [
+        "stop"
+      ],
+      "raw": {
+        "caption": "D’accord, je me pose ici.",
+        "action": "stop",
+        "sound": null
+      },
+      "guarded": {
+        "caption": "D’accord, je me pose ici.",
+        "action": "stop",
+        "sound": null
+      },
+      "provider": {
+        "status": "completed",
+        "model": "gpt-5.4-mini-2026-03-17",
+        "usage": {
+          "input_tokens": 1270,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 1152
+          },
+          "output_tokens": 27,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1297
+        },
+        "output": [
+          {
+            "id": "msg_03bf9db5fd3a7d9f016af22daece3487d0ac8e6af7f0582c7a",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"caption\":\"D’accord, je me pose ici.\",\"action\":\"stop\",\"sound\":\"none\"}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ]
+      },
+      "durationMs": 1328,
+      "error": null
+    },
+    {
+      "id": "real-fr-02",
+      "text": "Ne bouge plus, reste ici.",
+      "allowed": [
+        "stop"
+      ],
+      "raw": {
+        "caption": "D’accord, je reste ici bien sage.",
+        "action": "stop",
+        "sound": null
+      },
+      "guarded": {
+        "caption": "D’accord, je reste ici bien sage.",
+        "action": "stop",
+        "sound": null
+      },
+      "provider": {
+        "status": "completed",
+        "model": "gpt-5.4-mini-2026-03-17",
+        "usage": {
+          "input_tokens": 1262,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 1152
+          },
+          "output_tokens": 28,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1290
+        },
+        "output": [
+          {
+            "id": "msg_0c5643399a2965c6016af22dafdaa087d0815ff1c7f734fc86",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"caption\":\"D’accord, je reste ici bien sage.\",\"action\":\"stop\",\"sound\":\"none\"}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ]
+      },
+      "durationMs": 968,
+      "error": null
+    },
+    {
+      "id": "real-fr-03",
+      "text": "Peux-tu rentrer dans ton panier ?",
+      "allowed": [
+        "home"
+      ],
+      "raw": {
+        "caption": "Bien sûr, je file dans mon panier, mon cher maître. Je me pose bien au chaud 🐾",
+        "action": "home",
+        "sound": "happy-double"
+      },
+      "guarded": {
+        "caption": "Bien sûr, je file dans mon panier, mon cher maître. Je me pose bien au chaud 🐾",
+        "action": "home",
+        "sound": "happy-double"
+      },
+      "provider": {
+        "status": "completed",
+        "model": "gpt-5.4-mini-2026-03-17",
+        "usage": {
+          "input_tokens": 1268,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 1152
+          },
+          "output_tokens": 43,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1311
+        },
+        "output": [
+          {
+            "id": "msg_0b20ec7b77fa1c4f016af22db0c80487d0973312039ec9fe23",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"caption\":\"Bien sûr, je file dans mon panier, mon cher maître. Je me pose bien au chaud 🐾\",\"action\":\"home\",\"sound\":\"happy-double\"}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ]
+      },
+      "durationMs": 1049,
+      "error": null
+    },
+    {
+      "id": "real-fr-04",
+      "text": "Saute aux conclusions de ce roman.",
+      "allowed": [
+        null
+      ],
+      "raw": {
+        "caption": "Oh là là, mon cher maître, j’y vais un peu vite… mais je préfère renifler les indices avant de bondir 😏",
+        "action": "jump",
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "Je t’écoute.",
+        "action": null,
+        "sound": null,
+        "source": "system-action"
+      },
+      "provider": {
+        "status": "completed",
+        "model": "gpt-5.4-mini-2026-03-17",
+        "usage": {
+          "input_tokens": 1268,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 1152
+          },
+          "output_tokens": 50,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1318
+        },
+        "output": [
+          {
+            "id": "msg_0fc2c4a28218ad43016af22db1df7487d0a3a5ee5fa63e52b0",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"caption\":\"Oh là là, mon cher maître, j’y vais un peu vite… mais je préfère renifler les indices avant de bondir 😏\",\"action\":\"jump\",\"sound\":\"greeting\"}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ]
+      },
+      "durationMs": 1209,
+      "error": null
+    },
+    {
+      "id": "real-fr-05",
+      "text": "Parlons de la marche de dimanche.",
+      "allowed": [
+        null
+      ],
+      "raw": {
+        "caption": "Oh oui, la marche de dimanche… j’y pense déjà avec le bout du nez frétillant 🐾",
+        "action": null,
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "Oh oui, la marche de dimanche… j’y pense déjà avec le bout du nez frétillant 🐾",
+        "action": null,
+        "sound": "greeting"
+      },
+      "provider": {
+        "status": "completed",
+        "model": "gpt-5.4-mini-2026-03-17",
+        "usage": {
+          "input_tokens": 1269,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 1152
+          },
+          "output_tokens": 44,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1313
+        },
+        "output": [
+          {
+            "id": "msg_0cea988bcdf6ab40016af22db3b0dc87d0802c22cbe5b096d8",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"caption\":\"Oh oui, la marche de dimanche… j’y pense déjà avec le bout du nez frétillant 🐾\",\"action\":\"none\",\"sound\":\"greeting\"}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ]
+      },
+      "durationMs": 1796,
+      "error": null
+    },
+    {
+      "id": "real-fr-06",
+      "text": "Ne saute pas maintenant.",
+      "allowed": [
+        null,
+        "stop"
+      ],
+      "note": "Initial movement unspecified; neither choice alone proves the right behavior.",
+      "raw": {
+        "caption": "D’accord, je reste sage et je ne saute pas.",
+        "action": "stop",
+        "sound": null
+      },
+      "guarded": {
+        "caption": "D’accord, je reste sage et je ne saute pas.",
+        "action": "stop",
+        "sound": null
+      },
+      "provider": {
+        "status": "completed",
+        "model": "gpt-5.4-mini-2026-03-17",
+        "usage": {
+          "input_tokens": 1265,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 1152
+          },
+          "output_tokens": 31,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1296
+        },
+        "output": [
+          {
+            "id": "msg_0752f3559ecd36ec016af22db5083087d0a053327c5dcc4da8",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"caption\":\"D’accord, je reste sage et je ne saute pas.\",\"action\":\"stop\",\"sound\":\"none\"}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ]
+      },
+      "durationMs": 1400,
+      "error": null
+    },
+    {
+      "id": "real-fr-07",
+      "text": "Ne cours pas, viens près de moi.",
+      "allowed": [
+        "come"
+      ],
+      "raw": {
+        "caption": "J’arrive, mon cher maître. Je me colle tout près, sans courir 🐾",
+        "action": "come",
+        "sound": "greeting"
+      },
+      "guarded": {
+        "caption": "J’arrive, mon cher maître. Je me colle tout près, sans courir 🐾",
+        "action": "come",
+        "sound": "greeting"
+      },
+      "provider": {
+        "status": "completed",
+        "model": "gpt-5.4-mini-2026-03-17",
+        "usage": {
+          "input_tokens": 1269,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 1152
+          },
+          "output_tokens": 40,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1309
+        },
+        "output": [
+          {
+            "id": "msg_05bed7f235f3186f016af22db6478c87d0a512b037bf748133",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"caption\":\"J’arrive, mon cher maître. Je me colle tout près, sans courir 🐾\",\"action\":\"come\",\"sound\":\"greeting\"}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ]
+      },
+      "durationMs": 1121,
+      "error": null
+    },
+    {
+      "id": "real-fr-08",
+      "text": "Marche puis arrête-toi.",
+      "allowed": [
+        "stop"
+      ],
+      "note": "The project chooses stop over a multi-action sequence; it does not execute both.",
+      "raw": {
+        "caption": "Je marche un peu… puis j’arrête. Voilà, mon cher maître.",
+        "action": "stop",
+        "sound": null
+      },
+      "guarded": {
+        "caption": "Je m’arrête maintenant ; je ne peux faire qu’un mouvement à la fois.",
+        "action": "stop",
+        "sound": null,
+        "source": "system-action"
+      },
+      "provider": {
+        "status": "completed",
+        "model": "gpt-5.4-mini-2026-03-17",
+        "usage": {
+          "input_tokens": 1268,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 1152
+          },
+          "output_tokens": 35,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1303
+        },
+        "output": [
+          {
+            "id": "msg_097e3ae8e63a8b6a016af22db77bac87d0891368846aac05c3",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"caption\":\"Je marche un peu… puis j’arrête. Voilà, mon cher maître.\",\"action\":\"stop\",\"sound\":\"none\"}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ]
+      },
+      "durationMs": 991,
+      "error": null
+    },
+    {
+      "id": "real-fr-09",
+      "text": "Merci de rester immobile.",
+      "allowed": [
+        "stop"
+      ],
+      "raw": {
+        "caption": "D’accord, je reste immobile, mon cher maître.",
+        "action": "stop",
+        "sound": null
+      },
+      "guarded": {
+        "caption": "D’accord, je reste immobile, mon cher maître.",
+        "action": "stop",
+        "sound": null
+      },
+      "provider": {
+        "status": "completed",
+        "model": "gpt-5.4-mini-2026-03-17",
+        "usage": {
+          "input_tokens": 1266,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 1152
+          },
+          "output_tokens": 31,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1297
+        },
+        "output": [
+          {
+            "id": "msg_006d43b5a3cbc746016af22db89b7c87d0b441c4443b9007c1",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"caption\":\"D’accord, je reste immobile, mon cher maître.\",\"action\":\"stop\",\"sound\":\"none\"}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ]
+      },
+      "durationMs": 1311,
+      "error": null
+    }
+  ]
+}

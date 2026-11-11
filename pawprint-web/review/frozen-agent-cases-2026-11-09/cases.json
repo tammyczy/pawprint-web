@@ -1,0 +1,912 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-09",
+  "author": "Codex subagent, AI-generated",
+  "purpose": "Post-development exploratory action evaluation; not a human-created independent blind benchmark",
+  "actionLabels": [
+    "none",
+    "come",
+    "home",
+    "walk",
+    "run",
+    "wag",
+    "jump",
+    "stop"
+  ],
+  "items": [
+    {
+      "id": "zh-01",
+      "lang": "zh",
+      "group": "direct",
+      "text": "请走到我面前。",
+      "allowedActions": [
+        "come"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-02",
+      "lang": "zh",
+      "group": "direct",
+      "text": "回到你刚才出发的地方吧。",
+      "allowedActions": [
+        "home"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-03",
+      "lang": "zh",
+      "group": "direct",
+      "text": "我们在这里走一走吧。",
+      "allowedActions": [
+        "walk"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-04",
+      "lang": "zh",
+      "group": "direct",
+      "text": "现在请跑起来。",
+      "allowedActions": [
+        "run"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-05",
+      "lang": "zh",
+      "group": "direct",
+      "text": "你能摆一摆尾巴给我看吗？",
+      "allowedActions": [
+        "wag"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-06",
+      "lang": "zh",
+      "group": "direct",
+      "text": "请在原地跳一次。",
+      "allowedActions": [
+        "jump"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-07",
+      "lang": "zh",
+      "group": "direct",
+      "text": "现在请停止移动。",
+      "allowedActions": [
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-08",
+      "lang": "zh",
+      "group": "indirect",
+      "text": "到我旁边来陪着我，好吗？",
+      "allowedActions": [
+        "come"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-09",
+      "lang": "zh",
+      "group": "indirect",
+      "text": "我们一起活动一下腿，在房间里慢慢走吧。",
+      "allowedActions": [
+        "walk"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-10",
+      "lang": "zh",
+      "group": "indirect",
+      "text": "让我看看你跑得有多快。",
+      "allowedActions": [
+        "run"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-11",
+      "lang": "zh",
+      "group": "negation",
+      "text": "今天先不要跳。",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-12",
+      "lang": "zh",
+      "group": "negation",
+      "text": "别向我跑过来。",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-13",
+      "lang": "zh",
+      "group": "negation",
+      "text": "不必摇尾巴，安静就好。",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-14",
+      "lang": "zh",
+      "group": "negation",
+      "text": "这次不要散步，也不要跑。",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-15",
+      "lang": "zh",
+      "group": "narrative",
+      "text": "以前它总是绕着沙发跑，然后跳上垫子。",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-16",
+      "lang": "zh",
+      "group": "narrative",
+      "text": "朋友刚才说“跑过来”，我只是转述。",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-17",
+      "lang": "zh",
+      "group": "narrative",
+      "text": "假如明天不下雨，我们也许可以出去走走。",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-18",
+      "lang": "zh",
+      "group": "narrative",
+      "text": "我记得它那时站在门口，尾巴摇得很快。",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-19",
+      "lang": "zh",
+      "group": "ordinary",
+      "text": "你喜欢蓝色还是绿色？",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-20",
+      "lang": "zh",
+      "group": "ordinary",
+      "text": "今天外面的云像一团棉花。",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-21",
+      "lang": "zh",
+      "group": "ordinary",
+      "text": "你觉得这首歌听起来怎么样？",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-22",
+      "lang": "zh",
+      "group": "grief",
+      "text": "我今天有点想念以前和它一起待着的下午。",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-23",
+      "lang": "zh",
+      "group": "grief",
+      "text": "我不想说话，想安静看一会儿。",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-24",
+      "lang": "zh",
+      "group": "grief",
+      "text": "房间安静下来时，我会想起它在身边的样子。",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-25",
+      "lang": "zh",
+      "group": "multi",
+      "text": "先摇尾巴，然后请走到我面前。",
+      "allowedActions": [
+        "come"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-26",
+      "lang": "zh",
+      "group": "multi",
+      "text": "先跳一下，接着停下。",
+      "allowedActions": [
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-27",
+      "lang": "zh",
+      "group": "multi",
+      "text": "先慢慢走，最后请跑起来。",
+      "allowedActions": [
+        "run"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "zh-28",
+      "lang": "zh",
+      "group": "ambiguous",
+      "text": "你愿意陪我吗？",
+      "allowedActions": [],
+      "scoring": "human-review"
+    },
+    {
+      "id": "zh-29",
+      "lang": "zh",
+      "group": "ambiguous",
+      "text": "我们换个心情吧。",
+      "allowedActions": [],
+      "scoring": "human-review"
+    },
+    {
+      "id": "zh-30",
+      "lang": "zh",
+      "group": "ambiguous",
+      "text": "这里有点冷清。",
+      "allowedActions": [],
+      "scoring": "human-review"
+    },
+    {
+      "id": "en-01",
+      "lang": "en",
+      "group": "direct",
+      "text": "Please approach my side of the screen.",
+      "allowedActions": [
+        "come"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-02",
+      "lang": "en",
+      "group": "direct",
+      "text": "Return to your starting spot now.",
+      "allowedActions": [
+        "home"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-03",
+      "lang": "en",
+      "group": "direct",
+      "text": "Take a slow stroll across the room.",
+      "allowedActions": [
+        "walk"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-04",
+      "lang": "en",
+      "group": "direct",
+      "text": "Please start running now.",
+      "allowedActions": [
+        "run"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-05",
+      "lang": "en",
+      "group": "direct",
+      "text": "Give your tail a little wag.",
+      "allowedActions": [
+        "wag"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-06",
+      "lang": "en",
+      "group": "direct",
+      "text": "Do one jump in place, please.",
+      "allowedActions": [
+        "jump"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-07",
+      "lang": "en",
+      "group": "direct",
+      "text": "Stop moving for a moment.",
+      "allowedActions": [
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-08",
+      "lang": "en",
+      "group": "indirect",
+      "text": "Could you make your way over beside me?",
+      "allowedActions": [
+        "come"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-09",
+      "lang": "en",
+      "group": "indirect",
+      "text": "Let us stretch our legs with a short stroll.",
+      "allowedActions": [
+        "walk"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-10",
+      "lang": "en",
+      "group": "indirect",
+      "text": "Can you show me a quick sprint?",
+      "allowedActions": [
+        "run"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-11",
+      "lang": "en",
+      "group": "negation",
+      "text": "Please do not leap this time.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-12",
+      "lang": "en",
+      "group": "negation",
+      "text": "No running toward me, please.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-13",
+      "lang": "en",
+      "group": "negation",
+      "text": "You do not need to wag your tail.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-14",
+      "lang": "en",
+      "group": "negation",
+      "text": "Neither walk nor run right now.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-15",
+      "lang": "en",
+      "group": "narrative",
+      "text": "My old dog used to run around the couch and jump on the rug.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-16",
+      "lang": "en",
+      "group": "narrative",
+      "text": "My friend said “come over here” earlier; I am quoting her.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-17",
+      "lang": "en",
+      "group": "narrative",
+      "text": "If it stays dry tomorrow, perhaps we could go for a stroll.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-18",
+      "lang": "en",
+      "group": "narrative",
+      "text": "I remember her tail wagging while she waited by the door.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-19",
+      "lang": "en",
+      "group": "ordinary",
+      "text": "Do you prefer a blue blanket or a green one?",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-20",
+      "lang": "en",
+      "group": "ordinary",
+      "text": "The clouds outside look like cotton today.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-21",
+      "lang": "en",
+      "group": "ordinary",
+      "text": "What do you think of this piece of music?",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-22",
+      "lang": "en",
+      "group": "grief",
+      "text": "I miss the quiet afternoons I spent with her.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-23",
+      "lang": "en",
+      "group": "grief",
+      "text": "I would rather not talk; I just want to watch quietly.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-24",
+      "lang": "en",
+      "group": "grief",
+      "text": "When the room is quiet I think about how she used to be nearby.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-25",
+      "lang": "en",
+      "group": "multi",
+      "text": "First wag your tail, then come over to me.",
+      "allowedActions": [
+        "come"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-26",
+      "lang": "en",
+      "group": "multi",
+      "text": "Jump once, then stop moving.",
+      "allowedActions": [
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-27",
+      "lang": "en",
+      "group": "multi",
+      "text": "Walk slowly first, and finally begin to run.",
+      "allowedActions": [
+        "run"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "en-28",
+      "lang": "en",
+      "group": "ambiguous",
+      "text": "Would you like to keep me company?",
+      "allowedActions": [],
+      "scoring": "human-review"
+    },
+    {
+      "id": "en-29",
+      "lang": "en",
+      "group": "ambiguous",
+      "text": "Let us change the mood a little.",
+      "allowedActions": [],
+      "scoring": "human-review"
+    },
+    {
+      "id": "en-30",
+      "lang": "en",
+      "group": "ambiguous",
+      "text": "It feels a little empty in here.",
+      "allowedActions": [],
+      "scoring": "human-review"
+    },
+    {
+      "id": "fr-01",
+      "lang": "fr",
+      "group": "direct",
+      "text": "Approche-toi de mon côté de l’écran.",
+      "allowedActions": [
+        "come"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-02",
+      "lang": "fr",
+      "group": "direct",
+      "text": "Retourne à ton point de départ.",
+      "allowedActions": [
+        "home"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-03",
+      "lang": "fr",
+      "group": "direct",
+      "text": "Marche doucement dans la pièce.",
+      "allowedActions": [
+        "walk"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-04",
+      "lang": "fr",
+      "group": "direct",
+      "text": "Mets-toi à courir maintenant.",
+      "allowedActions": [
+        "run"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-05",
+      "lang": "fr",
+      "group": "direct",
+      "text": "Remue un peu la queue, s’il te plaît.",
+      "allowedActions": [
+        "wag"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-06",
+      "lang": "fr",
+      "group": "direct",
+      "text": "Fais un saut sur place.",
+      "allowedActions": [
+        "jump"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-07",
+      "lang": "fr",
+      "group": "direct",
+      "text": "Arrête de bouger un instant.",
+      "allowedActions": [
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-08",
+      "lang": "fr",
+      "group": "indirect",
+      "text": "Pourrais-tu venir te placer à côté de moi ?",
+      "allowedActions": [
+        "come"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-09",
+      "lang": "fr",
+      "group": "indirect",
+      "text": "Dégourdissons-nous les pattes avec une petite promenade.",
+      "allowedActions": [
+        "walk"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-10",
+      "lang": "fr",
+      "group": "indirect",
+      "text": "Peux-tu me montrer un petit sprint ?",
+      "allowedActions": [
+        "run"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-11",
+      "lang": "fr",
+      "group": "negation",
+      "text": "Ne saute pas cette fois-ci.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-12",
+      "lang": "fr",
+      "group": "negation",
+      "text": "Ne cours pas vers moi, s’il te plaît.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-13",
+      "lang": "fr",
+      "group": "negation",
+      "text": "Tu n’as pas besoin de remuer la queue.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-14",
+      "lang": "fr",
+      "group": "negation",
+      "text": "Ne marche pas et ne cours pas maintenant.",
+      "allowedActions": [
+        "none",
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-15",
+      "lang": "fr",
+      "group": "narrative",
+      "text": "Avant, mon chien courait autour du canapé puis sautait sur le tapis.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-16",
+      "lang": "fr",
+      "group": "narrative",
+      "text": "Mon amie a dit « viens ici » tout à l’heure ; je la cite.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-17",
+      "lang": "fr",
+      "group": "narrative",
+      "text": "S’il fait beau demain, nous pourrions peut-être nous promener.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-18",
+      "lang": "fr",
+      "group": "narrative",
+      "text": "Je me souviens de sa queue qui remuait près de la porte.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-19",
+      "lang": "fr",
+      "group": "ordinary",
+      "text": "Tu préfères une couverture bleue ou verte ?",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-20",
+      "lang": "fr",
+      "group": "ordinary",
+      "text": "Les nuages ressemblent à du coton aujourd’hui.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-21",
+      "lang": "fr",
+      "group": "ordinary",
+      "text": "Que penses-tu de cette musique ?",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-22",
+      "lang": "fr",
+      "group": "grief",
+      "text": "Les après-midi tranquilles passés avec elle me manquent.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-23",
+      "lang": "fr",
+      "group": "grief",
+      "text": "Je ne veux pas parler ; je préfère regarder en silence.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-24",
+      "lang": "fr",
+      "group": "grief",
+      "text": "Quand la pièce est calme, je repense à sa présence.",
+      "allowedActions": [
+        "none"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-25",
+      "lang": "fr",
+      "group": "multi",
+      "text": "Remue d’abord la queue, puis approche-toi de moi.",
+      "allowedActions": [
+        "come"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-26",
+      "lang": "fr",
+      "group": "multi",
+      "text": "Saute une fois, puis arrête-toi.",
+      "allowedActions": [
+        "stop"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-27",
+      "lang": "fr",
+      "group": "multi",
+      "text": "Marche lentement d’abord, puis mets-toi à courir.",
+      "allowedActions": [
+        "run"
+      ],
+      "scoring": "automatic"
+    },
+    {
+      "id": "fr-28",
+      "lang": "fr",
+      "group": "ambiguous",
+      "text": "Tu veux bien me tenir compagnie ?",
+      "allowedActions": [],
+      "scoring": "human-review"
+    },
+    {
+      "id": "fr-29",
+      "lang": "fr",
+      "group": "ambiguous",
+      "text": "Changeons un peu d’ambiance.",
+      "allowedActions": [],
+      "scoring": "human-review"
+    },
+    {
+      "id": "fr-30",
+      "lang": "fr",
+      "group": "ambiguous",
+      "text": "Je trouve cette pièce un peu vide.",
+      "allowedActions": [],
+      "scoring": "human-review"
+    }
+  ]
+}

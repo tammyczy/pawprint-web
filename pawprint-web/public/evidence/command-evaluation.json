@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-07T23:38:38.159Z",
+  "generatedAt": "2026-11-09T17:32:19.546Z",
   "scope": "Deterministic offline command parsing only; no paid APIs, LLM quality, user outcomes, clinical efficacy, or competition score measured.",
   "method": "55 author-written development/exploratory cases plus 13 independent code-review adversarial cases, subsequently used for fixes. Not a blind held-out test or representative benchmark. Known failures retained. Dataset hash is SHA-256 of cases.json bytes followed by adversarial.json bytes.",
   "datasetSha256": "2eb2d9c14ca4660aa23691ec45ca4a81a6168835e7b99b989351b926ef5d5b73",

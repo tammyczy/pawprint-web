@@ -9,12 +9,16 @@ export function createConversationStatus() {
     configured: 'conversationConfigured',
     unconfigured: 'conversationUnconfigured',
     ready: 'conversationReady',
+    privacy: 'conversationPrivacy',
+    action: 'conversationAction',
+    local: 'conversationLocal',
     unavailable: 'conversationUnavailable'
    }[state];
   },
   health(configured) { if (state === 'checking') state = configured ? 'configured' : 'unconfigured'; },
   healthFailed() { if (state === 'checking') state = 'unavailable'; },
-  succeeded() { state = 'ready'; },
+  succeeded(source) { state = source === 'system-privacy' ? 'privacy' : source === 'system-action' ? 'action' : 'ready'; },
+  local() { state = 'local'; },
   failed() { state = 'unavailable'; }
  };
 }

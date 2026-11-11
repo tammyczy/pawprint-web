@@ -1,0 +1,23 @@
+{
+  "events": [
+    {
+      "action": "散步",
+      "ms": 457
+    },
+    {
+      "action": "跑步",
+      "ms": 3696
+    },
+    {
+      "action": "散步",
+      "ms": 10875
+    },
+    {
+      "action": "停下",
+      "ms": 14270
+    }
+  ],
+  "durationMs": 16789,
+  "frameCount": 256,
+  "consoleWarningsAndErrors": []
+}

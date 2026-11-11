@@ -25,6 +25,21 @@ test('malformed replies and HTTP errors do not enter conversation history',async
  for(const request of requests)assert.deepEqual(request.history,[]);
 });
 
+test('system privacy and action notices are labeled and never treated as model conversation history',async()=>{
+ const requests=[];
+ const chat=createAIChat(null,{fetchImpl:async(url,options)=>{
+  requests.push(JSON.parse(options.body));
+  if(requests.length===2)return Response.json({caption:'Privacy notice',action:null,sound:null,source:'system-privacy'});
+  if(requests.length===3)return Response.json({caption:'Action notice',action:null,sound:null,source:'system-action'});
+  return reply(`AI reply ${requests.length}`);
+ }});
+ await chat('hello');
+ assert.equal((await chat('Will you tell my parents?')).source,'system-privacy');
+ assert.equal((await chat('What did you do today?')).source,'system-action');
+ await chat('hello again');
+ assert.deepEqual(requests[3].history,[{role:'user',content:'hello'},{role:'assistant',content:'AI reply 1'}]);
+});
+
 test('a timed-out chat releases the request and the next message can succeed',async()=>{
  let calls=0,signal;
  const chat=createAIChat(null,{timeoutMs:10,fetchImpl:async(url,options)=>{
@@ -35,6 +50,22 @@ test('a timed-out chat releases the request and the next message can succeed',as
  await assert.rejects(chat('hello'),{name:'AbortError'});
  assert.equal(signal.aborted,true);
  assert.equal((await chat('again')).caption,'Recovered');
+});
+
+test('a stop can cancel an in-flight chat without blocking a new request or retaining stale history',async()=>{
+ let firstResolve,firstSignal,current=true;const requests=[];
+ const chat=createAIChat(null,{fetchImpl:async(_url,options)=>{
+  requests.push(JSON.parse(options.body));
+  if(requests.length===1){firstSignal=options.signal;return new Promise(resolve=>{firstResolve=resolve;});}
+  return reply('New response');
+ }});
+ const old=chat('Please run',()=>current);
+ current=false;chat.cancel();
+ assert.equal(firstSignal.aborted,true);
+ assert.equal((await chat('Hello')).caption,'New response');
+ firstResolve(reply('Running','run'));await old;
+ await chat('Again');
+ assert.deepEqual(requests[2].history,[{role:'user',content:'Hello'},{role:'assistant',content:'New response'}]);
 });
 
 test('voice timeout displays a recoverable error instead of staying in preparing state',async()=>{

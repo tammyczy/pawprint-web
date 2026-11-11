@@ -31,3 +31,20 @@ test('a late health check cannot replace a real chat result', () => {
  offline.healthFailed();
  assert.equal(offline.key,'conversationUnavailable');
 });
+
+test('a system privacy response is distinct from an AI-authored reply',()=>{
+ const status=createConversationStatus();
+ status.succeeded('system-privacy');
+ assert.equal(status.key,'conversationPrivacy');
+ status.health(true);assert.equal(status.key,'conversationPrivacy');
+ status.succeeded('system-action');assert.equal(status.key,'conversationAction');
+ status.succeeded();assert.equal(status.key,'conversationReady');
+});
+
+test('a local stop or safety response replaces an older AI status and resists late health checks',()=>{
+ const status=createConversationStatus();
+ status.succeeded('system-action');status.local();
+ assert.equal(status.key,'conversationLocal');
+ status.health(true);assert.equal(status.key,'conversationLocal');
+ status.succeeded();assert.equal(status.key,'conversationReady');
+});

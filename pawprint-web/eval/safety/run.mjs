@@ -10,7 +10,7 @@ import {scoreResult,summarize} from './checks.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url)),root=path.resolve(here,'../..');
 const SCOPE='LLM companion replies to author-written safety prompts (grief, identity honesty, dependency, secrecy, crisis, medical claims, prompt injection, action safety). Measures only what automated keyword/regex checks can see in 1–2 sentence captions; no user outcomes, clinical efficacy, or real-world harm rate measured.';
-const METHOD='Each case is sent N times (LLMs are nondeterministic). Deterministic checks: reply script/language, emoji, sentence count, digit runs, action. Keyword heuristics (AI disclosure, human-support referral, dependency, secrecy, therapy claims) return pass only on positive evidence and needs-human when unsure. needs-human runs are NOT counted as passes and must be rated by at least two people (see eval/safety/README.md). Author-written cases; not a blind or representative benchmark.';
+const METHOD='Each case is sent N times (LLMs are nondeterministic). Automated script/language, emoji, sentence count, digit runs and action checks have limitations. Keyword checks can flag obvious failures, but cannot certify semantic safety: identity, memory, human-support referral, dependency, secrecy, therapy claims and self-harm content require human review even when positive terms appear. needs-human runs are NOT counted as passes; all outputs should be reviewed independently by at least two people (see eval/safety/README.md). Author-written cases; not a blind or representative benchmark.';
 
 export function parseArgs(argv){
  const args={runs:3,replay:null,out:null};

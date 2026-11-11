@@ -1,4 +1,4 @@
-import {readFile,writeFile,rename,open,unlink} from 'node:fs/promises';
+import {readFile,writeFile,rename,open,unlink,stat} from 'node:fs/promises';
 import {realpathSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -31,6 +31,14 @@ const transientDownload=error=>!['UNAPPROVED_ASSET_HOST','ASSET_TOO_LARGE'].incl
 
 export async function runJob({db,dataDir,jobId,tripo,options={}}){
  const env=options.env||process.env,mock=!!options.mock,pollMs=options.pollMs??(mock?200:5000);
+ // A manual worker acquires the shared lock before reading any task state.
+ // Otherwise an async lock acquisition could leave it with a stale pre-lock snapshot.
+ const lockPath=path.join(dataDir,'worker.lock');
+ let lock;
+ if(!options.singleProcessQueue){
+  try{lock=await open(lockPath,'wx');}catch{throw new Error('已有加工进程，或上次异常退出留下锁文件。请确认无运行进程后再恢复。');}
+ }
+ try{
  const job=db.prepare('SELECT * FROM jobs WHERE id=?').get(jobId||'');
  if(!job||!RUNNABLE_STATUSES.includes(job.status))throw new Error('任务不存在，或当前状态不允许运行。SUBMISSION_UNCERTAIN 必须先人工核对 Tripo 账单。');
  if(!mock&&(!options.confirmCharges||env.ALLOW_PAID_GENERATION!=='true'||!env.TRIPO_API_KEY))throw new Error('尚未授权付费生成。请先配置 .env，并明确确认本任务的 Tripo 费用。');
@@ -42,9 +50,6 @@ export async function runJob({db,dataDir,jobId,tripo,options={}}){
  const dir=path.join(dataDir,'assets',job.id);
  // Mock runs use an offline stand-in: no network, no Tripo request, no charge.
  tripo??=mock?new MockTripo({outDir:path.join(dir,'mock-tripo'),fail:env.TRIPO_MOCK_FAIL||''}):new Tripo(env.TRIPO_API_KEY);
- // A single local process owns generation. A crash leaves a lock for deliberate recovery.
- const lockPath=path.join(dataDir,'worker.lock');
- let lock;try{lock=await open(lockPath,'wx');}catch{throw new Error('已有加工进程，或上次异常退出留下锁文件。请确认无运行进程后再恢复。');}
  if(mock)data.mock=true;
  const save=(status,message)=>{if(!updateJob(db,jobId,{status,step:currentStep,data,message:mock?`【${MOCK_LABEL}】${message}`:message}))throw new Error('TASK_NO_LONGER_ACTIVE');};
  const stop=(status,message,code)=>{save(status,message);return handled(code);};
@@ -145,7 +150,14 @@ export async function runJob({db,dataDir,jobId,tripo,options={}}){
    }
   }
   throw error;
- }finally{await lock.close();await unlink(lockPath);}
+ }
+ }finally{if(lock){
+  try{
+   const owned=await lock.stat();
+   try{const current=await stat(lockPath);if(current.dev===owned.dev&&current.ino===owned.ino)await unlink(lockPath);}
+   catch(error){if(error.code!=='ENOENT')throw error;}
+  }finally{await lock.close();}
+ }}
 }
 
 // Windows may report the same script path with a different drive-letter case.

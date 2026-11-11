@@ -44,6 +44,7 @@ button,input,select{font:inherit}button:focus-visible,a:focus-visible,summary:fo
 /* Synced 2026-10-25: simulation note. Same layer as the rules above. */
 @layer pawprint-legacy {
 .sim-note{font-size:10px;letter-spacing:.4px;color:#6f7b69;opacity:.9}
+.chat-sim-note{font-size:12px;line-height:1.5;color:#415b42;margin:14px 0 8px}
 .pet-page .sim-note{margin-top:10px;padding:6px 10px;border:1px solid #dfe5da;border-radius:999px;display:inline-block}
 @media(max-width:760px){.stage-foot .sim-note{position:absolute;left:0;right:0;bottom:40px;text-align:center}}
 }

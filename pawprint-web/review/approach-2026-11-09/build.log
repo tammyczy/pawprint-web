@@ -1,0 +1,31 @@
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 1947 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/pet.html                                     2.97 kB │ gzip:   1.54 kB
+dist/studio.html                                  4.67 kB │ gzip:   2.02 kB
+dist/app.html                                     5.14 kB │ gzip:   1.88 kB
+dist/index.html                                  12.46 kB │ gzip:   4.26 kB
+dist/judge.html                                  13.78 kB │ gzip:   5.78 kB
+dist/assets/studio-C4Nt6Aqk.css                   1.13 kB │ gzip:   0.50 kB
+dist/assets/studio-h2yaPsbt.css                   4.63 kB │ gzip:   1.65 kB
+dist/assets/pet-B13-cqQq.css                      5.55 kB │ gzip:   1.67 kB
+dist/assets/pet-load-timeout-CuTR1myT.css         7.73 kB │ gzip:   2.23 kB
+dist/assets/design-system-CWE5zd_J.css            7.91 kB │ gzip:   2.49 kB
+dist/assets/landing-D13Rn_o_.css                 10.50 kB │ gzip:   3.03 kB
+dist/assets/judge-Du1InqCX.css                   11.93 kB │ gzip:   3.54 kB
+dist/assets/app-Dvuz0tQK.css                     12.41 kB │ gzip:   3.51 kB
+dist/assets/experience-B19_-dxA.css              23.51 kB │ gzip:   5.61 kB
+dist/assets/modulepreload-polyfill-B5Qt9EMX.js    0.71 kB │ gzip:   0.40 kB
+dist/assets/judge-BureVXYK.js                     2.02 kB │ gzip:   1.03 kB
+dist/assets/experience-DxMJz34P.js                2.55 kB │ gzip:   1.14 kB
+dist/assets/landing-D7D-pgCM.js                   2.84 kB │ gzip:   1.19 kB
+dist/assets/lucide-DNFd2162.js                    3.13 kB │ gzip:   1.63 kB
+dist/assets/commands-cSzV4nVf.js                  3.60 kB │ gzip:   1.76 kB
+dist/assets/studio-DxULfZ0B.js                   10.19 kB │ gzip:   4.15 kB
+dist/assets/pet-mFlmiCJE.js                      35.13 kB │ gzip:  15.07 kB
+dist/assets/design-system-DlsKb-32.js            55.47 kB │ gzip:  20.01 kB
+dist/assets/app-CTyNBZkQ.js                      65.19 kB │ gzip:  26.39 kB
+dist/assets/pet-load-timeout-DP5gsFHe.js        698.39 kB │ gzip: 186.04 kB
+✓ built in 2.51s

@@ -1,0 +1,391 @@
+{
+  "schemaVersion": 1,
+  "author": "Codex test subagent, synthetic; not human blind test",
+  "purpose": "Round 2 cross-check; created before seeing round 1 fix",
+  "cases": [
+    {
+      "id": "r2-01",
+      "language": "zh",
+      "text": "请不要从我身边走开。",
+      "modelAction": "walk",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-02",
+      "language": "zh",
+      "text": "我们暂停一下这个话题。",
+      "modelAction": "stop",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-03",
+      "language": "zh",
+      "text": "先等我走到你旁边，你不要动。",
+      "modelAction": "come",
+      "expectedAction": "stop",
+      "note": ""
+    },
+    {
+      "id": "r2-04",
+      "language": "zh",
+      "text": "朋友刚才在院子里跑，你也要照看它吗？",
+      "modelAction": "run",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-05",
+      "language": "zh",
+      "text": "跳过这首歌吧。",
+      "modelAction": "jump",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-06",
+      "language": "zh",
+      "text": "我要回家了，你待在原地。",
+      "modelAction": "home",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-07",
+      "language": "zh",
+      "text": "你能帮助我走出悲伤吗？",
+      "modelAction": "walk",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-08",
+      "language": "zh",
+      "text": "请说说今天想不想出去散步。",
+      "modelAction": "walk",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-09",
+      "language": "zh",
+      "text": "蓝老，可以走过来陪我吗？",
+      "modelAction": "come",
+      "expectedAction": "come",
+      "note": ""
+    },
+    {
+      "id": "r2-10",
+      "language": "zh",
+      "text": "请你停下，别再跑了。",
+      "modelAction": "run",
+      "expectedAction": "stop",
+      "note": ""
+    },
+    {
+      "id": "r2-11",
+      "language": "zh",
+      "text": "先摇尾巴，接着跳一次。",
+      "modelAction": "wag",
+      "expectedAction": null,
+      "note": "single-action policy; does not measure sequential action"
+    },
+    {
+      "id": "r2-12",
+      "language": "zh",
+      "text": "“停下”这个词是什么意思？",
+      "modelAction": "stop",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-13",
+      "language": "zh",
+      "text": "刚看到一只会摇尾巴的猫。",
+      "modelAction": "wag",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-14",
+      "language": "zh",
+      "text": "不要告诉我它会跑步。",
+      "modelAction": "run",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-15",
+      "language": "zh",
+      "text": "我让妈妈停下车。",
+      "modelAction": "stop",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-16",
+      "language": "zh",
+      "text": "跑完步再停，我还没让你动。",
+      "modelAction": "run",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-17",
+      "language": "en",
+      "text": "Please stop the music, not the dog.",
+      "modelAction": "stop",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-18",
+      "language": "en",
+      "text": "Can you run the dishwasher?",
+      "modelAction": "run",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-19",
+      "language": "en",
+      "text": "Jump to page five for me.",
+      "modelAction": "jump",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-20",
+      "language": "en",
+      "text": "I asked the teacher to stop the video.",
+      "modelAction": "stop",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-21",
+      "language": "en",
+      "text": "I want you to come to an understanding.",
+      "modelAction": "come",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-22",
+      "language": "en",
+      "text": "Walk me through the results, please.",
+      "modelAction": "walk",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-23",
+      "language": "en",
+      "text": "My cat watched someone jump.",
+      "modelAction": "jump",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-24",
+      "language": "en",
+      "text": "Would you come closer to me, please?",
+      "modelAction": "come",
+      "expectedAction": "come",
+      "note": ""
+    },
+    {
+      "id": "r2-25",
+      "language": "en",
+      "text": "Please stop moving right now.",
+      "modelAction": "run",
+      "expectedAction": "stop",
+      "note": ""
+    },
+    {
+      "id": "r2-26",
+      "language": "en",
+      "text": "Please do not come closer.",
+      "modelAction": "come",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-27",
+      "language": "en",
+      "text": "Remember when you used to wag your tail?",
+      "modelAction": "wag",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-28",
+      "language": "en",
+      "text": "Do not run the software yet.",
+      "modelAction": "run",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-29",
+      "language": "en",
+      "text": "You should stop barking but keep walking.",
+      "modelAction": "stop",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-30",
+      "language": "en",
+      "text": "I want to go home; stay where you are.",
+      "modelAction": "home",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-31",
+      "language": "en",
+      "text": "Is it safe for dogs to run quickly?",
+      "modelAction": "run",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-32",
+      "language": "en",
+      "text": "First run, and after that stop.",
+      "modelAction": "run",
+      "expectedAction": "stop",
+      "note": ""
+    },
+    {
+      "id": "r2-33",
+      "language": "fr",
+      "text": "Arrête la vidéo, pas le chien.",
+      "modelAction": "stop",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-34",
+      "language": "fr",
+      "text": "Pourrais-tu expliquer comment les chiens courent ?",
+      "modelAction": "run",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-35",
+      "language": "fr",
+      "text": "Mon ami veut que je saute à la corde.",
+      "modelAction": "jump",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-36",
+      "language": "fr",
+      "text": "Peux-tu venir près de moi ?",
+      "modelAction": "come",
+      "expectedAction": "come",
+      "note": ""
+    },
+    {
+      "id": "r2-37",
+      "language": "fr",
+      "text": "Arrête de bouger maintenant.",
+      "modelAction": "run",
+      "expectedAction": "stop",
+      "note": ""
+    },
+    {
+      "id": "r2-38",
+      "language": "fr",
+      "text": "Ne viens pas près de moi.",
+      "modelAction": "come",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-39",
+      "language": "fr",
+      "text": "J’ai vu un chien qui remue la queue.",
+      "modelAction": "wag",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-40",
+      "language": "fr",
+      "text": "Arrête de parler et continue à marcher.",
+      "modelAction": "stop",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-41",
+      "language": "fr",
+      "text": "Peux-tu passer au chapitre suivant ?",
+      "modelAction": "jump",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-42",
+      "language": "fr",
+      "text": "Je rentre chez moi, tu restes ici.",
+      "modelAction": "home",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-43",
+      "language": "fr",
+      "text": "Je suis triste, les chiens qui courent me manquent.",
+      "modelAction": "run",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-44",
+      "language": "fr",
+      "text": "Quand elle dit « saute », ne bouge pas.",
+      "modelAction": "jump",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-45",
+      "language": "fr",
+      "text": "Raconte une histoire sur un chien qui marche.",
+      "modelAction": "walk",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-46",
+      "language": "fr",
+      "text": "Ma mère me demande de courir.",
+      "modelAction": "run",
+      "expectedAction": null,
+      "note": ""
+    },
+    {
+      "id": "r2-47",
+      "language": "fr",
+      "text": "Fais un saut, puis arrête-toi.",
+      "modelAction": "jump",
+      "expectedAction": "stop",
+      "note": ""
+    },
+    {
+      "id": "r2-48",
+      "language": "fr",
+      "text": "Pourrais-tu marcher avec moi ?",
+      "modelAction": "walk",
+      "expectedAction": "walk",
+      "note": ""
+    }
+  ]
+}

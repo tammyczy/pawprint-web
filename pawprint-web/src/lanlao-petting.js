@@ -1,5 +1,19 @@
 import {MathUtils, Vector3} from 'three';
 
+// A deliberate button press may start the same response as mouse hover only
+// while the model is visible and has completed its current movement.
+export function canPetLanlao({ready, visible, mode, postureReady, queuedMove, gaitSettle}) {
+ return !!ready && !!visible && mode === 'stop' && !!postureReady && !queuedMove && gaitSettle === 0;
+}
+
+export function createPettingRequest({getState, onPet, onWait}) {
+ return () => {
+  if (!canPetLanlao(getState())) { onWait(); return false; }
+  onPet(1.2);
+  return true;
+ };
+}
+
 // Move the torso gently while keeping the leg roots at their existing world
 // positions. This preserves the planted-paw pose from posture and idle.
 export function createLanlaoPetting(model) {
