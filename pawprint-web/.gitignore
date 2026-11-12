@@ -7,3 +7,4 @@ dist/
 *.blend[1-9]
 !review/**/tests.log
 !review/**/build.log
+mic-trace.log

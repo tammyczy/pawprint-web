@@ -26,7 +26,7 @@ const $=s=>document.querySelector(s),id=new URLSearchParams(location.search).get
 let renderPet=()=>{},renderViewer=()=>{},memoryCard;
 const petI18n=initI18n('pet',()=>{renderPet();renderViewer();memoryCard?.render();});
 memoryCard=createMemoryCard({container:document.querySelector('#memory-card'),locale});
-const sampleURL='/models/lanlao-rig-motion-refined.glb',wrap=$('#viewer'),status=$('#viewer-status');wrap.style.position='relative';
+const sampleURL='/models/lanlao-web.glb',wrap=$('#viewer'),status=$('#viewer-status');wrap.style.position='relative';
 const overlay=document.createElement('div');overlay.className='viewer-overlay';const bar=document.createElement('progress');const percent=document.createElement('small');const warning=document.createElement('p');const actions=document.createElement('div');actions.className='row';status.before(overlay);overlay.append(status,bar,percent,warning,actions);
 let fallbackSupport=null,careReady=false;
 const viewerCopy={

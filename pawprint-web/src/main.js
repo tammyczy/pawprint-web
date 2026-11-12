@@ -13,7 +13,7 @@ import { respond } from './companion.js';
 import { createAIChat } from './ai-chat.js';
 import { createConversationStatus } from './conversation-status.js';
 import {directPetCommand} from './direct-pet-command.js';
-import {recognitionStatus,bindRecognitionErrors,createRecognitionWatchdog} from './recognition-status.js';
+import {recognitionStatus,bindRecognitionErrors,createRecognitionWatchdog,createUtterance} from './recognition-status.js';
 import { createWebFur } from './web-fur.js';
 import {softenLanlaoEarColor} from './lanlao-ear-color.js';
 import {initI18n,tr,locale} from './i18n.js';
@@ -36,6 +36,9 @@ import {createLanlaoAttention,createLanlaoGreeting} from './lanlao-attention.js'
 import {createLanlaoExpression} from './lanlao-expression.js';
 import {createLanlaoPetting,createPettingRequest} from './lanlao-petting.js';
 import {parseCommand} from './commands.js';
+import {normalizeSpokenCommand} from './spoken-command.js';
+import {micTrace} from './mic-trace.js';
+micTrace('page-load',{url:location.href,ua:navigator.userAgent,speech:!!(window.SpeechRecognition||window.webkitSpeechRecognition)});
 
 const webFurMode=new URLSearchParams(location.search).get('fur')==='web';
 let webFur, idle, eyelids, posture, stride, expression, petBody;
@@ -111,7 +114,7 @@ const care=createCare({locale,petName:()=>tr('brand'),petKey:'lanlao',controls:d
 const memoryCard=createMemoryCard({container:document.querySelector('#memory-card'),locale});
 const viewerFailure=createLanlaoViewerFailure({loading:$('#loading'),state,locale,reload:()=>location.reload(),document});
 function fail(code){ready=false;greetButton.disabled=true;petButton.disabled=true;mic.disabled=true;document.querySelectorAll('[data-command],#send').forEach(button=>button.disabled=true);bubble.hidden=true;viewerFailure.show(code);}
-initI18n('home',()=>{care.render();memoryCard.render();languageSelect.value=voiceLocales[locale()];languageLabel.firstChild.textContent=tr('speechLanguage');voicePlayback.render();renderConversationStatus();if(voiceErrorCode)$('#voice-status').textContent=recognitionStatus(voiceErrorCode,locale());const studioText=[...studioLink.childNodes].find(n=>n.nodeType===Node.TEXT_NODE);if(studioText)studioText.textContent=tr('createPet')+' ';else studioLink.prepend(document.createTextNode(tr('createPet')+' '));furLink.textContent=tr(webFurMode?'furBack':'furTry');bubbleName.textContent=tr('brand');if(ready){state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: Hi, Josh.`;}for(const button of document.querySelectorAll('[data-command]')){const label=button.querySelector('span');if(label)label.textContent=tr(button.dataset.command);const hint=button.querySelector('small');if(hint)hint.textContent=tr(`hint_${button.dataset.command}`);}renderIcons();viewerFailure.render();});
+initI18n('home',()=>{care.render();memoryCard.render();languageSelect.value=voiceLocales[locale()];languageLabel.firstChild.textContent=tr('speechLanguage');voicePlayback.render();renderConversationStatus();if(voiceErrorCode)$('#voice-status').textContent=recognitionStatus(voiceErrorCode,locale());const studioText=[...studioLink.childNodes].find(n=>n.nodeType===Node.TEXT_NODE);if(studioText)studioText.textContent=tr('createPet')+' ';else studioLink.prepend(document.createTextNode(tr('createPet')+' '));furLink.textContent=tr(webFurMode?'furBack':'furTry');bubbleName.textContent=tr('brand');if(ready){state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: ${plainGreeting()}`;}for(const button of document.querySelectorAll('[data-command]')){const label=button.querySelector('span');if(label)label.textContent=tr(button.dataset.command);const hint=button.querySelector('small');if(hint)hint.textContent=tr(`hint_${button.dataset.command}`);}renderIcons();viewerFailure.render();});
 let renderer,mixer,model,activeAction,finishedAction,mode='stop',destination=null;
 const actions={},rest=[],morphWeights=[],home=new THREE.Vector3(0,0,0);
 const scene=new THREE.Scene();scene.background=new THREE.Color('#e8e9df');
@@ -197,7 +200,7 @@ function engageViewer(source){
  if(reducedMotion.matches){
   if(source==='canvas'||source==='button'){
    bubble.hidden=false;
-   reply.textContent=`${tr('brand')}: Hi, Josh.`;
+   reply.textContent=`${tr('brand')}: ${plainGreeting()}`;
   }
   return;
  }
@@ -213,7 +216,7 @@ const dog=new THREE.Group();scene.add(dog);
 const locomotion=createLanlaoLocomotion(dog);
 const manager=new THREE.LoadingManager();
 const loader=new GLTFLoader(manager).setMeshoptDecoder(MeshoptDecoder);
-loadWithIdleTimeout({start:(resolve,progress,reject)=>{loader.load(`${import.meta.env.BASE_URL}models/lanlao-rig-motion-refined.glb`,resolve,progress,reject);return ()=>manager.abort();},onProgress:e=>{if(!contextLost&&e.total)$('#progress').textContent=`Loading · ${Math.round(e.loaded/e.total*100)}%`;}}).then(gltf=>{
+loadWithIdleTimeout({start:(resolve,progress,reject)=>{loader.load(`${import.meta.env.BASE_URL}models/lanlao-web.glb`,resolve,progress,reject);return ()=>manager.abort();},onProgress:e=>{if(!contextLost&&e.total)$('#progress').textContent=`Loading · ${Math.round(e.loaded/e.total*100)}%`;}}).then(gltf=>{
  if(contextLost)return;
  model=gltf.scene;dog.add(model);
  model.traverse(o=>{if(o.isSkinnedMesh && !petMesh)petMesh=o;});
@@ -234,7 +237,7 @@ loadWithIdleTimeout({start:(resolve,progress,reject)=>{loader.load(`${import.met
  if(required.some(n=>!actions[n])){fail('animation');return;}
  mixer.addEventListener('finished',e=>{if(e.action===activeAction)finishedAction=e.action;});
  ready=true;greetButton.disabled=false;petButton.disabled=false;$('#loading').classList.add('hidden');document.querySelectorAll('[data-command],#send').forEach(b=>b.disabled=false);
- mic.disabled=!Recognition;state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: Hi, Josh.`;bubble.hidden=false;
+ mic.disabled=!Recognition;state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: ${plainGreeting()}`;bubble.hidden=false;
 }).catch(error=>{if(!contextLost)fail(error?.code==='MODEL_LOAD_STALLED'?'timeout':'model');});
 function play(name,once=false){
  const next=actions[name];if(activeAction===next&&next.isRunning())return;
@@ -347,6 +350,7 @@ function announceCommand(command,quiet){
  });
 }
 function execute(command,quiet=false){
+ micTrace('execute',{command,quiet,ready,mode});
  if(!ready)return;
  pendingTravelStart=null;
  approachCameraMove=null;
@@ -601,14 +605,16 @@ function updateAutonomy(){
   else beginQuietActivity(nextQuietActivity());
  }
 }
+// A fixed local greeting in the interface language; it names no one.
+function plainGreeting(){return ({zh:'你好！',fr:'Salut !'})[locale()]||'Hi!';}
 const askAI=createAIChat();let answering=false, commandVersion=0, requestSerial=0;
 const commandInput=$('#command-text'),sendCommand=$('#send');
 function updateSend(){sendCommand.disabled=!ready||(answering&&!isImmediateStop(commandInput.value)&&!detectDistress(commandInput.value));}
 function cancelPending(){if(!answering)return;requestSerial++;answering=false;askAI.cancel();updateSend();}
 commandInput.addEventListener('input',updateSend);
 stopRenderActivity=()=>{commandVersion++;cancelPending();voicePlayback.stop();recognition?.abort();};
-const accept=guardLanlaoInput({isAvailable:()=>ready&&!contextLost,handle:async text=>{const careReply=care.check(text);if(careReply){cancelPending();voicePlayback.stop();execute('stop');reply.textContent=`${tr('brand')}: ${careReply}`;conversationStatus.local();renderConversationStatus();commandInput.value='';updateSend();return;}
- if(/^(?:hi|hello|hey)(?:[, ]+(?:lanlao))?[.!?]*$/i.test(text.trim())){commandVersion++;cancelPending();bubble.hidden=false;reply.textContent='Hi, Josh.';conversationStatus.local();renderConversationStatus();clearSubmittedInput(commandInput,text);return;}
+const accept=guardLanlaoInput({isAvailable:()=>ready&&!contextLost,handle:async text=>{micTrace('accept',{text});const careReply=care.check(text);if(careReply){cancelPending();voicePlayback.stop();execute('stop');reply.textContent=`${tr('brand')}: ${careReply}`;conversationStatus.local();renderConversationStatus();commandInput.value='';updateSend();return;}
+ if(/^(?:hi|hello|hey)(?:[, ]+(?:lanlao))?[.!?]*$/i.test(text.trim())){commandVersion++;cancelPending();bubble.hidden=false;reply.textContent=`${tr('brand')}: ${plainGreeting()}`;conversationStatus.local();renderConversationStatus();clearSubmittedInput(commandInput,text);return;}
  const action=parseCommand(text,{postures:true});
  // A direct stop is a control, not a request that should wait for a network
  // response. It also invalidates any older pending reply and its history.
@@ -630,15 +636,16 @@ let listening=false,voiceError=false;
 if(!Recognition)$('#voice-status').textContent=recognitionStatus('unsupported',locale());
 mic.setAttribute('aria-pressed','false');
 mic.onclick=()=>{
+ micTrace('mic-click',{ready,hasRecognition:!!Recognition,active:!!recognition,lang:languageSelect.value});
  if(!Recognition||!ready)return;
  if(recognition){recognition.stop();return;}
  voicePlayback.stop();
  recognition=new Recognition();recognition.lang=languageSelect.value;recognition.continuous=false;recognition.interimResults=true;recognition.maxAlternatives=1;voiceError=false;voiceErrorCode=null;
- const session=recognition,previousSpeech=bubbleText.textContent;let heardText='';const watchdog=createRecognitionWatchdog(session,{onTimeout:()=>{if(recognition!==session)return;recognition=null;listening=false;voiceError=true;voiceErrorCode=voiceErrorCode||'timeout';mic.setAttribute('aria-pressed','false');mic.classList.remove('listening');mic.innerHTML=tr('micStart');renderIcons();$('#voice-status').textContent=recognitionStatus(voiceErrorCode,locale());showSpeech(recognitionStatus(voiceErrorCode,locale()));}});
- session.onstart=()=>{if(watchdog.expired||recognition!==session)return;listening=true;mic.setAttribute('aria-pressed','true');mic.classList.add('listening');mic.textContent=tr('listening');$('#voice-status').textContent=tr('listening');showSpeech(tr('listening'));};
- session.onresult=e=>{if(watchdog.expired||recognition!==session||!ready||contextLost)return;for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;heardText=t;$('#voice-status').textContent=`${tr('heard')}${t}`;if(e.results[i].isFinal)accept(t);}};
- bindRecognitionErrors(session,{locale,onError:(code,message)=>{if(watchdog.expired||recognition!==session)return;voiceError=true;voiceErrorCode=code;$('#voice-status').textContent=message;showSpeech(message);}});
- session.onend=()=>{watchdog.cancel();if(watchdog.expired||recognition!==session)return;recognition=null;listening=false;mic.setAttribute('aria-pressed','false');mic.classList.remove('listening');mic.innerHTML=tr('micStart');renderIcons();if(!voiceError){$('#voice-status').textContent=heardText?`${tr('heard')}${heardText}`:tr('micStatus');if(bubbleText.textContent===tr('listening'))showSpeech(previousSpeech);}};
+ const session=recognition,previousSpeech=bubbleText.textContent;let heardText='';const usable=()=>recognition===session&&ready&&!contextLost;const utterance=createUtterance({commit:text=>{const command=normalizeSpokenCommand(text);micTrace('commit',{text,command,ready,contextLost});accept(command);},onQuiet:()=>{try{session.stop();}catch{}}});const watchdog=createRecognitionWatchdog(session,{onTimeout:()=>{if(recognition!==session)return;if(usable())utterance.end();else utterance.discard();recognition=null;listening=false;voiceError=true;voiceErrorCode=voiceErrorCode||'timeout';mic.setAttribute('aria-pressed','false');mic.classList.remove('listening');mic.innerHTML=tr('micStart');renderIcons();$('#voice-status').textContent=recognitionStatus(voiceErrorCode,locale());showSpeech(recognitionStatus(voiceErrorCode,locale()));}});
+ session.onstart=()=>{micTrace('start');if(watchdog.expired||recognition!==session)return;listening=true;mic.setAttribute('aria-pressed','true');mic.classList.add('listening');mic.textContent=tr('listening');$('#voice-status').textContent=tr('listening');showSpeech(tr('listening'));};
+ session.onresult=e=>{micTrace('result',{results:[...e.results].map(r=>[r[0]?.transcript,r.isFinal]),resultIndex:e.resultIndex,expired:watchdog.expired,current:recognition===session,ready,contextLost});if(watchdog.expired||recognition!==session||!ready||contextLost)return;for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;heardText=t;$('#voice-status').textContent=`${tr('heard')}${t}`;utterance.heard(t,e.results[i].isFinal);}};
+ bindRecognitionErrors(session,{locale,onError:(code,message)=>{micTrace('error',{code});if(watchdog.expired||recognition!==session)return;voiceError=true;voiceErrorCode=code;$('#voice-status').textContent=message;showSpeech(message);}});
+ session.onend=()=>{micTrace('end',{expired:watchdog.expired,current:recognition===session,heardText,committed:utterance.committed,voiceErrorCode});watchdog.cancel();if(watchdog.expired||recognition!==session){utterance.discard();return;}if(usable()&&voiceErrorCode!=='aborted')utterance.end();else utterance.discard();recognition=null;listening=false;mic.setAttribute('aria-pressed','false');mic.classList.remove('listening');mic.innerHTML=tr('micStart');renderIcons();if(!voiceError){$('#voice-status').textContent=heardText?`${tr('heard')}${heardText}`:tr('micStatus');if(bubbleText.textContent===tr('listening'))showSpeech(previousSpeech);}};
  watchdog.start();try{session.start();}catch{watchdog.cancel();recognition=null;listening=false;voiceErrorCode='start';$('#voice-status').textContent=recognitionStatus(voiceErrorCode,locale());}
 };
 document.addEventListener('visibilitychange',()=>{

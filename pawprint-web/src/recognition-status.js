@@ -22,3 +22,25 @@ export function createRecognitionWatchdog(recognition,{onTimeout,delay=20000,set
   cancel(){if(timer!==null){clearTimer(timer);timer=null;}}
  };
 }
+// Chrome does not always mark the last result of a one-utterance session as
+// final: the words appear as an interim result and the session then ends, or
+// simply goes quiet. Waiting only for `isFinal` showed "Heard: come here" and
+// then did nothing. This collects one utterance and commits it exactly once:
+// on a final result, after a short silence, or when the session ends.
+export function createUtterance({commit,onQuiet=()=>{},quietDelay=1600,setTimer=setTimeout,clearTimer=clearTimeout}){
+ let text='',done=false,timer=null;
+ const clear=()=>{if(timer!==null){clearTimer(timer);timer=null;}};
+ const finish=()=>{clear();if(done)return false;done=true;const value=text.trim();if(!value)return false;commit(value);return true;};
+ return {
+  get text(){return text;},
+  get committed(){return done;},
+  heard(value,isFinal=false){
+   if(done||typeof value!=='string')return;
+   text=value;clear();
+   if(isFinal)finish();
+   else if(text.trim())timer=setTimer(()=>{timer=null;if(finish())onQuiet();},quietDelay);
+  },
+  end(){return finish();},
+  discard(){clear();done=true;}
+ };
+}

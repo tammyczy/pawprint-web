@@ -4,9 +4,9 @@ export function respond(text,language='zh',name='Lanlao',kind='dog',{useInterfac
  const lang=useInterfaceLanguage?(language==='fr'?'fr':language==='en'?'en':'zh'):/[\u3400-\u9fff]/.test(text)?'zh':/\b(bonjour|bonsoir|merci|comment|pourquoi|salut|viens|marche|cours|saute|chien|chat|avec|moi)\b|[éèêëàâùûçœ]/i.test(text)?'fr':/[a-z]/i.test(text)?'en':language==='fr'?'fr':language==='en'?'en':'zh';
  const action=parseCommand(text);
  const lines={
-  zh:{come:'主人，我来啦！🐾',home:'好，我回到这里等你。',walk:'一起慢慢走吧。',run:'出发！追上我呀 ✨',wag:'见到你就很开心！',jump:'看我跳一下！',stop:'好，我乖乖陪着你。',hello:`主人你好！我是${name}，见到你真开心 🐾`,love:'嘿嘿，再陪我玩一会儿吧。',sad:'我就在这里，陪着你。',other:'我歪着头听呢。你想聊什么？'},
+  zh:{come:'我来啦！🐾',home:'好，我回到这里等你。',walk:'一起慢慢走吧。',run:'出发！追上我呀 ✨',wag:'见到你就很开心！',jump:'看我跳一下！',stop:'好，我乖乖陪着你。',hello:`你好！我是${name}，见到你真开心 🐾`,love:'嘿嘿，再陪我玩一会儿吧。',sad:'我就在这里，陪着你。',other:'我歪着头听呢。你想聊什么？'},
   en:{come:'Coming over.',home:'I’ll wait for you here.',walk:'Let’s take the scenic route.',run:'Zoomies! Catch me if you can ✨',wag:'You make my tail so happy.',jump:'Watch this little leap!',stop:'I’ll rest right beside you.',hello:`Hi! I’m ${name}. Want to play? 🐾`,love:'Oh, you’re making my tail wag.',sad:'I’m right here with you.',other:'I’m listening with my head tilted. Tell me more!'},
-  fr:{come:'J’arrive, mon cher maître ! 🐾',home:'Je t’attends ici.',walk:'Promenons-nous doucement.',run:'On fait la course ! ✨',wag:'Ma queue ne tient plus en place !',jump:'Regarde mon petit saut !',stop:'Je reste près de toi.',hello:`Coucou, mon cher maître ! Je suis ${name}. On joue ? 🐾`,love:'Tu me rends tellement heureuse !',sad:'Je suis là, tout près de toi.',other:'Je t’écoute. Raconte-moi !'}
+  fr:{come:'J’arrive ! 🐾',home:'Je t’attends ici.',walk:'Promenons-nous doucement.',run:'On fait la course ! ✨',wag:'Ma queue ne tient plus en place !',jump:'Regarde mon petit saut !',stop:'Je reste près de toi.',hello:`Coucou ! Je suis ${name}. On joue ? 🐾`,love:'Ça me fait tellement plaisir !',sad:'Je suis là, tout près de toi.',other:'Je t’écoute. Raconte-moi !'}
  }[lang];
  const sound=value=>kind==='cat'?null:value;
  if(action)return {action,caption:lines[action],sound:sound(action==='stop'?null:action==='run'?'panting':action==='wag'?'happy-double':'greeting')};
