@@ -27,7 +27,7 @@ function validMedia(bytes,extension){
  if(extension==='mp3')return bytes.length>3&&(ascii(0,3)==='ID3'||bytes[0]===0xff&&(bytes[1]&0xe0)===0xe0);
  return false;
 }
-export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],allowRegistration=true,keyConfigured=false,localMode=false,companionAI=null,companionSpeech=null,memoryDraft=null,cloud=false,registrationCode="",automaticGeneration=false}){
+export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],allowRegistration=true,keyConfigured=false,localMode=false,companionAI=null,companionSpeech=null,transcription=null,memoryDraft=null,cloud=false,registrationCode="",automaticGeneration=false}){
  if(localMode&&!['127.0.0.1','localhost','[::1]'].includes(new URL(origin).hostname))throw new Error('免登录模式只能使用本机地址，不能配置公网入口。');
  const db=openStore(dataDir),app=express(),secure=new URL(origin).protocol==='https:';
  const localUser={id:'local-workspace',email:'本机工作区',local:true};
@@ -126,6 +126,20 @@ export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],al
   finally{res.off('close',closed);}
  });
  const speechLimits=new Map();
+ const transcriptionLimits=new Map();
+ const audioUpload=multer({storage:multer.memoryStorage(),limits:{fileSize:2*1024*1024,files:1,fields:1,parts:2}}).single('audio');
+ app.post('/api/companion/transcribe',requireUser,(req,res,next)=>{
+  if(!transcription)return res.status(503).json({error:'Speech recognition is not configured.'});
+  const now=Date.now(),recent=(transcriptionLimits.get(req.user.id)||[]).filter(at=>now-at<60000);
+  if(recent.length>=12)return res.status(429).json({error:'Too many recordings. Please try again later.'});
+  recent.push(now);transcriptionLimits.set(req.user.id,recent);audioUpload(req,res,next);
+ },async(req,res)=>{
+  const file=req.file,language=req.body?.language;
+  if(!file||!['audio/webm','audio/mp4'].includes(file.mimetype)||!validMedia(file.buffer,file.mimetype==='audio/mp4'?'m4a':'webm')||!['en','zh','fr'].includes(language))throw err('Invalid recording or language.');
+  const controller=new AbortController(),closed=()=>{if(!res.writableEnded)controller.abort();};res.once('close',closed);
+  try{const text=await transcription({bytes:file.buffer,mime:file.mimetype,language,signal:controller.signal});if(!controller.signal.aborted)res.json({text});}
+  catch(error){if(!controller.signal.aborted)throw error;}finally{res.off('close',closed);}
+ });
  app.post('/api/companion/speech',requireUser,async(req,res)=>{
   if(!companionSpeech)throw err('Voice is not configured yet.',503);
   const {text,voice='verse',tone='natural'}=req.body||{};

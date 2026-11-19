@@ -1,5 +1,7 @@
 # Pawprint — an honest AI companion for remembering a pet
 
+Lanlao's microphone offers OpenAI and browser recognition. OpenAI mode records after the microphone button is pressed and sends audio when pressed again or after 10 seconds. It requires the server's `OPENAI_API_KEY` and incurs transcription charges. Audio is sent to OpenAI. Changing modes or hiding the page cancels a pending recording. Restart the API server after updating it and rebuild the frontend for the production server. Compare both modes with the same spoken examples; recognition accuracy has not been independently measured.
+
 **WAICY 2026 · AI Showcase.** Pawprint turns a pet's photos and its owner's own words into a 3D companion you can talk to, pet, and say goodbye to. It always tells you the truth: this is an AI simulation, not your pet come back.
 
 | | |

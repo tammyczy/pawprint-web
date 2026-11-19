@@ -37,6 +37,7 @@ import {createLanlaoExpression} from './lanlao-expression.js';
 import {createLanlaoPetting,createPettingRequest} from './lanlao-petting.js';
 import {parseCommand} from './commands.js';
 import {normalizeSpokenCommand} from './spoken-command.js';
+import {createOpenAIRecorder} from './openai-recorder.js';
 import {micTrace} from './mic-trace.js';
 micTrace('page-load',{url:location.href,ua:navigator.userAgent,speech:!!(window.SpeechRecognition||window.webkitSpeechRecognition)});
 
@@ -102,6 +103,7 @@ const renderConversationStatus=()=>{
 };
 fetch('/api/health',{signal:AbortSignal.timeout(8000)}).then(r=>{if(!r.ok)throw new Error('Health check failed');return r.json();}).then(data=>{conversationStatus.health(data.conversation==='openai');renderConversationStatus();voicePlayback.setAvailable(data.speech==='openai');}).catch(()=>{conversationStatus.healthFailed();renderConversationStatus();voicePlayback.setAvailable(false);});
 const languageLabel=document.createElement('label');languageLabel.textContent='Speech language ';const languageSelect=document.createElement('select');for(const [value,label] of [['en-US','English'],['zh-CN','中文'],['fr-FR','Français'],['es-ES','Español'],['de-DE','Deutsch'],['ja-JP','日本語'],['ko-KR','한국어']]){const option=document.createElement('option');option.value=value;option.textContent=label;languageSelect.append(option);}languageLabel.append(languageSelect);document.querySelector('.voice-box').append(languageLabel);
+const recognitionModeLabel=document.createElement('label');recognitionModeLabel.append(document.createTextNode('Recognition method '));const recognitionMode=document.createElement('select');for(const [value,label] of [['openai','OpenAI'],['browser','Browser']]){const option=document.createElement('option');option.value=value;option.textContent=label;recognitionMode.append(option);}recognitionModeLabel.append(recognitionMode);const recognitionNotice=document.createElement('p');document.querySelector('.voice-box').append(recognitionModeLabel,recognitionNotice);
 const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
 let recognition,voiceErrorCode=Recognition?null:'unsupported';
 // Lanlao responds through movement; no human-sounding narration on this page.
@@ -114,7 +116,7 @@ const care=createCare({locale,petName:()=>tr('brand'),petKey:'lanlao',controls:d
 const memoryCard=createMemoryCard({container:document.querySelector('#memory-card'),locale});
 const viewerFailure=createLanlaoViewerFailure({loading:$('#loading'),state,locale,reload:()=>location.reload(),document});
 function fail(code){ready=false;greetButton.disabled=true;petButton.disabled=true;mic.disabled=true;document.querySelectorAll('[data-command],#send').forEach(button=>button.disabled=true);bubble.hidden=true;viewerFailure.show(code);}
-initI18n('home',()=>{care.render();memoryCard.render();languageSelect.value=voiceLocales[locale()];languageLabel.firstChild.textContent=tr('speechLanguage');voicePlayback.render();renderConversationStatus();if(voiceErrorCode)$('#voice-status').textContent=recognitionStatus(voiceErrorCode,locale());const studioText=[...studioLink.childNodes].find(n=>n.nodeType===Node.TEXT_NODE);if(studioText)studioText.textContent=tr('createPet')+' ';else studioLink.prepend(document.createTextNode(tr('createPet')+' '));furLink.textContent=tr(webFurMode?'furBack':'furTry');bubbleName.textContent=tr('brand');if(ready){state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: ${plainGreeting()}`;}for(const button of document.querySelectorAll('[data-command]')){const label=button.querySelector('span');if(label)label.textContent=tr(button.dataset.command);const hint=button.querySelector('small');if(hint)hint.textContent=tr(`hint_${button.dataset.command}`);}renderIcons();viewerFailure.render();});
+initI18n('home',()=>{care.render();memoryCard.render();languageSelect.value=voiceLocales[locale()];languageSelect.options[1].textContent=locale()==='en'?'Chinese':locale()==='fr'?'Chinois':'中文';languageLabel.firstChild.textContent=tr('speechLanguage');recognitionModeLabel.firstChild.textContent=tr('recognitionMode');recognitionMode.options[1].textContent=tr('recognitionBrowser');recognitionNotice.textContent=tr('recognitionNotice');voicePlayback.render();renderConversationStatus();if(voiceErrorCode&&recognitionMode.value==='browser')$('#voice-status').textContent=recognitionStatus(voiceErrorCode,locale());const studioText=[...studioLink.childNodes].find(n=>n.nodeType===Node.TEXT_NODE);if(studioText)studioText.textContent=tr('createPet')+' ';else studioLink.prepend(document.createTextNode(tr('createPet')+' '));furLink.textContent=tr(webFurMode?'furBack':'furTry');bubbleName.textContent=tr('brand');if(ready){state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: ${plainGreeting()}`;}for(const button of document.querySelectorAll('[data-command]')){const label=button.querySelector('span');if(label)label.textContent=tr(button.dataset.command);const hint=button.querySelector('small');if(hint)hint.textContent=tr(`hint_${button.dataset.command}`);}renderIcons();viewerFailure.render();});
 let renderer,mixer,model,activeAction,finishedAction,mode='stop',destination=null;
 const actions={},rest=[],morphWeights=[],home=new THREE.Vector3(0,0,0);
 const scene=new THREE.Scene();scene.background=new THREE.Color('#e8e9df');
@@ -237,7 +239,7 @@ loadWithIdleTimeout({start:(resolve,progress,reject)=>{loader.load(`${import.met
  if(required.some(n=>!actions[n])){fail('animation');return;}
  mixer.addEventListener('finished',e=>{if(e.action===activeAction)finishedAction=e.action;});
  ready=true;greetButton.disabled=false;petButton.disabled=false;$('#loading').classList.add('hidden');document.querySelectorAll('[data-command],#send').forEach(b=>b.disabled=false);
- mic.disabled=!Recognition;state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: ${plainGreeting()}`;bubble.hidden=false;
+ mic.disabled=false;state.textContent=tr('stateReady');reply.textContent=`${tr('brand')}: ${plainGreeting()}`;bubble.hidden=false;
 }).catch(error=>{if(!contextLost)fail(error?.code==='MODEL_LOAD_STALLED'?'timeout':'model');});
 function play(name,once=false){
  const next=actions[name];if(activeAction===next&&next.isRunning())return;
@@ -612,7 +614,7 @@ const commandInput=$('#command-text'),sendCommand=$('#send');
 function updateSend(){sendCommand.disabled=!ready||(answering&&!isImmediateStop(commandInput.value)&&!detectDistress(commandInput.value));}
 function cancelPending(){if(!answering)return;requestSerial++;answering=false;askAI.cancel();updateSend();}
 commandInput.addEventListener('input',updateSend);
-stopRenderActivity=()=>{commandVersion++;cancelPending();voicePlayback.stop();recognition?.abort();};
+stopRenderActivity=()=>{commandVersion++;cancelPending();voicePlayback.stop();recognition?.abort();openAIRecorder.cancel();};
 const accept=guardLanlaoInput({isAvailable:()=>ready&&!contextLost,handle:async text=>{micTrace('accept',{text});const careReply=care.check(text);if(careReply){cancelPending();voicePlayback.stop();execute('stop');reply.textContent=`${tr('brand')}: ${careReply}`;conversationStatus.local();renderConversationStatus();commandInput.value='';updateSend();return;}
  if(/^(?:hi|hello|hey)(?:[, ]+(?:lanlao))?[.!?]*$/i.test(text.trim())){commandVersion++;cancelPending();bubble.hidden=false;reply.textContent=`${tr('brand')}: ${plainGreeting()}`;conversationStatus.local();renderConversationStatus();clearSubmittedInput(commandInput,text);return;}
  const action=parseCommand(text,{postures:true});
@@ -628,14 +630,23 @@ const accept=guardLanlaoInput({isAvailable:()=>ready&&!contextLost,handle:async 
  try{const answer=await askAI(text,()=>requestVersion===commandVersion);if(requestVersion!==commandVersion)return;if(answer.action)execute(answer.action);reply.textContent=`${tr(answer.source==='system-privacy'?'systemPrivacy':answer.source==='system-action'?'systemAction':'brand')}: ${answer.caption}`;void voicePlayback.speak(answer.caption);conversationNeedsLogin=false;conversationStatus.succeeded(answer.source);renderConversationStatus();clearSubmittedInput(commandInput,text);}
  catch(error){if(requestVersion!==commandVersion)return;const answer=respond(text,locale());if(answer.action)execute(answer.action);reply.textContent=`${tr('brand')}: ${answer.caption}`;void voicePlayback.speak(answer.caption);conversationNeedsLogin=error.status===401;conversationStatus.failed();renderConversationStatus();clearSubmittedInput(commandInput,text);}
  finally{if(currentRequest===requestSerial){answering=false;updateSend();care.noteActivity();}}}});
-document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>{cancelPending();voicePlayback.stop();execute(b.dataset.command);conversationStatus.local();renderConversationStatus();if(b.dataset.command!=='stop')void voicePlayback.speak(tr(`action_${b.dataset.command}`)+'.');});
-$('#command-form').onsubmit=e=>{e.preventDefault();const v=$('#command-text').value.trim();if(v)accept(v);};
+document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>{openAIRecorder.cancel();cancelPending();voicePlayback.stop();execute(b.dataset.command);conversationStatus.local();renderConversationStatus();if(b.dataset.command!=='stop')void voicePlayback.speak(tr(`action_${b.dataset.command}`)+'.');});
+$('#command-form').onsubmit=e=>{e.preventDefault();const v=$('#command-text').value.trim();if(v){openAIRecorder.cancel();accept(v);}};
 
 // Explicit, one-utterance microphone sessions. No background listening or audio storage.
 let listening=false,voiceError=false;
-if(!Recognition)$('#voice-status').textContent=recognitionStatus('unsupported',locale());
+const openAIRecorder=createOpenAIRecorder({getLanguage:()=>languageSelect.value.split('-')[0],onState:state=>{const active=state==='recording';mic.setAttribute('aria-pressed',String(active));mic.classList.toggle('listening',active);if(state==='idle'){mic.innerHTML=tr('micStart');renderIcons();}else{mic.textContent=tr({recording:'recordStop',preparing:'recordPreparing',transcribing:'recordTranscribing'}[state]);$('#voice-status').textContent=mic.textContent;}},onText:text=>{$('#voice-status').textContent=`${tr('heard')}${text}`;accept(normalizeSpokenCommand(text));},onError:message=>{$('#voice-status').textContent=message;}});
+recognitionMode.onchange=()=>{openAIRecorder.cancel();recognition?.abort();recognitionNotice.hidden=recognitionMode.value!=='openai';$('#voice-status').textContent=recognitionMode.value==='browser'&&!Recognition?recognitionStatus('unsupported',locale()):tr('micStatus');};
+languageSelect.addEventListener('change',()=>openAIRecorder.cancel());
+window.addEventListener('pagehide',()=>openAIRecorder.cancel());
+if(!Recognition&&recognitionMode.value==='browser')$('#voice-status').textContent=recognitionStatus('unsupported',locale());
 mic.setAttribute('aria-pressed','false');
 mic.onclick=()=>{
+ if(recognitionMode.value==='openai'){
+  if(!ready||contextLost)return;
+  if(!['en','zh','fr'].includes(languageSelect.value.split('-')[0])){$('#voice-status').textContent=tr('recognitionLanguages');return;}
+  voicePlayback.stop();void openAIRecorder.start();return;
+ }
  micTrace('mic-click',{ready,hasRecognition:!!Recognition,active:!!recognition,lang:languageSelect.value});
  if(!Recognition||!ready)return;
  if(recognition){recognition.stop();return;}
@@ -649,7 +660,7 @@ mic.onclick=()=>{
  watchdog.start();try{session.start();}catch{watchdog.cancel();recognition=null;listening=false;voiceErrorCode='start';$('#voice-status').textContent=recognitionStatus(voiceErrorCode,locale());}
 };
 document.addEventListener('visibilitychange',()=>{
- if(document.hidden){attention.disengage();tapStart=null;if(recognition)recognition.abort();voicePlayback.stop();}
+ if(document.hidden){attention.disengage();tapStart=null;if(recognition)recognition.abort();openAIRecorder.cancel();voicePlayback.stop();}
 });
 reducedMotion.addEventListener('change',()=>attention.disengage());
 new ResizeObserver(([entry])=>{
