@@ -1,0 +1,88 @@
+@import './ui/visual-effects.css';
+
+body:has(#app), body:has(.shell) {
+  min-height: 100vh;
+  background: radial-gradient(ellipse 970px 550px at 90% 99px, #e5ecdf, transparent 86%), #f9f7f0;
+}
+
+#app .intro h1 { font-size: clamp(2.5rem, 4.3vw, 4rem); }
+#app .intro>p, .shell .hero>div>p:last-child { font-size: 1rem; color: #526658; }
+#app .stage, .pet-page .stage {
+  border-color: #c3d0bf;
+  border-radius: 20px;
+  box-shadow: 0 18px 46px #193d2918, 0 2px 8px #193d290b;
+  --beam-radius: 20px;
+  --beam-width: 2px;
+  --beam-from: #477d61;
+  --beam-to: #c99550;
+  --beam-size: 210px;
+  --beam-duration: 10s;
+}
+#app #dog-speech { border-top-color: #ccd7c7; background: #faf9f0; }
+#app #dog-speech .dog-speech-name { color: #41684a; }
+
+#app .controls {
+  padding: clamp(13px, 1.7vw, 24px);
+  border: 1px solid #d5ddd0;
+  border-radius: 20px;
+  background: #fffdf6;
+  box-shadow: 0 14px 37px #193d290f;
+}
+#app .controls-heading h2 { font-size: clamp(1.65rem, 2.55vw, 2.25rem); }
+#app .commands button {
+  position: relative;
+  isolation: isolate;
+  border-color: #d5ded1;
+  border-radius: 11px;
+  background: linear-gradient(147deg, #fffefa, #f2f4e9);
+  --glow-size: 117px;
+  --glow-color: #d6bc7659;
+}
+#app .commands button .pointer-glow { z-index: -1; }
+#app .commands button>span:not(.pointer-glow) { font-size: .875rem; font-weight: 600; }
+#app .commands button:hover:not(:disabled), #app .commands button.active {
+  border-color: #9bac94;
+  background: #eaf0e0;
+}
+#app #command-form>div { padding: 3px; border: 1px solid #d3dfce; border-radius: 12px; background: #f7f9f1; }
+#app #command-form>div:focus-within { border-color: #829b79; }
+#app #send, #app .controls #mic {
+  border-radius: 10px;
+  background: linear-gradient(115deg, #295641, #112f25);
+  font-weight: 700;
+  box-shadow: 0 4px 14px #214c3230;
+}
+#app .controls #mic.listening { background: #855439; }
+#app #voice-status, #app .controls .privacy, #app .chat-sim-note { color: #506451; }
+
+.shell .hero .note {
+  position: relative;
+  overflow: clip;
+  border-color: #557863;
+  border-radius: 18px;
+  background: radial-gradient(ellipse at 90% 0%, #325943, transparent 85%), #122e25;
+  color: #fff5de;
+  box-shadow: 0 14px 36px #193d2925;
+  --beam-radius: 18px;
+  --beam-size: 135px;
+}
+.shell .hero .note p, .shell .hero .note small { color: #e3eddc; font-size: .875rem; }
+.shell .hero .note b { color: #f2d6a1; font-size: 1rem; font-weight: 700; }
+.shell .card, .shell .job, .pet-page #interaction {
+  border-color: #d8e0d2;
+  border-radius: 18px;
+  box-shadow: 0 12px 34px #193d2910;
+}
+.shell .steps { background: linear-gradient(130deg, #f5f7ec, #e5ecdb); }
+.shell button.primary {
+  border-color: #40684d;
+  border-radius: 10px;
+  background: linear-gradient(115deg, #295641, #112f25);
+  box-shadow: 0 4px 14px #214c322a;
+}
+.shell button.primary:hover { background: #315a45; }
+
+@media (max-width: 760px) {
+  #app .stage { border-radius: 16px; --beam-radius: 16px; }
+  #app .commands button>span:not(.pointer-glow) { font-size: .75rem; }
+}

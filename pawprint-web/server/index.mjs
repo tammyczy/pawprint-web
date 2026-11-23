@@ -15,13 +15,14 @@ const memoryDraft=process.env.OPENAI_API_KEY?createMemoryDraft({apiKey:process.e
 const companionSpeech=process.env.OPENAI_API_KEY?createCompanionSpeech({apiKey:process.env.OPENAI_API_KEY,model:process.env.OPENAI_SPEECH_MODEL||'gpt-4o-mini-tts'}):null;
 const transcription=process.env.OPENAI_API_KEY?createTranscription({apiKey:process.env.OPENAI_API_KEY}):null;
 const cloud=process.env.CLOUD_DEPLOYMENT==='true';
+const portraitApiKey=process.env.OPENAI_PORTRAIT_API_KEY||(cloud?null:process.env.OPENAI_API_KEY);
 const registrationCode=process.env.REGISTRATION_CODE||'';
 const allowRegistration=process.env.ALLOW_REGISTRATION!=='false';
 const dataDir=cloud?process.env.RAILWAY_VOLUME_MOUNT_PATH||process.env.DATA_DIR:path.join(root,'.data');
 if(cloud&&(!dataDir||!path.isAbsolute(dataDir)||!origin.startsWith('https://')||process.env.LOCAL_TEST_MODE!=='false'||allowRegistration&&registrationCode.length<24))throw new Error('Cloud deployment requires a persistent data directory, HTTPS origin, account mode, and an invitation code for registration.');
 const keyConfigured=!!process.env.TRIPO_API_KEY;
 const automaticGeneration=cloud&&keyConfigured&&process.env.ALLOW_PAID_GENERATION==='true';
-const {app,db}=await makeApp({dataDir,distDir:cloud?null:path.join(root,'dist'),origin,allowedOrigins,allowRegistration,keyConfigured,localMode:process.env.LOCAL_TEST_MODE!=='false',companionAI,companionSpeech,transcription,memoryDraft,cloud,registrationCode,automaticGeneration});
+const {app,db}=await makeApp({dataDir,distDir:cloud?null:path.join(root,'dist'),origin,allowedOrigins,allowRegistration,keyConfigured,localMode:process.env.LOCAL_TEST_MODE!=='false',companionAI,companionSpeech,transcription,memoryDraft,portraitApiKey,cloud,registrationCode,automaticGeneration});
 const server=app.listen(port,cloud?'0.0.0.0':'127.0.0.1');
 let stopQueue=async()=>{};
 let shuttingDown;

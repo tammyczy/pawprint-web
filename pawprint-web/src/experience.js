@@ -1,5 +1,7 @@
 import './editorial.css';
 import './motion.css';
+import './interaction-surfaces.css';
+import {bindPointerEffects} from './ui/pointer-effects.js';
 
 const markURL=new URL('../public/pawprint-mark-v3.png',import.meta.url).href;
 for(const host of document.querySelectorAll('.wordmark-icon,.brand-icon,.demo-mark')){
@@ -10,6 +12,22 @@ for(const brand of document.querySelectorAll('.shell header .brand')){
  const copy=document.createElement('span');copy.className='brand-copy';copy.append(...brand.childNodes);brand.replaceChildren(image,copy);
 }
 let icon=document.querySelector('link[rel="icon"]');if(!icon){icon=document.createElement('link');icon.rel='icon';document.head.append(icon);}icon.href=markURL;icon.type='image/png';
+
+for (const frame of document.querySelectorAll('#app .stage, .pet-page .stage, .shell .hero .note')) {
+ const beam = document.createElement('span');
+ beam.className = 'border-beam';
+ beam.setAttribute('aria-hidden', 'true');
+ frame.append(beam);
+}
+for (const button of document.querySelectorAll('#app .commands button')) {
+ const glow = document.createElement('span');
+ glow.className = 'pointer-glow';
+ glow.setAttribute('aria-hidden', 'true');
+ button.dataset.pointerFx = '';
+ button.append(glow);
+}
+bindPointerEffects();
+
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const candidates=document.querySelectorAll('.idea-grid,.feature-head,.feature-card,.keepsake-heading,.keepsake-card,.keepsake-note,.demo-section,.journey-strip,.workspace-head,.shell .grid,.job,.controls-heading,.commands,#command-form');
 if('IntersectionObserver' in window){

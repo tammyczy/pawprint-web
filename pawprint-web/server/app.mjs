@@ -11,6 +11,7 @@ import {validateMemoryDraft} from './memory-draft.mjs';
 import {createMemoryRateLimit} from './memory-rate-limit.mjs';
 import {privacyReply} from './privacy-reply.mjs';
 import {guardCompanionAction} from './action-guard.mjs';
+import {createFamilyPortraitRouter} from './family-portrait.mjs';
 
 const scrypt=promisify(scryptCb), hash=t=>createHash('sha256').update(t).digest('hex');
 const err=(message,status=400)=>Object.assign(new Error(message),{status});
@@ -27,7 +28,7 @@ function validMedia(bytes,extension){
  if(extension==='mp3')return bytes.length>3&&(ascii(0,3)==='ID3'||bytes[0]===0xff&&(bytes[1]&0xe0)===0xe0);
  return false;
 }
-export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],allowRegistration=true,keyConfigured=false,localMode=false,companionAI=null,companionSpeech=null,transcription=null,memoryDraft=null,cloud=false,registrationCode="",automaticGeneration=false}){
+export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],allowRegistration=true,keyConfigured=false,localMode=false,companionAI=null,companionSpeech=null,transcription=null,memoryDraft=null,portraitApiKey=null,cloud=false,registrationCode="",automaticGeneration=false}){
  if(localMode&&!['127.0.0.1','localhost','[::1]'].includes(new URL(origin).hostname))throw new Error('免登录模式只能使用本机地址，不能配置公网入口。');
  const db=openStore(dataDir),app=express(),secure=new URL(origin).protocol==='https:';
  const localUser={id:'local-workspace',email:'本机工作区',local:true};
@@ -37,12 +38,13 @@ export async function makeApp({dataDir,distDir,origin,allowedOrigins=[origin],al
   if(localMode&&(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress)||!['127.0.0.1','localhost','[::1]'].includes(req.hostname)||req.headers.forwarded||req.headers['x-forwarded-for']||req.headers['x-forwarded-host']||req.headers['cf-connecting-ip']))return res.status(403).json({error:'免登录测试模式仅限本机直接访问，禁止公网代理。'});
   next();
  });
- app.use((req,res,next)=>{res.set({'X-Content-Type-Options':'nosniff','Referrer-Policy':'same-origin','X-Frame-Options':'DENY','Permissions-Policy':'camera=(), microphone=(self)'});next();});
+ app.use((req,res,next)=>{const camera=req.path==='/family-portrait.html'?'(self)':'()';res.set({'X-Content-Type-Options':'nosniff','Referrer-Policy':'same-origin','X-Frame-Options':'DENY','Permissions-Policy':`camera=${camera}, microphone=(self)`});next();});
  app.use('/api',(req,res,next)=>{
   res.set('Cache-Control','no-store');
   if(!['GET','HEAD','OPTIONS'].includes(req.method)&&!allowedOrigins.includes(req.headers.origin))return res.status(403).json({error:'请求来源不匹配，请从本站打开页面。'});
   next();
  });
+ app.use('/api/family-portrait',createFamilyPortraitRouter({apiKey:portraitApiKey,allowedOrigins}));
  app.use(express.json({limit:'8kb'}));
  const attempts=new Map();
  function authLimit(req,res,next){const k=req.ip,now=Date.now();let a=attempts.get(k);if(!a||now>a.until){a={count:0,until:now+600000};attempts.set(k,a);}if(++a.count>15)return res.status(429).json({error:'登录尝试过多，请十分钟后重试。'});next();}

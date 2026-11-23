@@ -28,10 +28,26 @@ Then open http://127.0.0.1:8788/. On macOS you can double-click `启动Pawprint.
 | --- | --- | --- |
 | Home | `/` | The story and design principles |
 | Meet Lanlao | `/app.html?lang=en` | The 3D companion: talk, type, tap, pet, stop |
+| Family portraits | `/family-portrait.html` | Upload separate people and pet photos and download an AI-generated JPG |
 | Evidence | `/judge.html` | Architecture, experiments, every failure we kept |
 | Studio | `/studio.html?lang=en` | Photos → candidate 3D model (private workspace) |
 
 Without keys the site still works: Lanlao answers with a small set of local rules, and the page says so. To enable live AI, copy `.env.example` to `.env` and fill in `OPENAI_API_KEY` (chat, memory drafts, voice) and `TRIPO_API_KEY` (photo-to-3D). Keys stay on the server and are never sent to the browser.
+
+## Family portraits
+
+Portraits use GPT-Image-2.5 Sunburst at `high` quality with one to three people photos and one to four cat or dog photos. Visitors can review or retake a front-camera photo, pick a scene and orientation, and add a short note about headcount or appearance. Refinement sends the current portrait, the original reference photos and a requested correction. The latest and immediately preceding edits are available to download in the browser. Pawprint strips upload metadata and processes the photos only after the visitor agrees to generate or apply a correction.
+
+Holiday scenes and art styles can be combined. A scene sets the surroundings and props, and the visual medium sets texture, light and linework. The same source photos and identity instructions apply to every combination. Christmas, winter holidays, Lunar New Year, Halloween and birthdays are available year-round. The finished portrait can become a JPG greeting card with exact user-entered text rendered in the browser.
+
+| Research | Design decision |
+| --- | --- |
+| [Pet Plus Us](https://www.pet-plus-us.com/) uses a small visible set of looks and shows samples before upload. | Give each art medium a recognizable image sample and keep the original upload flow. |
+| [AI Pet Portrait](https://ai-pet-portrait.com/) separates scene from style. [Pettenderly’s watercolor example](https://pettenderly.com/) shows how a medium can soften whiskers and fur while retaining eye and coat colors. | Let visitors combine a holiday with a medium and tell the model to keep the specific markings, faces and proportions visible. |
+| [Shutterfly](https://www.shutterfly.com/a/custom-holiday-card-templates/) uses orientation-aware photo layouts and user-written greetings. | Preserve the portrait’s aspect ratio and draw the greeting directly on the card. |
+| [OpenAI’s image prompting guide](https://developers.openai.com/api/docs/guides/image-prompting) separates visual style, reference roles and editing constraints. | Keep scene and medium separate in the prompt and preserve the current medium by default during refinement. |
+
+Locally, the portrait route uses `OPENAI_PORTRAIT_API_KEY` or the existing `OPENAI_API_KEY`. For Vercel, set `OPENAI_PORTRAIT_API_KEY` as a production secret, run `npm run build`, and use `node scripts/prepare-vercel-output.mjs` to stage the prebuilt frontend and portrait function. The optional HTTPS backend argument to the staging script proxies other API routes separately.
 
 ## How it works
 

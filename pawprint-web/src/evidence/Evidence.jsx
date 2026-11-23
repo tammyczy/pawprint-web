@@ -1,13 +1,24 @@
 import {useEffect,useMemo,useState} from 'react';
+import {ClipboardList, PawPrint} from 'lucide';
 import SplitText from '../reactbits/SplitText.jsx';
 import CountUp from '../reactbits/CountUp.jsx';
 import SpotlightCard from '../reactbits/SpotlightCard.jsx';
+import Aurora from '../reactbits/Aurora.jsx';
 import ShinyText from '../reactbits/ShinyText.jsx';
 import AnimatedContent from '../reactbits/AnimatedContent.jsx';
 import Magnet from '../reactbits/Magnet.jsx';
 import ClickSpark from '../reactbits/ClickSpark.jsx';
 import {explainCommand} from '../commands.js';
-import markURL from '../../public/pawprint-mark-v3.png';
+import Icon from '../ui/Icon.jsx';
+import SiteNav from '../ui/SiteNav.jsx';
+
+const links = [
+ ['#question', 'Question'],
+ ['#architecture', 'Where AI fits'],
+ ['#experiment', 'Experiment'],
+ ['#live', 'Real model'],
+ ['#responsibility', 'Trust']
+];
 
 const research=[
  {title:'The bond is real',text:'A qualitative review describes the importance of the human–animal relationship and of having grief socially recognized.',design:'Pawprint treats the loss as real and never asks people to explain or justify it.',source:'Cleary et al., review',href:'https://pubmed.ncbi.nlm.nih.gov/33881389/'},
@@ -41,7 +52,6 @@ const gates=['Independent intent cases written and labeled by people who never s
 const rubric=[['Artificial Intelligence',25],['Technical Skills',25],['Problem Statement',10],['Design',10],['AI Ethics',10],['Presentation & Communication',10],['Originality & Creativity',10]];
 const samples=['Don’t run','I watched a dog run yesterday','Walk then run','Show me how fast you can go','蓝老，过来'];
 
-const Arrow=()=> <svg className="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>;
 function Heading({kicker,text}){
  return <header className="section-head"><span className="kicker">{kicker}</span><SplitText tag="h2" text={text} splitType="words" delay={55} duration={.9} textAlign="left" className="h2" rootMargin="-60px" /></header>;
 }
@@ -104,31 +114,32 @@ function Inspector(){
 export default function Evidence(){
  return <ClickSpark sparkColor="#d9b56a" sparkSize={9} sparkRadius={22} sparkCount={7} duration={420}>
   <a className="skip-link" href="#main">Skip to content</a>
-  <header className="nav">
-   <a className="wordmark" href="/" aria-label="Pawprint home"><img src={markURL} alt="" width="34" height="34" /><span>Pawprint</span></a>
-   <nav aria-label="Sections"><a href="#question">Question</a><a href="#architecture">Where AI fits</a><a href="#experiment">Experiment</a><a href="#live">Real model</a><a href="#responsibility">Trust</a></nav>
-   <a className="nav-cta" href="/app.html?lang=en">Meet Lanlao <Arrow /></a>
-  </header>
+  <SiteNav links={links} />
 
-  <main id="main">
+  <main id="main" tabIndex={-1}>
    <section className="evidence-hero" aria-label="Introduction">
-    <ShinyText className="eyebrow" text="PROJECT EVIDENCE · WAICY 2026" color="#cfdccf" shineColor="#f6dfa4" speed={4} />
-    <SplitText tag="h1" text="Connection, with evidence behind it." splitType="words" delay={60} duration={1} textAlign="left" className="h1" />
-    <p className="lede">Inspect what the AI contributes, what the application controls, and what still has to be proven. Nothing on this page is hidden to look better.</p>
-    <div className="actions">
-     <Magnet padding={60} magnetStrength={5}><a className="button primary" href="/app.html?lang=en">Try the companion <Arrow /></a></Magnet>
-     <a className="button ghost" href="#experiment">Jump to the experiment <Arrow /></a>
+    <div className="evidence-sky" aria-hidden="true">
+     <Aurora colorStops={['#12543e','#60946e','#b48f55','#1d5a43']} height={.55} blend={.75} amplitude={1.25} direction="bottom" speed={.72} layers={2} dpr={.85} mouseInteraction={false} />
     </div>
-    <p className="badge">Prototype · third-party pretrained models · human review required</p>
+    <div className="evidence-intro">
+     <ShinyText className="eyebrow" text="PROJECT EVIDENCE · WAICY 2026" color="#cfdccf" shineColor="#f6dfa4" speed={4} />
+     <SplitText tag="h1" text="Connection, with evidence behind it." splitType="words" delay={48} duration={.85} textAlign="left" className="h1" />
+     <p className="lede">Inspect what the AI contributes, what the application controls, and what still has to be proven. Nothing on this page is hidden to look better.</p>
+     <div className="actions">
+      <Magnet padding={28} magnetStrength={7}><a className="button primary" href="/app.html?lang=en"><Icon icon={PawPrint} />Try the companion</a></Magnet>
+      <a className="button ghost" href="#experiment"><Icon icon={ClipboardList} />Jump to the experiment</a>
+     </div>
+     <p className="evidence-meta">Prototype · third-party pretrained models · human review required</p>
+    </div>
    </section>
 
    <section id="question" className="band paper" aria-label="The question">
-    <Heading kicker="01 · THE QUESTION" text="Can a digital keepsake stay honest?" />
+    <Heading kicker="THE QUESTION" text="Can a digital keepsake stay honest?" />
     <p className="intro">Some people who have lost a pet may want a personal way to remember a familiar companion. Pawprint combines a recognizable 3D model with short conversations and controllable movement. This is a design hypothesis: no participant study has shown that it helps.</p>
     <div className="grid three">
      {research.map((item,index)=><AnimatedContent key={item.title} distance={50} delay={index*.1}>
       <SpotlightCard theme="light" className="card" spotlightColor="#d9b56a" style={{'--spotlight-card-surface':'#fffdf8'}}>
-       <h3>{item.title}</h3><p>{item.text}</p><p className="so"><strong>So in Pawprint:</strong> {item.design}</p><a className="source" href={item.href} target="_blank" rel="noopener noreferrer">{item.source} <Arrow /></a>
+       <h3>{item.title}</h3><p>{item.text}</p><p className="so"><strong>So in Pawprint:</strong> {item.design}</p><a className="source" href={item.href} target="_blank" rel="noopener noreferrer">{item.source}</a>
       </SpotlightCard>
      </AnimatedContent>)}
     </div>
@@ -136,7 +147,7 @@ export default function Evidence(){
    </section>
 
    <section id="architecture" className="band forest" aria-label="Where AI fits">
-    <Heading kicker="02 · WHERE AI FITS" text="Three model services. One bounded experience." />
+    <Heading kicker="WHERE AI FITS" text="Three model services. One bounded experience." />
     <div className="grid three">
      {layers.map((item,index)=><AnimatedContent key={item.tag} distance={50} delay={index*.1}>
       <SpotlightCard className="card model" spotlightColor="#d9b56a" style={{'--spotlight-card-surface':'#17382f','--spotlight-card-border':'rgba(245,241,230,.14)'}}>
@@ -152,35 +163,35 @@ export default function Evidence(){
    </section>
 
    <section id="experiment" className="band paper" aria-label="A reproducible experiment">
-    <Heading kicker="03 · A REPRODUCIBLE EXPERIMENT" text="Fewer accidental moves. Visible limits." />
+    <Heading kicker="A REPRODUCIBLE EXPERIMENT" text="Fewer accidental moves. Visible limits." />
     <p className="intro">The original substring matcher is compared with the revised offline command rules on 55 author-written cases plus 13 adversarial cases from code review. All of them were later used for fixes, so this is a development set. It measures exact action labels only: it does not measure the language model or real-world accuracy.</p>
     <Experiment />
     <Inspector />
    </section>
 
    <section id="live" className="band sage" aria-label="Tests with the real language model">
-    <Heading kicker="04 · THE REAL LANGUAGE MODEL" text="What broke when the AI was real." />
+    <Heading kicker="THE REAL LANGUAGE MODEL" text="What broke when the AI was real." />
     <p className="intro">On November 9, 2026, fictional messages were sent to the configured model. An AI assistant reviewed the outputs; there was no independent human blind review. Each row is what was found and what changed.</p>
-    <ol className="timeline">
-     {liveFindings.map((item,index)=><AnimatedContent key={item.when} distance={36} delay={index*.05}><li>
+    <AnimatedContent distance={28}><ol className="timeline">
+     {liveFindings.map(item=><li key={item.when}>
       <span className="when">{item.when}</span>
       <div><p className="what">{item.what}</p><p>{item.found}</p><p className="fix">{item.fix}</p></div>
-     </li></AnimatedContent>)}
-    </ol>
+     </li>)}
+    </ol></AnimatedContent>
     <p className="fineprint">Outputs, versions and failures are kept in the project’s review files; the provider excerpt from one rejected memory draft was not captured. This is not a participant study or a therapeutic evaluation.</p>
    </section>
 
    <section id="responsibility" className="band paper" aria-label="Trust and responsibility">
-    <Heading kicker="05 · TRUST IS PART OF THE DESIGN" text="Personal, without pretending." />
+    <Heading kicker="TRUST IS PART OF THE DESIGN" text="Personal, without pretending." />
     <div className="grid two">
      {trust.map(([title,text],index)=><AnimatedContent key={title} distance={40} delay={index*.08}>
-      <SpotlightCard theme="light" className="card" spotlightColor="#a66b4e" style={{'--spotlight-card-surface':'#fffdf8'}}><span className="number">{String(index+1).padStart(2,'0')}</span><h3>{title}</h3><p>{text}</p></SpotlightCard>
+      <SpotlightCard theme="light" className="card" spotlightColor="#a66b4e" style={{'--spotlight-card-surface':'#fffdf8'}}><h3>{title}</h3><p>{text}</p></SpotlightCard>
      </AnimatedContent>)}
     </div>
    </section>
 
    <section id="iterations" className="band forest" aria-label="Iterations and next steps">
-    <Heading kicker="06 · BUILD, MEASURE, EXPLAIN" text="Three iterations, and what comes next." />
+    <Heading kicker="BUILD, MEASURE, EXPLAIN" text="Three iterations, and what comes next." />
     <div className="grid three">
      {iterations.map(([title,text],index)=><AnimatedContent key={title} distance={50} delay={index*.1}>
       <SpotlightCard className="card model" spotlightColor="#d9b56a" style={{'--spotlight-card-surface':'#17382f','--spotlight-card-border':'rgba(245,241,230,.14)'}}><h3>{title}</h3><p>{text}</p></SpotlightCard>
@@ -190,9 +201,9 @@ export default function Evidence(){
    </section>
 
    <section className="band paper" aria-label="Competition references">
-    <Heading kicker="07 · COMPETITION REFERENCES" text="The rubric is the guide. Evidence earns the score." />
+    <Heading kicker="COMPETITION REFERENCES" text="The rubric is the guide. Evidence earns the score." />
     <ul className="rubric">{rubric.map(([name,points])=><li key={name}><span>{name}</span><span className="bar" style={{'--share':points/25}} aria-hidden="true" /><strong>{points}</strong></li>)}</ul>
-    <p className="fineprint">Any score in the project’s internal review is an estimate, not an official result. <a href="https://www.waicy.org/rubrics/" target="_blank" rel="noopener noreferrer">Official rubric <Arrow /></a> <a href="https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/10/WAICY-2026-Guidebook-2.pdf" target="_blank" rel="noopener noreferrer">2026 guidebook <Arrow /></a> <a href="https://www.waicy.org/2026-submission/" target="_blank" rel="noopener noreferrer">Submission requirements <Arrow /></a></p>
+    <p className="fineprint">Any score in the project’s internal review is an estimate, not an official result. <a href="https://www.waicy.org/rubrics/" target="_blank" rel="noopener noreferrer">Official rubric</a> <a href="https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/10/WAICY-2026-Guidebook-2.pdf" target="_blank" rel="noopener noreferrer">2026 guidebook</a> <a href="https://www.waicy.org/2026-submission/" target="_blank" rel="noopener noreferrer">Submission requirements</a></p>
    </section>
   </main>
 

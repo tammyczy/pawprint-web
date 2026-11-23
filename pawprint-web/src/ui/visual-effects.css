@@ -1,0 +1,67 @@
+/*!
+ * Border Beam adapted from Magic UI (https://magicui.design/docs/components/border-beam).
+ * MIT License
+ * Copyright (c) Magic UI
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+.border-beam {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+@supports (offset-path: inset(0 round 20px)) and (mask-composite: exclude) {
+  .border-beam {
+    border: var(--beam-width, 1px) solid transparent;
+    mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box;
+    mask-composite: exclude;
+  }
+  .border-beam::after {
+    position: absolute;
+    width: var(--beam-size, 160px);
+    aspect-ratio: 1;
+    offset-path: inset(0 round var(--beam-radius, 24px));
+    offset-distance: 36%;
+    background: linear-gradient(90deg, transparent 7%, var(--beam-from, #d9ab61), var(--beam-to, #fff2cc), transparent);
+    content: '';
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .border-beam::after { animation: beam-travel var(--beam-duration, 8s) linear infinite; }
+    @keyframes beam-travel { to { offset-distance: 136%; } }
+  }
+}
+
+.pointer-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .pointer-glow {
+    background: radial-gradient(circle var(--glow-size, 220px) at calc(var(--fx-x, .5) * 100%) calc(var(--fx-y, .5) * 100%), var(--glow-color, #edc97c38), transparent 88%);
+    opacity: 0;
+    transition: opacity .4s ease;
+  }
+  [data-pointer-fx]:hover > .pointer-glow { opacity: 1; }
+}
