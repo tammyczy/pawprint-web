@@ -32,7 +32,7 @@ import {createLanlaoRoamingArea} from './lanlao-roaming-area.js';
 import {createLanlaoStride} from './lanlao-stride.js';
 import {planLanlaoRequestedTravel} from './lanlao-travel-view.js';
 import {planLanlaoApproach,LANLAO_APPROACH_FOCUS_HEIGHT} from './lanlao-approach.js';
-import {createLanlaoAttention,createLanlaoGreeting} from './lanlao-attention.js';
+import {createLanlaoAttention,createLanlaoGreeting,lanlaoPlayBowDuration,sampleLanlaoPlayBow} from './lanlao-attention.js';
 import {createLanlaoExpression} from './lanlao-expression.js';
 import {createLanlaoPetting,createPettingRequest} from './lanlao-petting.js';
 import {parseCommand} from './commands.js';
@@ -510,10 +510,6 @@ function ease(value){
  const t=THREE.MathUtils.clamp(value,0,1);
  return t*t*(3-2*t);
 }
-const playBowEnd=.74;
-function popAt(time,start,peak,release,end){
- return ease((time-start)/(peak-start))*(1-ease((time-release)/(end-release)));
-}
 function startGesture(name){
  mode=name;
  gestureTime=0;gestureDepth=0;gestureLook=0;gestureExit=null;
@@ -553,8 +549,8 @@ function animateGesture(dt,interrupted){
   }
   if(beat.done){startGreetingTurn();return;}
  }else{
-  gestureDepth=popAt(gestureTime,0,.28,.36,playBowEnd);
-  if(gestureTime>=playBowEnd){startAutonomousGait(true);return;}
+  gestureDepth=sampleLanlaoPlayBow(gestureTime);
+  if(gestureTime>=lanlaoPlayBowDuration){startAutonomousGait(true);return;}
  }
  dog.worldToLocal(gestureViewer.copy(camera.position));
  const yaw=Math.atan2(gestureViewer.z,-gestureViewer.x);

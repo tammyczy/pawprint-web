@@ -3,8 +3,8 @@ import {MathUtils, Vector3} from 'three';
 const UP = new Vector3(0, 1, 0);
 // Calibrated root travel per second of each authored clip, in model units.
 // Cruise pace can change; these must stay fixed so feet follow actual travel.
-const WALK_SPEED = .275;
-const TROT_SPEED = .865;
+export const LANLAO_WALK_SPEED = .275;
+export const LANLAO_TROT_SPEED = .865;
 const ARRIVAL_DISTANCE = .022;
 export const LANLAO_TURN_RATE_LIMIT = 1.6;
 
@@ -24,7 +24,7 @@ export function createLanlaoLocomotion(dog) {
   move(dt, {destination = null, route = null, nextRoute = null, run = false, pace = 1, brake = false, exitSpeed = 0,
    faceBeforeMoving = false, faceOnArrival = null} = {}) {
    if (dt <= 0) return {clipRate:0, arrived:false, speed, turnRate:0};
-   const strideSpeed = run ? TROT_SPEED : WALK_SPEED;
+   const strideSpeed = run ? LANLAO_TROT_SPEED : LANLAO_WALK_SPEED;
    const {w,y} = dog.quaternion;
    const yaw = Math.atan2(2*w*y, 1-2*y*y);
    const deceleration = run ? 3.6 : 1.25;

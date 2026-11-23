@@ -3,11 +3,13 @@ import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,rm,writeFile,readFile,access} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import sharp from 'sharp';
 import {openStore} from './server/store.mjs';
 import {runJob,MOCK_LABEL} from './server/worker.mjs';
 import {Tripo,TripoError,inspectGLB} from './server/tripo.mjs';
 import {MockTripo} from './server/mock-tripo.mjs';
+import {LANLAO_MOTION_CLIPS} from './server/lanlao-motion.mjs';
 
 const exists=file=>access(file).then(()=>true,()=>false);
 async function setup(mode='direct'){
@@ -47,6 +49,75 @@ test('mock generated_views run pauses at VIEW_REVIEW with four labelled views, t
   assert.equal((await t.run()).status,'REVIEW_REQUIRED');job=t.row();
   assert.equal(job.data.tasks.multiview.id,multiviewId);assert.equal(job.data.modelFile,'model.glb');assert.ok(await exists(path.join(t.dir,'model.glb')));
  }finally{await t.cleanup();}
+});
+
+test('the reviewed path sends the real front photo and only selected AI views',async()=>{
+ const t=await setup('generated_views');
+ try{
+  const provider=new MockTripo({outDir:path.join(t.dir,'mock-tripo'),sampleGLB:fileURLToPath(new URL('./models/silver-fold-cat/base-model.glb',import.meta.url))});
+  const calls=[],submit=provider.submit.bind(provider);
+  provider.submit=(endpoint,body)=>{calls.push({endpoint,body});return submit(endpoint,body);};
+  const result=await t.run('',{tripo:provider});assert.equal(result.status,'VIEW_REVIEW');
+  const {data}=t.row();data.viewsApprovedAt=Date.now();data.approvedSyntheticViews=['back'];data.modelProfile='detail';
+  t.db.prepare('UPDATE jobs SET status=?,data=? WHERE id=?').run('WAITING_APPROVAL',JSON.stringify(data),t.id);
+  assert.equal((await t.run('',{tripo:provider})).status,'REVIEW_REQUIRED');
+  const job=t.row(),generation=calls.find(call=>call.endpoint==='/generation/multiview-to-model');
+  assert.deepEqual(generation.body.inputs,[{front:data.tokens.front},{back:job.data.generatedTokens.back}]);
+  assert.deepEqual(Object.keys(job.data.generatedTokens),['back']);
+  assert.equal(generation.body.geometry_quality,'detailed');
+  assert.equal(job.data.modelReview.result,'invalid_walk');
+  assert.ok(job.data.modelReview.issues.includes('no_walk'));
+  assert.equal(job.data.modelFile,'base-model.glb');
+  assert.equal(await exists(path.join(t.dir,'model.glb')),false);
+  assert.equal(job.data.previewFile,'model-preview.glb');
+ }finally{await t.cleanup();}
+});
+
+test('a broken base model stops before rigging and stays out of the preview',async()=>{
+ const t=await setup();
+ try{
+  const broken=path.join(t.dir,'broken.glb');await writeFile(broken,'invalid GLB');
+  const provider=new MockTripo({outDir:path.join(t.dir,'mock-tripo'),sampleGLB:broken});
+  assert.equal((await t.run('',{tripo:provider})).status,'REVIEW_REQUIRED');
+  const {data}=t.row();
+  assert.deepEqual(Object.keys(data.tasks),['generation']);
+  assert.equal(data.modelReview.result,'invalid_base');
+  assert.equal(data.modelFile,undefined);
+ }finally{await t.cleanup();}
+});
+
+test('a new provider rig receives Lanlao motions locally and the download contains the full set',async t=>{
+ const run=await setup();
+ const base=await readFile(new URL('./models/silver-fold-cat/base-model.glb',import.meta.url));
+ const rig=await readFile(new URL('./models/silver-fold-cat/model.glb',import.meta.url));
+ const origin='https://openapi-dl.data.tripo3d.com';
+ const calls=[];
+ const tripo={
+  request:async()=>({balance:500}),
+  upload:async()=>'provider-photo',
+  submit:async endpoint=>{calls.push(endpoint);return endpoint;},
+  query:async endpoint=>{
+   const rigged=endpoint==='/animations/rig';
+   const check=endpoint==='/animations/rig-check';
+   return {status:'success',credits_consumed:check?0:rigged?25:30,
+    output:check?{riggable:true,rig_type:'quadruped'}:{model_url:`${origin}/${rigged?'rig':'base'}.glb`}};
+  },
+ };
+ t.mock.method(globalThis,'fetch',async (url,options)=>{
+  assert.equal(url.origin,origin);
+  assert.equal(options.redirect,'error');
+  return new Response(url.pathname==='/rig.glb'?rig:base);
+ });
+ try{
+  const env={ALLOW_PAID_GENERATION:'true',TRIPO_API_KEY:'test-only',TEST_BUDGET_CREDITS:'100'};
+  await runJob({db:run.db,dataDir:run.dataDir,jobId:run.id,tripo,options:{env,confirmCharges:true,skipBlender:true}});
+  assert.deepEqual(calls,['/generation/image-to-model','/animations/rig-check','/animations/rig']);
+  const {data}=run.row();
+  assert.equal(data.modelReview.result,'animated');
+  assert.equal(data.report.motionTemplate,'lanlao');
+  assert.equal(data.report.validation.errors,0);
+  assert.deepEqual(inspectGLB(await readFile(path.join(run.dir,data.modelFile))).animations,LANLAO_MOTION_CLIPS);
+ }finally{await run.cleanup();}
 });
 
 test('mock failure drills leave clear, correctly rerunnable statuses',async()=>{

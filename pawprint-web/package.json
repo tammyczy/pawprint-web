@@ -16,6 +16,7 @@
   "dependencies": {
     "dotenv": "^18.0.1",
     "express": "^5.2.1",
+    "gltf-validator": "2.0.0-dev.3.10",
     "lucide": "^1.51.0",
     "multer": "^2.4.0",
     "sharp": "^0.35.4",

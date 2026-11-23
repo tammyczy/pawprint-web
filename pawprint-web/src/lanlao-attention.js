@@ -53,6 +53,9 @@ function pop(elapsed, rise, release, end) {
  return ease(elapsed / rise) * (1 - ease((elapsed - release) / (end - release)));
 }
 
+export const lanlaoPlayBowDuration = .74;
+export const sampleLanlaoPlayBow = time => pop(time, .28, .36, lanlaoPlayBowDuration);
+
 export function createLanlaoGreeting(attention) {
  const frame = {
   depth: 0, look: 0, phase: 'look', done: false, playful: false, turnIntent: 0, landingAge: undefined

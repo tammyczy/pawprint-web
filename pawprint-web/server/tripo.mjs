@@ -1,4 +1,6 @@
 import {readProviderBody} from './provider-response.mjs';
+import {DEFAULT_TRIPO_MODEL,PHOTO_VIEWS} from './modeling-plan.mjs';
+export {inspectGLB} from './glb.mjs';
 // Classified provider errors: .code for the worker, .definite when Tripo answered and rejected (safe to rerun), never the key or raw body.
 export class TripoError extends Error{constructor(code,{status,apiCode,providerMessage,definite=false}={}){super(`${code}${status?` HTTP ${status}`:''}${apiCode!==undefined?` code ${apiCode}`:''}${providerMessage?`: ${providerMessage}`:''}`);this.name='TripoError';Object.assign(this,{code,status,apiCode,providerMessage,definite});}}
 export function sanitizeProviderMessage(value,key){
@@ -31,16 +33,12 @@ export class Tripo {
  async submit(endpoint,body){const data=await this.request(endpoint,{method:'POST',body});if(typeof data.task_id!=='string')throw new TripoError('TRIPO_BAD_RESPONSE');return data.task_id;}
  query(id){return this.request(`/tasks/${encodeURIComponent(id)}`);}
 }
-export function generationRequest(tokens,model,multiviewTaskId){
- const options={model,texture:true,pbr:true,face_limit:50000,texture_alignment:'original_image',texture_quality:'standard',geometry_quality:'standard',enable_image_autofix:false};
+export function generationRequest(tokens,model,multiviewTaskId,profile='standard'){
+ const detail=profile==='detail';
+ const options={model:detail?DEFAULT_TRIPO_MODEL:model,texture:true,pbr:true,face_limit:detail?80000:50000,texture_alignment:'original_image',texture_quality:detail?'detailed':'standard',geometry_quality:detail?'detailed':'standard',enable_image_autofix:false};
+ if(detail){options.texture_version='v3.5-20260815';options.delight=false;}
  if(multiviewTaskId)return {endpoint:'/generation/multiview-to-model',body:{...options,inputs:[{task_id:multiviewTaskId}]}};
- return Object.keys(tokens).length===1?{endpoint:'/generation/image-to-model',body:{...options,input:tokens.front}}:{endpoint:'/generation/multiview-to-model',body:{...options,inputs:Object.entries(tokens).map(([view,token])=>({[view]:token}))}};
-}
-export function inspectGLB(bytes){
- if(bytes.length<20||bytes.toString('ascii',0,4)!=='glTF'||bytes.readUInt32LE(4)!==2||bytes.readUInt32LE(8)!==bytes.length||bytes.readUInt32LE(16)!==0x4e4f534a)throw new Error('Invalid GLB');
- const length=bytes.readUInt32LE(12);if(length>bytes.length-20)throw new Error('Invalid GLB JSON');
- const document=JSON.parse(bytes.toString('utf8',20,20+length));
- for(const resource of [...document.buffers||[],...document.images||[]])if(resource.uri&&!resource.uri.startsWith('data:'))throw new Error('External GLB resources are not allowed');
- const animations=(document.animations||[]).map(x=>x.name||'Unnamed');
- return {animations,meshes:document.meshes?.length||0,materials:document.materials?.length||0,skins:document.skins?.length||0,joints:(document.skins||[]).reduce((n,s)=>n+s.joints.length,0)};
+ const views=PHOTO_VIEWS.filter(view=>tokens[view]);
+ if(!tokens.front)throw new Error('Missing front photo');
+ return views.length===1?{endpoint:'/generation/image-to-model',body:{...options,input:tokens.front}}:{endpoint:'/generation/multiview-to-model',body:{...options,inputs:views.map(view=>({[view]:tokens[view]}))}};
 }

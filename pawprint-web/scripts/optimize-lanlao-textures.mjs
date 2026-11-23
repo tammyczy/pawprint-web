@@ -1,30 +1,54 @@
-// Re-encode Lanlao's textures as WebP for the website copy of the model.
-// Geometry, skin weights, morph targets and animations are written unchanged,
-// so the motion code and its tests keep using identical vertex data.
-// Usage: node scripts/optimize-lanlao-textures.mjs
-import {NodeIO} from '@gltf-transform/core';
-import {ALL_EXTENSIONS,EXTTextureWebP} from '@gltf-transform/extensions';
+import {readFile, rename, writeFile} from 'node:fs/promises';
 import sharp from 'sharp';
-import {statSync} from 'node:fs';
+import {readGLB} from '../server/glb.mjs';
+import {assessModel} from '../server/model-quality.mjs';
+import {rewriteModelTextures} from '../server/model-textures.mjs';
 
-const source='public/models/lanlao-rig-motion-refined.glb',target='public/models/lanlao-web.glb';
-const quality={basecolor:82,normal:92,rm:90};
-const io=new NodeIO().registerExtensions(ALL_EXTENSIONS);
-const summary=doc=>{const root=doc.getRoot();let vertices=0;for(const mesh of root.listMeshes())for(const primitive of mesh.listPrimitives())vertices+=primitive.getAttribute('POSITION').getCount();return JSON.stringify({vertices,joints:root.listSkins().map(skin=>skin.listJoints().length),animations:root.listAnimations().map(animation=>animation.getName()),targets:root.listMeshes().map(mesh=>mesh.listPrimitives()[0].listTargets().length)});};
+const source = new URL('../public/models/lanlao-rig-motion-refined.glb', import.meta.url);
+const target = new URL('../public/models/lanlao-web.glb', import.meta.url);
+const temporary = new URL('./lanlao-web.glb.tmp', target);
+const quality = {basecolor: 82, normal: 92, rm: 90};
 
-const doc=await io.read(source),before=summary(doc);
-doc.createExtension(EXTTextureWebP).setRequired(true);
-for(const texture of doc.getRoot().listTextures()){
- const kind=Object.keys(quality).find(key=>texture.getName().endsWith(key));
- if(!kind)throw new Error(`Unexpected texture: ${texture.getName()}`);
- const [width,height]=texture.getSize(),bytes=texture.getImage().byteLength;
- const webp=await sharp(texture.getImage()).webp({quality:quality[kind],effort:6,smartSubsample:true}).toBuffer();
- // An already-compressed JPEG can come out larger; keep the original then.
- if(webp.byteLength>=bytes*.9){console.log(`${kind}: ${width}×${height}, kept original (${bytes} bytes)`);continue;}
- texture.setImage(webp).setMimeType('image/webp');
- console.log(`${kind}: ${width}×${height}, ${bytes} → ${webp.byteLength} bytes`);
+const original = await readFile(source);
+const {document, binary} = readGLB(original);
+const primitive = document.meshes[0].primitives[0];
+const joints = document.accessors[primitive.attributes.JOINTS_0];
+const weights = document.accessors[primitive.attributes.WEIGHTS_0];
+if (joints.componentType !== 5121 || weights.componentType !== 5126 || joints.count !== weights.count
+  || joints.type !== 'VEC4' || weights.type !== 'VEC4' || joints.sparse || weights.sparse) {
+ throw new Error('Unexpected Lanlao skin layout');
 }
-await io.write(target,doc);
-const after=summary(await io.read(target));
-if(before!==after)throw new Error(`Model structure changed:\n${before}\n${after}`);
-console.log(`${source} ${statSync(source).size} → ${target} ${statSync(target).size} bytes; structure unchanged: ${after}`);
+const jointsView = document.bufferViews[joints.bufferView], weightsView = document.bufferViews[weights.bufferView];
+let duplicates = 0;
+for (let vertex = 0; vertex < weights.count; vertex++) {
+ const jointStart = (jointsView.byteOffset ?? 0) + (joints.byteOffset ?? 0) + vertex * (jointsView.byteStride ?? 4);
+ const weightStart = (weightsView.byteOffset ?? 0) + (weights.byteOffset ?? 0) + vertex * (weightsView.byteStride ?? 16);
+ const firstSlot = new Map();
+ for (let slot = 0; slot < 4; slot++) {
+  const weightOffset = weightStart + slot * 4;
+  const weight = binary.readFloatLE(weightOffset);
+  if (weight === 0) continue;
+  const joint = binary[jointStart + slot];
+  if (!firstSlot.has(joint)) {
+   firstSlot.set(joint, weightOffset);
+   continue;
+  }
+  const first = firstSlot.get(joint);
+  binary.writeFloatLE(binary.readFloatLE(first) + weight, first);
+  binary.writeFloatLE(0, weightOffset);
+  binary[jointStart + slot] = 0;
+  duplicates++;
+ }
+}
+const preview = await rewriteModelTextures(original, async (bytes, image) => {
+ const kind = Object.keys(quality).find(key => image.name?.endsWith(key));
+ if (!kind) throw new Error(`Unexpected texture: ${image.name}`);
+ const webp = await sharp(bytes).webp({quality: quality[kind], effort: 6, smartSubsample: true}).toBuffer();
+ return webp.length < bytes.length * 0.9 ? webp : null;
+});
+if (!preview) throw new Error('No smaller preview was produced');
+const review = await assessModel(preview, {walking: true});
+if (!review.renderable || !review.coat || !review.walkable) throw new Error(JSON.stringify(review));
+await writeFile(temporary, preview);
+await rename(temporary, target);
+console.log(`Lanlao: ${original.length} → ${preview.length} bytes; ${duplicates} duplicate influences merged; ${review.validation.errors} glTF errors`);

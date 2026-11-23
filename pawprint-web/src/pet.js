@@ -7,6 +7,7 @@ import {createWebFur} from './web-fur.js';
 import {createStrandFur} from './strand-fur.js';
 import {repairXiaoqWalk} from './xiaoq-walk.js';
 import {respond} from './companion.js';
+import {parseCommand} from './commands.js';
 import {isImmediateStop} from './immediate-stop.js';
 import {createAIChat} from './ai-chat.js';
 import {createConversationStatus} from './conversation-status.js';
@@ -22,6 +23,7 @@ import {createMemoryCard} from './memory-card.js';
 import {loadWithIdleTimeout} from './pet-load-timeout.js';
 import {createPetLoadSupport} from './pet-load-fallback.js';
 import {createPetRequestGuard} from './pet-request-guard.js';
+import {modelReviewText} from './studio-modeling.js';
 const $=s=>document.querySelector(s),id=new URLSearchParams(location.search).get('id');
 let renderPet=()=>{},renderViewer=()=>{},memoryCard;
 const petI18n=initI18n('pet',()=>{renderPet();renderViewer();memoryCard?.render();});
@@ -52,7 +54,13 @@ async function boot(){showState('petLoading',{loading:true});let job=null;
   if(response.status===404||response.status===401)throw fail('petJobMissing');if(!response.ok||!job||typeof job!=='object')throw Object.assign(fail(response.status>=500||!job?'netServer':'requestFailed'),{detail:job?.error});
   $('#name').textContent=job.name;if(job.mock){const demo=document.createElement('span');demo.className='badge demo-badge';demo.textContent=tr('demoMode');demo.title=tr('demoModeHint');$('.workspace-head .badge').after(demo);}
   if(!job.hasModel)throw fail('petNoModel');
-  const url=`/api/jobs/${id}/model`,model=await loadGLB(url);start(job,url,model,id);
+  const url=`/api/jobs/${id}/model`;
+  let model;
+  if(job.hasPreview){
+   try{model=await loadGLB(`${url}?variant=preview`);}
+   catch{showState('petLoading',{loading:true});}
+  }
+  start(job,url,model??await loadGLB(url),id);
  }catch(error){console.error(error);if(started||error.key==='petWebglUnavailable')return showState(error.key||'petLoadError',{buttons:[action('petRetry',()=>location.reload(),true),link('petBackStudio','/studio.html')]});showState(error.key||'petLoadError',{detail:error.detail||job?.message||error.message,buttons:[action('petViewSample',showSample,true),action('petRetry',()=>location.reload()),link('petBackStudio','/studio.html')]});}
 }
 function start(job,url,model,petId){
@@ -60,7 +68,7 @@ function start(job,url,model,petId){
  const responseGuard=createPetRequestGuard();
  let referenceAudio=null;
  function stopReferenceAudio(){if(referenceAudio){referenceAudio.pause();referenceAudio.currentTime=0;}}
- $('#name').textContent=job.name;$('#message').textContent=job.message;
+ $('#name').textContent=job.name;$('#message').textContent=modelReviewText(job)||job.message;
  let renderer;try{renderer=new THREE.WebGLRenderer({antialias:true});}catch{throw fail('petWebglUnavailable');}started=true;
  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
  renderer.toneMappingExposure=1.05;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;
@@ -75,14 +83,15 @@ function start(job,url,model,petId){
  controls.maxPolarAngle=Math.PI*.48;controls.minDistance=radius*1.2;controls.maxDistance=radius*4;controls.enablePan=false;
  function resetView(){controls.target.copy(center).add(new THREE.Vector3(0,radius*.08,0));camera.position.copy(center).add(new THREE.Vector3(radius*.95,radius*.48,-radius*1.8));controls.update();}
  resetView();$('#reset-view').onclick=resetView;camera.far=Math.max(100,radius*220);camera.updateProjectionMatrix();
- const mixer=new THREE.AnimationMixer(model.scene);for(const [index,clip]of model.animations.entries()){const option=document.createElement('option');option.value=index;option.textContent=clip.name||`动作 ${index+1}`;$('#animations').append(option);}$('#animations').onchange=e=>{responseGuard.invalidate();cancelPending();mixer.stopAllAction();destination=null;mode=e.target.value===''?'stop':'preview';if(e.target.value!=='')mixer.clipAction(model.animations[Number(e.target.value)]).reset().setLoop(THREE.LoopRepeat,Infinity).play();};
+ const animations=job.modelReview&&job.modelReview.result!=='animated'?[]:model.animations;
+ const mixer=new THREE.AnimationMixer(model.scene);for(const [index,clip]of animations.entries()){const option=document.createElement('option');option.value=index;option.textContent=clip.name||`动作 ${index+1}`;$('#animations').append(option);}$('#animations').onchange=e=>{responseGuard.invalidate();cancelPending();mixer.stopAllAction();destination=null;mode=e.target.value===''?'stop':'preview';if(e.target.value!=='')mixer.clipAction(animations[Number(e.target.value)]).reset().setLoop(THREE.LoopRepeat,Infinity).play();};
  const bubble=document.createElement('div');bubble.id='dog-speech';const speaker=document.createElement('span');speaker.className='dog-speech-name';speaker.textContent=job.name;const speech=document.createElement('div');speech.className='dog-speech-text';speech.textContent='我来啦，和我说句话吧！';bubble.append(speaker,speech);wrap.append(bubble);
  speech.setAttribute('role','status');speech.setAttribute('aria-live','polite');
  const panel=$('#interaction');const caption=document.createElement('p');caption.className='interaction-note';caption.textContent='试试“你好”“小Q过来”或“你真乖”。灰色动作还在适配中。';const buttons=document.createElement('div');buttons.className='action-grid';const preferences=document.createElement('div');preferences.className='preferences';
  const conversationStatus=createConversationStatus();
  const renderConversationStatus=()=>{caption.textContent=tr(conversationStatus.key);};
  fetch('/api/health',{signal:AbortSignal.timeout(8000)}).then(r=>{if(!r.ok)throw new Error('Health check failed');return r.json();}).then(data=>{conversationStatus.health(data.conversation==='openai');renderConversationStatus();voicePlayback.setAvailable(data.speech==='openai');}).catch(()=>{conversationStatus.healthFailed();renderConversationStatus();voicePlayback.setAvailable(false);});
- let mode='stop',destination=null;
+ let mode='stop',destination=null,modelAction=null;
  const correctedWalk=petId==='43788e99-7894-4b2f-ae42-33757b37227a'?repairXiaoqWalk(model.scene):null;
  if(correctedWalk){
   model.scene.updateMatrixWorld(true);model.scene.traverse(o=>{if(o.isSkinnedMesh)o.skeleton.update();});
@@ -92,15 +101,31 @@ function start(job,url,model,petId){
   $('#animations').disabled=true;$('#message').textContent='小Q网页动作：行走、原地跑步、摇尾巴、跳跃与走近。采用专用骨骼与程序动画，仍在打磨；下载的原始 GLB 不包含这些网页动作。';
  }
  const rest=[];model.scene.traverse(o=>{if(o.isBone)rest.push({o,p:o.position.clone(),q:o.quaternion.clone(),s:o.scale.clone()});});
- const walk=model.animations.find(c=>/walk/i.test(c.name))||(model.animations.length===1?model.animations[0]:null);
- const run=model.animations.find(c=>/run|trot/i.test(c.name));const jump=model.animations.find(c=>/jump/i.test(c.name));const wag=model.animations.find(c=>/wag|tail.?flick/i.test(c.name));
- const clips={walk,come:walk,home:walk,run,jump,wag};
+ const walk=animations.find(c=>/walk/i.test(c.name))||(animations.length===1?animations[0]:null);
+ const run=animations.find(c=>/run|trot/i.test(c.name));const jump=animations.find(c=>/jump/i.test(c.name));const wag=animations.find(c=>/wag|tail.?flick/i.test(c.name));
+ const sit=animations.find(c=>c.name==='Sit'),lie=animations.find(c=>c.name==='Lie_Down');
+ const standFromSit=animations.find(c=>c.name==='Stand_From_Sit'),standFromLie=animations.find(c=>c.name==='Stand_From_Lie');
+ const clips={walk,come:walk,home:walk,run,jump,wag,sit,lie,stand:standFromSit};
  if(correctedWalk)for(const action of ['walk','come','home','run','jump','wag'])clips[action]=true;
  if(correctedWalk)caption.textContent='试试“跑步”“摇尾巴”或“跳一下”。跑步为原地展示，跳跃完成后自动停下。';
- function execute(command){if(command!=='stop'&&!clips[command]){speech.textContent='这个动作还在适配中，先陪我走一走吧。';return false;}mixer.stopAllAction();destination=null;mode=command;
+ function execute(command){if(command!=='stop'&&!clips[command]){speech.textContent='这个动作还在适配中，先陪我走一走吧。';return false;}
+  const previousMode=mode;
+  if(command===previousMode&&['sit','lie','stand'].includes(command))return true;
+  const standing=command==='stand'&&['sit','lie'].includes(previousMode);
+  const reverse=standing&&modelAction?.isRunning();
+  if(!reverse)mixer.stopAllAction();
+  destination=null;mode=command;
   for(const button of buttons.children)button.setAttribute('aria-pressed',String(button.dataset.command===command));
   correctedWalk?.start(command);
-  if(command!=='stop'&&!correctedWalk){const once=['jump','wag'].includes(command);mixer.clipAction(clips[command]).reset().fadeIn(.25).setLoop(once?THREE.LoopOnce:THREE.LoopRepeat,once?1:Infinity).play();}
+  if(reverse)modelAction.setEffectiveTimeScale(-1);
+  else if(command!=='stop'&&!correctedWalk&&(command!=='stand'||standing)){
+   const once=['jump','wag','sit','lie','stand'].includes(command);
+   const clip=standing&&previousMode==='lie'?standFromLie:clips[command];
+   modelAction=mixer.clipAction(clip).reset().setEffectiveTimeScale(1).setLoop(once?THREE.LoopOnce:THREE.LoopRepeat,once?1:Infinity);
+   modelAction.clampWhenFinished=['sit','lie'].includes(command);
+   if(!standing)modelAction.fadeIn(.25);
+   modelAction.play();
+  }
   if(command==='come')destination=new THREE.Vector3(camera.position.x-center.x,0,camera.position.z-center.z).normalize().multiplyScalar(radius*.45);
   if(command==='home')destination=new THREE.Vector3();return true;
  }
@@ -112,11 +137,15 @@ function start(job,url,model,petId){
   async function accept(text){if(contextLost)return;const careReply=care.check(text);if(careReply){responseGuard.invalidate();cancelPending();voicePlayback.stop();execute('stop');speech.textContent=careReply;hasSpoken=true;conversationStatus.local();renderConversationStatus();input.value='';updateSend();return;}
   // Direct stop commands must remain responsive while a model reply is pending.
   if(isImmediateStop(text,job.name)){responseGuard.invalidate();cancelPending();stopReferenceAudio();voicePlayback.stop();showAnswer(respond('stop',locale(),job.name,job.species,{useInterfaceLanguage:true}),text);conversationStatus.local();renderConversationStatus();updateSend();care.noteActivity();return;}
+  const posture=parseCommand(text,{postures:true});
+  if(poses.includes(posture)){responseGuard.invalidate();cancelPending();stopReferenceAudio();voicePlayback.stop();showAnswer(respond(text,locale(),job.name,job.species,{postures:true}),text);conversationStatus.local();renderConversationStatus();updateSend();care.noteActivity();return;}
   if(answering)return;stopReferenceAudio();voicePlayback.stop();const currentRequest=++requestSerial;answering=true;updateSend();speech.textContent=tr('thinking');const isCurrent=responseGuard.begin();
   try{const answer=await askAI(text,isCurrent);if(!isCurrent())return;showAnswer(answer,text);conversationStatus.succeeded(answer.source);renderConversationStatus();}
    catch(error){if(!isCurrent())return;showAnswer(respond(text,locale(),job.name,job.species),text);conversationStatus.failed();renderConversationStatus();}
    finally{if(currentRequest===requestSerial){answering=false;updateSend();care.noteActivity();}}}
- for(const command of ['come','walk','run','wag','jump','stop']){const button=document.createElement('button');button.textContent=tr(`pet${command[0].toUpperCase()}${command.slice(1)}`);button.dataset.command=command;button.setAttribute('aria-pressed',String(command==='stop'));button.disabled=command!=='stop'&&!clips[command];button.title=button.disabled?'此模型尚未包含该动作':'';button.onclick=()=>{responseGuard.invalidate();cancelPending();showAnswer(respond(command,locale(),job.name,job.species,{useInterfaceLanguage:true}),command);conversationStatus.local();renderConversationStatus();};buttons.append(button);}
+ const poses=['sit','lie','stand'].filter(command=>clips[command]&&(command!=='stand'||standFromLie));
+ const commandLabel=command=>tr(poses.includes(command)?command:`pet${command[0].toUpperCase()}${command.slice(1)}`);
+ for(const command of ['come','walk','run','wag','jump',...poses,'stop']){const button=document.createElement('button');button.textContent=commandLabel(command);button.dataset.command=command;button.setAttribute('aria-pressed',String(command==='stop'));button.disabled=command!=='stop'&&!clips[command];button.title=button.disabled?'此模型尚未包含该动作':'';button.onclick=()=>{responseGuard.invalidate();cancelPending();showAnswer(respond(command==='lie'?'lie down':command,locale(),job.name,job.species,{useInterfaceLanguage:true,postures:true}),command);conversationStatus.local();renderConversationStatus();};buttons.append(button);}
  const mic=document.createElement('button');mic.className='voice-button';mic.textContent='和小狗说话';const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;mic.disabled=!Recognition;if(!Recognition)mic.textContent='请用文字和我说话';let recognition,voiceErrorCode=Recognition?null:'unsupported';const micStatus=document.createElement('p');micStatus.className='recognition-status';micStatus.setAttribute('role','status');
  const languageLabel=document.createElement('label');languageLabel.textContent='语音识别语言 ';const languageSelect=document.createElement('select');for(const [value,label] of [['zh-CN','中文'],['en-US','English'],['es-ES','Español'],['fr-FR','Français'],['de-DE','Deutsch'],['ja-JP','日本語'],['ko-KR','한국어']]){const option=document.createElement('option');option.value=value;option.textContent=label;languageSelect.append(option);}languageLabel.append(languageSelect);preferences.append(languageLabel);
   mic.setAttribute('aria-pressed','false');mic.onclick=()=>{if(recognition){recognition.stop();return;}stopReferenceAudio();voicePlayback.stop();recognition=new Recognition();voiceErrorCode=null;micStatus.textContent='';recognition.lang=languageSelect.value;recognition.interimResults=false;recognition.continuous=false;const session=recognition,previousSpeech=speech.textContent;const watchdog=createRecognitionWatchdog(session,{onTimeout:()=>{if(recognition!==session)return;recognition=null;voiceErrorCode=voiceErrorCode||'timeout';mic.setAttribute('aria-pressed','false');mic.textContent=tr(isCat?'catMic':'dogMic');micStatus.textContent=recognitionStatus(voiceErrorCode,locale());speech.textContent=recognitionStatus(voiceErrorCode,locale());}});session.onstart=()=>{if(watchdog.expired||recognition!==session)return;mic.setAttribute('aria-pressed','true');mic.textContent=tr('listening');speech.textContent=tr('listening');};session.onresult=e=>{if(!watchdog.expired&&recognition===session){const text=e.results[0][0].transcript;micStatus.textContent=`${tr('heard')}${text}`;accept(text);}};bindRecognitionErrors(session,{locale,onError:(code,message)=>{if(watchdog.expired||recognition!==session)return;voiceErrorCode=code;micStatus.textContent=message;speech.textContent=message;}});session.onend=()=>{watchdog.cancel();if(watchdog.expired||recognition!==session)return;recognition=null;mic.setAttribute('aria-pressed','false');mic.textContent=tr(isCat?'catMic':'dogMic');if(!voiceErrorCode&&speech.textContent===tr('listening'))speech.textContent=previousSpeech;};watchdog.start();try{session.start();}catch{watchdog.cancel();recognition=null;mic.setAttribute('aria-pressed','false');voiceErrorCode='start';micStatus.textContent=recognitionStatus(voiceErrorCode,locale());}};buttons.append(mic);
@@ -139,7 +168,7 @@ function start(job,url,model,petId){
   referenceAudio.onplay=referenceAudio.onpause=referenceAudio.onended=renderReference;
   original.onclick=()=>{if(!referenceAudio.paused){stopReferenceAudio();return;}voicePlayback.stop();recognition?.abort();referenceAudio.play().catch(()=>{caption.textContent=tr('notHeard');});};renderReference();preferences.append(original);
  }
- mixer.addEventListener('finished',()=>execute('stop'));
+  mixer.addEventListener('finished',()=>{if(!['sit','lie'].includes(mode))execute('stop');});
  if(isCat){
   furry=false;fur.setEnabled(false);strands.setEnabled(false);furButton.textContent=tr('petFurOff');furButton.setAttribute('aria-pressed','false');
    mic.textContent='和小猫说话';
@@ -147,7 +176,7 @@ function start(job,url,model,petId){
    renderConversationStatus();
   const observer=new MutationObserver(()=>{if(speech.textContent.includes('汪'))speech.textContent=speech.textContent.replaceAll('汪','喵');});observer.observe(speech,{childList:true,characterData:true,subtree:true});
  }
-  renderPet=()=>{care.render();voicePlayback.render();micStatus.textContent=voiceErrorCode?recognitionStatus(voiceErrorCode,locale()):'';furButton.textContent=tr(furry?'petFurOn':'petFurOff');languageSelect.value={zh:'zh-CN',en:'en-US',fr:'fr-FR'}[locale()];languageLabel.firstChild.textContent=tr('petLanguage');send.textContent=tr('petSend');if(!recognition)mic.textContent=Recognition?tr(isCat?'catMic':'dogMic'):tr('petNoMic');furLabel.firstChild.textContent=tr('petFluff');furRange.setAttribute('aria-label',tr('petFluff'));input.placeholder=`${tr('petTry')}${job.name}, ${tr('petCome')}`;input.setAttribute('aria-label',tr('petInput'));if(!hasSpoken)speech.textContent={zh:`主人，我是${job.name}！一起玩吧 🐾`,en:`Hi, my dear owner! I'm ${job.name}. Want to play? 🐾`,fr:`Coucou, mon cher maître ! Je suis ${job.name}. On joue ? 🐾`}[locale()];if(isCat){$('#interaction .intro').textContent=tr('catIntro');furButton.textContent=tr(furry?'petFurOn':'petFurOff');}for(const button of buttons.querySelectorAll('[data-command]')){const command=button.dataset.command;button.textContent=tr(`pet${command[0].toUpperCase()}${command.slice(1)}`);}renderConversationStatus();document.title=`${job.name} · ${tr(isCat?'digitalCat':'digitalDog')}`;};petI18n.render();
+  renderPet=()=>{care.render();voicePlayback.render();micStatus.textContent=voiceErrorCode?recognitionStatus(voiceErrorCode,locale()):'';furButton.textContent=tr(furry?'petFurOn':'petFurOff');languageSelect.value={zh:'zh-CN',en:'en-US',fr:'fr-FR'}[locale()];languageLabel.firstChild.textContent=tr('petLanguage');send.textContent=tr('petSend');if(!recognition)mic.textContent=Recognition?tr(isCat?'catMic':'dogMic'):tr('petNoMic');furLabel.firstChild.textContent=tr('petFluff');furRange.setAttribute('aria-label',tr('petFluff'));input.placeholder=`${tr('petTry')}${job.name}, ${tr('petCome')}`;input.setAttribute('aria-label',tr('petInput'));if(!hasSpoken)speech.textContent={zh:`主人，我是${job.name}！一起玩吧 🐾`,en:`Hi, my dear owner! I'm ${job.name}. Want to play? 🐾`,fr:`Coucou, mon cher maître ! Je suis ${job.name}. On joue ? 🐾`}[locale()];if(isCat){$('#interaction .intro').textContent=tr('catIntro');furButton.textContent=tr(furry?'petFurOn':'petFurOff');}for(const button of buttons.querySelectorAll('[data-command]')){const command=button.dataset.command;button.textContent=commandLabel(command);}renderConversationStatus();document.title=`${job.name} · ${tr(isCat?'digitalCat':'digitalDog')}`;};petI18n.render();
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stopReferenceAudio();voicePlayback.stop();recognition?.abort();}});
   window.addEventListener('pagehide',()=>{stopReferenceAudio();voicePlayback.stop();recognition?.abort();});
  const anchor=new THREE.Vector3();let elapsed=0;
@@ -172,7 +201,9 @@ function start(job,url,model,petId){
   bubble.style.left=`${THREE.MathUtils.clamp((anchor.x*.5+.5)*wrap.clientWidth,Math.min(150,wrap.clientWidth/2),Math.max(wrap.clientWidth-150,wrap.clientWidth/2))}px`;
   bubble.style.top=`${THREE.MathUtils.clamp((-.5*anchor.y+.5)*wrap.clientHeight,bubble.offsetHeight+18,wrap.clientHeight-25)}px`;
  });
- $('#download').href=url;$('#download').download=`${job.name}-animated.glb`;$('#download').hidden=false;document.title=`${job.name} · ${tr(isCat?'digitalCat':'digitalDog')}`;
+ const renderInteraction=renderPet;
+ renderPet=()=>{renderInteraction();if(job.modelReview)$('#message').textContent=modelReviewText(job);};
+ $('#download').href=url;$('#download').download=`${job.name}${animations.length?'-animated':''}.glb`;$('#download').hidden=false;document.title=`${job.name} · ${tr(isCat?'digitalCat':'digitalDog')}`;
 }
 await boot();
 

@@ -38,13 +38,15 @@ test('private upload, authentication, ownership, CSRF, persistence and deletion'
   assert.equal(db.prepare('SELECT count(*) AS n FROM jobs').get().n,1);
   const reopened=openStore(dir);assert.equal(reopened.prepare('SELECT status FROM jobs WHERE id=?').get(job.id).status,'WAITING_APPROVAL');reopened.close();
   assert.equal((await request(`/jobs/${job.id}/approve-views`,'POST',null,cookie)).status,409);
-  const saved=JSON.parse(db.prepare('SELECT data FROM jobs WHERE id=?').get(job.id).data);saved.generatedViews={front:'generated-front.png'};
+  const saved=JSON.parse(db.prepare('SELECT data FROM jobs WHERE id=?').get(job.id).data);saved.generatedViews={front:'generated-front.png',back:'generated-back.png'};
   await writeFile(path.join(dir,'assets',job.id,'generated-front.png'),bytes);
   db.prepare("UPDATE jobs SET status='VIEW_REVIEW',data=? WHERE id=?").run(JSON.stringify(saved),job.id);
   assert.equal((await request(`/jobs/${job.id}/generated-view/front`,'GET',null,cookie2)).status,404);
   assert.equal((await request(`/jobs/${job.id}/approve-views`,'POST',null,cookie2)).status,404);
-  assert.equal((await request(`/jobs/${job.id}/approve-views`,'POST',null,cookie)).status,200);
-  assert.ok(JSON.parse(db.prepare('SELECT data FROM jobs WHERE id=?').get(job.id).data).viewsApprovedAt);
+  assert.equal((await request(`/jobs/${job.id}/approve-views`,'POST',{views:['front','left']},cookie)).status,400);
+  assert.equal((await request(`/jobs/${job.id}/approve-views`,'POST',{views:['back']},cookie)).status,200);
+  const approved=JSON.parse(db.prepare('SELECT data FROM jobs WHERE id=?').get(job.id).data);
+  assert.ok(approved.viewsApprovedAt);assert.deepEqual(approved.approvedSyntheticViews,['back']);
   assert.equal((await request(`/jobs/${job.id}/cancel`,'POST',null,cookie)).status,200);
   assert.equal((await request(`/jobs/${job.id}`,'DELETE',null,cookie)).status,200);assert.deepEqual(await readdir(path.join(dir,'assets')),[]);
   assert.equal((await request(`/jobs/${job.id}`,'GET',null,cookie)).status,404);
@@ -56,9 +58,10 @@ test('studio multipart form accepts four fields with all four photos and rejects
  const dir=await mkdtemp(path.join(os.tmpdir(),'pawprint-form-')),origin='http://127.0.0.1:8788';
  const {app,db}=await makeApp({dataDir:dir,origin,localMode:true});const server=app.listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));
  const base=`http://127.0.0.1:${server.address().port}`,bytes=await sharp({create:{width:300,height:300,channels:3,background:'#a4ad94'}}).png().toBuffer();
- function form(extra=false){const data=new FormData();for(const [key,value]of Object.entries({name:'QA four-view dog',species:'dog',mode:'direct',consent:'yes'}))data.set(key,value);for(const view of ['front','left','back','right'])data.set(view,new Blob([bytes],{type:'image/png'}),`${view}.png`);if(extra)data.set('unexpected','extra');return data;}
+ function form(extra=false){const data=new FormData();for(const [key,value]of Object.entries({name:'QA four-view dog',species:'dog',mode:'direct',consent:'yes',modelProfile:'detail'}))data.set(key,value);for(const view of ['front','left','back','right'])data.set(view,new Blob([bytes],{type:'image/png'}),`${view}.png`);if(extra)data.set('unexpected','extra');return data;}
  try{
   const response=await fetch(base+'/api/jobs',{method:'POST',headers:{Origin:origin},body:form()});assert.equal(response.status,201);const job=await response.json();assert.deepEqual(job.views,['front','left','back','right']);assert.equal(job.mode,'direct');assert.equal(job.status,'WAITING_APPROVAL');
+  assert.equal(job.modelProfile,'detail');assert.deepEqual(job.photoReview.usedViews,['front']);
   assert.equal((await fetch(base+'/api/jobs',{method:'POST',headers:{Origin:origin},body:form(true)})).status,400);
  }finally{await new Promise(r=>server.close(r));db.close();await rm(dir,{recursive:true,force:true});}
 });
@@ -67,6 +70,9 @@ test('Tripo requests use documented options and never retry uncertain submission
  const one=generationRequest({front:'file_front'},'v3.1-20260211');assert.equal(one.endpoint,'/generation/image-to-model');assert.equal(one.body.texture_alignment,'original_image');
  const multi=generationRequest({front:'f',left:'l'},'v3.1-20260211');assert.deepEqual(multi.body.inputs,[{front:'f'},{left:'l'}]);
  const inferred=generationRequest({front:'f'},'v3.1-20260211','task_multiview');assert.deepEqual(inferred.body.inputs,[{task_id:'task_multiview'}]);assert.equal(inferred.body.input,undefined);
+ const detailed=generationRequest({front:'f',back:'b'},'v2.5-20250123',null,'detail');
+ assert.equal(detailed.body.model,'v3.1-20260211');assert.equal(detailed.body.texture_version,'v3.5-20260815');
+ assert.equal(detailed.body.geometry_quality,'detailed');assert.equal(detailed.body.texture_quality,'detailed');assert.equal(detailed.body.face_limit,80000);
  let calls=0;const client=new Tripo('test-only',async()=>{calls++;throw new Error('connection lost');});await assert.rejects(()=>client.submit(one.endpoint,one.body));assert.equal(calls,1);
 });
 

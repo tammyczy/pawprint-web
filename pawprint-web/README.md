@@ -65,7 +65,9 @@ memory ─▶ consent ──▶ OpenAI draft ──▶ every sentence must quote
 
 ## Model size
 
-The website loads `public/models/lanlao-web.glb` (6.7 MB). It is produced from the 12.9 MB source model by `node scripts/optimize-lanlao-textures.mjs`, which re-encodes the three textures as WebP and leaves geometry, skin weights and animations byte-for-byte equivalent in structure, so the motion code and tests are unaffected.
+The website loads `public/models/lanlao-web.glb` (6.7 MB). Run `node scripts/optimize-lanlao-textures.mjs` to build it from the 12.9 MB source. The build merges duplicate influence slots for the same joint, retains each joint’s total weight and checks the result with the Khronos validator. Geometry, morph targets and motion data are carried over byte for byte.
+
+Studio checks reference photos before a paid run. When AI suggests extra views, select the ones you want to add to the original front photo. Standard is the default, and High detail requests detailed mesh and textures. Studio checks the base mesh for extra ground contacts before paying for rigging. Suspicious meshes stay available as still models for review. For supported four-leg rigs, the worker adapts and exports Lanlao’s current body motions locally. A new Standard job with original photos is estimated at 55 Tripo credits for mesh generation and rigging. When lossless texture compression saves at least 5%, Studio uses a smaller preview and keeps the full GLB available for download. The modeling experiments describe the earlier provider walk workflow. [Modeling research and experiments](review/PHOTO-TO-3D-RESEARCH.md)
 
 ## Evidence
 
@@ -88,7 +90,7 @@ Everything for the submission is in [`submission/`](submission/README.md): proje
 
 ## Not done yet
 
-- A first real paid Tripo generation ([checklist](真實生成檢查清單.md)); so far only the mock pipeline has run end to end.
+- A controlled paid comparison of the Studio modeling routes and detail profiles ([modeling research](review/PHOTO-TO-3D-RESEARCH.md)).
 - Testing on a real phone and with a real microphone.
 - Sessions with consenting adult pet owners ([kit](review/human-test-kit/README.md)).
 - The public cloud deployment.
